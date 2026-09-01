@@ -1,0 +1,134 @@
+<script type="text/javascript">
+  RED.nodes.registerType('eudiplo-presentation', {
+    category:     'eudiplo',
+    color:        '#ffffff',
+    defaults: {
+      name:                       { value: '' },
+      baseUrl:                    { value: '' },
+      baseUrlOverwrite:           { value: false },
+      clientId:                   { value: '' },
+      credentialsOverwrite:       { value: false },
+      presentationConfigId:       { value: '', required: true },
+      presentationConfigIdSource: { value: 'str' },
+    },
+    credentials: {
+      clientSecret: { type: 'password' },
+    },
+    inputs:       1,
+    outputs:      1,
+    icon:         'eudiploLogo.svg',
+    label:        function () { return this.name || 'eudiplo presentation'; },
+    paletteLabel: 'eudiplo presentation',
+
+    oneditprepare: function () {
+      $('#node-input-presentationConfigId').typedInput({
+        type:      this.presentationConfigIdSource || 'str',
+        types:     ['msg', 'str'],
+        typeField: '#node-input-presentationConfigIdSource',
+      });
+
+      $('#node-input-baseUrlEnvVar').val('EUDIPLO_BASE_URL');
+
+      function toggleBaseUrlOverride() {
+        const checked = $('#node-input-baseUrlOverwrite').prop('checked');
+        $('#base-url-override-rows').toggle(checked);
+      }
+
+      function toggleCredentials() {
+        const checked = $('#node-input-credentialsOverwrite').prop('checked');
+        $('#credentials-override-rows').toggle(checked);
+      }
+
+      toggleBaseUrlOverride();
+      toggleCredentials();
+      $('#node-input-baseUrlOverwrite').on('change', toggleBaseUrlOverride);
+      $('#node-input-credentialsOverwrite').on('change', toggleCredentials);
+    },
+  });
+</script>
+
+<script type="text/html" data-template-name="eudiplo-presentation">
+  <div class="form-row">
+    <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+    <input type="text" id="node-input-name" placeholder="Name">
+  </div>
+
+  <div class="form-row">
+    <label for="node-input-baseUrlEnvVar"><i class="fa fa-globe"></i> Base URL</label>
+    <input type="text" id="node-input-baseUrlEnvVar" readonly>
+  </div>
+
+  <div class="form-row">
+    <input type="checkbox" id="node-input-baseUrlOverwrite" style="width:auto; margin-left: 107px;">
+    <label for="node-input-baseUrlOverwrite" style="width:auto;"> Override base URL</label>
+  </div>
+
+  <div id="base-url-override-rows">
+    <div class="form-row">
+      <label for="node-input-baseUrl"><i class="fa fa-globe"></i> Base URL</label>
+      <input type="text" id="node-input-baseUrl" placeholder="https://eudiplo.example.com">
+    </div>
+  </div>
+
+  <hr/>
+
+  <div class="form-row">
+    <label><i class="fa fa-lock"></i> OAuth2</label>
+  </div>
+
+  <div class="form-row">
+    <input type="checkbox" id="node-input-credentialsOverwrite" style="width:auto; margin-left: 107px;">
+    <label for="node-input-credentialsOverwrite" style="width:auto;"> Override credentials</label>
+  </div>
+
+  <div id="credentials-override-rows">
+    <div class="form-row">
+      <label for="node-input-clientId"><i class="fa fa-user"></i> Client ID</label>
+      <input type="text" id="node-input-clientId">
+    </div>
+
+    <div class="form-row">
+      <label for="node-input-clientSecret"><i class="fa fa-user-secret"></i> Client Secret</label>
+      <input type="password" id="node-input-clientSecret">
+    </div>
+  </div>
+
+  <hr/>
+
+  <div class="form-row">
+    <label for="node-input-presentationConfigId"><i class="fa fa-id-card"></i> Presentation Config ID</label>
+    <input type="text" id="node-input-presentationConfigId">
+    <input type="hidden" id="node-input-presentationConfigIdSource">
+  </div>
+</script>
+
+<script type="text/html" data-help-name="eudiplo-presentation">
+  <p>Creates a Verifiable Presentation request via a Eudiplo server and outputs the presentation URI for the holder's wallet.</p>
+
+  <h3>Inputs</h3>
+  <dl class="message-properties">
+    <dt>payload <span class="property-type">any</span></dt>
+    <dd>Used to resolve the <b>Presentation Config ID</b> when configured as a <code>msg</code> property.</dd>
+  </dl>
+
+  <h3>Outputs</h3>
+  <dl class="message-properties">
+    <dt>payload.presentationUri <span class="property-type">string</span></dt>
+    <dd>Same-device OID4VP presentation request URI (wallet on same device, redirects back after completion).</dd>
+    <dt>payload.crossDeviceUri <span class="property-type">string</span></dt>
+    <dd>Cross-device URI suitable for displaying as a QR code (no redirect; poll <code>sessionId</code> for status).</dd>
+    <dt>payload.sessionId <span class="property-type">string</span></dt>
+    <dd>Session ID for polling presentation status.</dd>
+  </dl>
+
+  <h3>Details</h3>
+  <ul>
+    <li><b>Base URL</b> — By default the node reads the server URL from the <code>EUDIPLO_BASE_URL</code> environment variable shown in the editor.</li>
+    <li><b>Base URL Override</b> — Enable this to provide a node-specific Base URL instead of using <code>EUDIPLO_BASE_URL</code>.</li>
+    <li><b>Client ID / Secret</b> — OAuth2 client credentials (Client Credentials grant). The secret is stored encrypted. The SDK uses <code>${baseUrl}/oauth2/token</code> as the token endpoint.</li>
+    <li><b>Presentation Config ID</b> — The ID of the presentation configuration that defines which credentials are required. Can be read from a <code>msg</code> property or set as a static string.</li>
+  </ul>
+
+  <h3>Notes</h3>
+  <p>Uses the <code>@eudiplo/sdk-core</code> package. The OAuth2 access token is cached and automatically refreshed by the SDK.</p>
+</script>

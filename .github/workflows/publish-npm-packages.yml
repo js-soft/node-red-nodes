@@ -1,0 +1,78 @@
+name: Publish NPM Packages
+
+on:
+  push:
+    tags:
+      - '*@*.*.*'
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Parse tag
+        id: parse_tag
+        run: |
+          TAG="${{ github.ref_name }}"
+          # Extract package name and version from tag like "eudiplo@1.0.0"
+          if [[ $TAG =~ ^([a-z0-9-]+)@([0-9]+\.[0-9]+\.[0-9]+)$ ]]; then
+            PACKAGE_NAME="${BASH_REMATCH[1]}"
+            VERSION="${BASH_REMATCH[2]}"
+
+            case "$PACKAGE_NAME" in
+              enmeshed-connector|eudiplo|frosch-work-openapi-generator)
+                DIR_NAME="$PACKAGE_NAME"
+                ;;
+              *)
+                echo "Unsupported package tag: $PACKAGE_NAME"
+                echo "Expected one of: enmeshed-connector, eudiplo, frosch-work-openapi-generator"
+                exit 1
+                ;;
+            esac
+
+            echo "package_name=$PACKAGE_NAME" >> $GITHUB_OUTPUT
+            echo "version=$VERSION" >> $GITHUB_OUTPUT
+            echo "package_dir=packages/node-red-$DIR_NAME" >> $GITHUB_OUTPUT
+            echo "Package: $PACKAGE_NAME, Version: $VERSION"
+          else
+            echo "Invalid tag format. Expected format: 'package-name@x.y.z'"
+            exit 1
+          fi
+
+      - name: Verify package exists
+        run: |
+          if [ ! -d "${{ steps.parse_tag.outputs.package_dir }}" ]; then
+            echo "Package directory not found: ${{ steps.parse_tag.outputs.package_dir }}"
+            exit 1
+          fi
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Install dependencies
+        working-directory: ${{ steps.parse_tag.outputs.package_dir }}
+        run: npm ci
+
+      - name: Update package version
+        working-directory: ${{ steps.parse_tag.outputs.package_dir }}
+        run: |
+          TARGET_VERSION="${{ steps.parse_tag.outputs.version }}"
+          CURRENT_VERSION="$(node -p "require('./package.json').version")"
+
+          if [ "$CURRENT_VERSION" = "$TARGET_VERSION" ]; then
+            echo "Package version already matches tag ($TARGET_VERSION), skipping npm version."
+          else
+            npm version "$TARGET_VERSION" --no-git-tag-version
+          fi
+
+      - name: Publish to npm
+        working-directory: ${{ steps.parse_tag.outputs.package_dir }}
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

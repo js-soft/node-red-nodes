@@ -1,0 +1,164 @@
+<script type="text/javascript">
+  RED.nodes.registerType('eudiplo-issuance', {
+    category:     'eudiplo',
+    color:        '#ffffff',
+    defaults: {
+      name:                            { value: '' },
+      baseUrl:                         { value: '' },
+      baseUrlOverwrite:                { value: false },
+      clientId:                        { value: '' },
+      credentialsOverwrite:            { value: false },
+      flow:                            { value: 'pre_authorized_code' },
+      responseType:                    { value: 'uri' },
+      credentialConfigurationId:       { value: '', required: true },
+      credentialConfigurationIdSource: { value: 'msg' },
+      subjectData:                     { value: '{}' },
+      subjectDataSource:               { value: 'json' },
+    },
+    credentials: {
+      clientSecret: { type: 'password' },
+    },
+    inputs:       1,
+    outputs:      1,
+    icon:         'eudiploLogo.svg',
+    label:        function () { return this.name || 'eudiplo issuance'; },
+    paletteLabel: 'eudiplo issuance',
+
+    oneditprepare: function () {
+      $('#node-input-credentialConfigurationId').typedInput({
+        type:      this.credentialConfigurationIdSource || 'msg',
+        types:     ['msg', 'str'],
+        typeField: '#node-input-credentialConfigurationIdSource',
+      });
+      $('#node-input-subjectData').typedInput({
+        type:      this.subjectDataSource || 'json',
+        types:     ['msg', 'json'],
+        typeField: '#node-input-subjectDataSource',
+      });
+
+      $('#node-input-baseUrlEnvVar').val('EUDIPLO_BASE_URL');
+
+      function toggleBaseUrlOverride() {
+        const checked = $('#node-input-baseUrlOverwrite').prop('checked');
+        $('#base-url-override-rows').toggle(checked);
+      }
+
+      function toggleCredentials() {
+        const checked = $('#node-input-credentialsOverwrite').prop('checked');
+        $('#credentials-override-rows').toggle(checked);
+      }
+
+      toggleBaseUrlOverride();
+      toggleCredentials();
+      $('#node-input-baseUrlOverwrite').on('change', toggleBaseUrlOverride);
+      $('#node-input-credentialsOverwrite').on('change', toggleCredentials);
+    },
+  });
+</script>
+
+<script type="text/html" data-template-name="eudiplo-issuance">
+  <div class="form-row">
+    <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+    <input type="text" id="node-input-name" placeholder="Name">
+  </div>
+
+  <div class="form-row">
+    <label for="node-input-baseUrlEnvVar"><i class="fa fa-globe"></i> Base URL</label>
+    <input type="text" id="node-input-baseUrlEnvVar" readonly>
+  </div>
+
+  <div class="form-row">
+    <input type="checkbox" id="node-input-baseUrlOverwrite" style="width:auto; margin-left: 107px;">
+    <label for="node-input-baseUrlOverwrite" style="width:auto;"> Override base URL</label>
+  </div>
+
+  <div id="base-url-override-rows">
+    <div class="form-row">
+      <label for="node-input-baseUrl"><i class="fa fa-globe"></i> Base URL</label>
+      <input type="text" id="node-input-baseUrl" placeholder="https://eudiplo.example.com">
+    </div>
+  </div>
+
+  <hr/>
+
+  <div class="form-row">
+    <label><i class="fa fa-lock"></i> OAuth2</label>
+  </div>
+
+  <div class="form-row">
+    <input type="checkbox" id="node-input-credentialsOverwrite" style="width:auto; margin-left: 107px;">
+    <label for="node-input-credentialsOverwrite" style="width:auto;"> Override credentials</label>
+  </div>
+
+  <div id="credentials-override-rows">
+    <div class="form-row">
+      <label for="node-input-clientId"><i class="fa fa-user"></i> Client ID</label>
+      <input type="text" id="node-input-clientId">
+    </div>
+
+    <div class="form-row">
+      <label for="node-input-clientSecret"><i class="fa fa-user-secret"></i> Client Secret</label>
+      <input type="password" id="node-input-clientSecret">
+    </div>
+  </div>
+
+  <hr/>
+
+  <div class="form-row">
+    <label for="node-input-flow"><i class="fa fa-code-fork"></i> Flow</label>
+    <select id="node-input-flow" style="width:70%">
+      <option value="pre_authorized_code">pre_authorized_code</option>
+      <option value="authorization_code">authorization_code</option>
+    </select>
+  </div>
+
+  <div class="form-row">
+    <label for="node-input-responseType"><i class="fa fa-qrcode"></i> Response Type</label>
+    <select id="node-input-responseType" style="width:70%">
+      <option value="uri">uri</option>
+      <option value="dc-api">dc-api</option>
+    </select>
+  </div>
+
+  <div class="form-row">
+    <label for="node-input-credentialConfigurationId"><i class="fa fa-id-card"></i> Credential Configuration ID</label>
+    <input type="text" id="node-input-credentialConfigurationId">
+    <input type="hidden" id="node-input-credentialConfigurationIdSource">
+  </div>
+
+  <div class="form-row">
+    <label for="node-input-subjectData"><i class="fa fa-user-circle"></i> Subject Data</label>
+    <input type="text" id="node-input-subjectData">
+    <input type="hidden" id="node-input-subjectDataSource">
+  </div>
+</script>
+
+<script type="text/html" data-help-name="eudiplo-issuance">
+  <p>Issues a Verifiable Credential via a Eudiplo server and outputs the <code>credentialOffer</code> URI for the holder's wallet.</p>
+
+  <h3>Inputs</h3>
+  <dl class="message-properties">
+    <dt>payload <span class="property-type">any</span></dt>
+    <dd>Used to resolve <b>Credential Configuration ID</b> and <b>Subject Data</b> when configured as <code>msg</code> properties.</dd>
+  </dl>
+
+  <h3>Outputs</h3>
+  <dl class="message-properties">
+    <dt>payload.credentialOffer <span class="property-type">string</span></dt>
+    <dd>The OID4VCI credential offer URI to present to the holder's wallet.</dd>
+    <dt>payload.sessionId <span class="property-type">string</span></dt>
+    <dd>Session ID for polling issuance status.</dd>
+  </dl>
+
+  <h3>Details</h3>
+  <ul>
+    <li><b>Base URL</b> — By default the node reads the server URL from the <code>EUDIPLO_BASE_URL</code> environment variable shown in the editor.</li>
+    <li><b>Base URL Override</b> — Enable this to provide a node-specific Base URL instead of using <code>EUDIPLO_BASE_URL</code>.</li>
+    <li><b>Client ID / Secret</b> — OAuth2 client credentials (Client Credentials grant). The secret is stored encrypted. The SDK uses <code>${baseUrl}/oauth2/token</code> as the token endpoint.</li>
+    <li><b>Credential Configuration ID</b> — The type identifier of the credential to issue. Can be read from a <code>msg</code> property or set as a static string.</li>
+    <li><b>Subject Data</b> — JSON object of subject claims/attributes. Can be a <code>msg</code> property or a static JSON object.</li>
+  </ul>
+
+  <h3>Notes</h3>
+  <p>Uses the <code>@eudiplo/sdk-core</code> package. The OAuth2 access token is cached and automatically refreshed by the SDK.</p>
+</script>

@@ -1,0 +1,46 @@
+{
+  "name": "@js-soft/node-red-eudiplo",
+  "version": "7.4.0",
+  "publishConfig": {
+    "access": "public"
+  },
+  "description": "Node-RED nodes for issuing and presenting credentials via a Eudiplo server",
+  "keywords": [
+    "node-red",
+    "eudiplo",
+    "vc",
+    "credential",
+    "issuance",
+    "presentation"
+  ],
+  "license": "MIT",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/js-soft/node-red-nodes.git",
+    "directory": "packages/node-red-eudiplo"
+  },
+  "files": [
+    "index.js",
+    "eudiplo-issuance.js",
+    "eudiplo-issuance.html",
+    "eudiplo-presentation.js",
+    "eudiplo-presentation.html",
+    "icons",
+    "README.md",
+    "LICENSE"
+  ],
+  "node-red": {
+    "version": ">=3.0.0",
+    "nodes": {
+      "eudiplo-issuance": "eudiplo-issuance.js",
+      "eudiplo-presentation": "eudiplo-presentation.js"
+    }
+  },
+  "dependencies": {
+    "@eudiplo/sdk-core": "7.4.0"
+  },
+  "engines": {
+    "node": "24.x"
+  }
+}

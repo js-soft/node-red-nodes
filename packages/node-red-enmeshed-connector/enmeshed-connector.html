@@ -1,0 +1,97 @@
+<script type="text/javascript">
+  (function () {
+    // IMPORTANT: Do NOT call RED.nodes.getType('openApi-red') here.
+    // Node-RED loads custom nodes (file: deps) before openapi-red (versioned dep)
+    // in the concatenated /nodes HTML, so openApi-red is not yet registered
+    // when this script runs.
+    //
+    // Instead, the lifecycle functions do a lazy getType() at call time —
+    // that is always safe because the editor is only opened after full page load.
+
+    function callBase(method, ctx, args) {
+      var base = RED.nodes.getType('openApi-red');
+      if (base && typeof base[method] === 'function') {
+        return base[method].apply(ctx, args || []);
+      }
+      console.warn('[enmeshed-connector] openApi-red not ready for ' + method);
+    }
+
+    RED.nodes.registerType('enmeshed-connector', {
+      // ── Visual identity ────────────────────────────────────────────────
+      category:     'enmeshed',
+      color:        '#FFE5D0',
+      icon:         'jsFrog.svg',
+      paletteLabel: 'enmeshed connector',
+      inputs:       1,
+      outputs:      1,
+
+      // ── Defaults — must match openapi-red exactly so saved flows are valid ─
+      defaults: {
+        name:                { value: '' },
+        configUrlNode:       { value: '', type: 'openApi-red-url', required: true },
+        apiTag:              { value: '', required: true },
+        keepAuth:            { value: false },
+        operationData:       { value: {}, validate: function (v) { return v.id !== ''; } },
+        target:              { value: 'payload' },
+        targetType:          { value: 'msg' },
+        outputStyle:         { value: 'each response' },
+        errorHandling:       { value: 'throw exception' },
+        internalErrors:      { value: {}, validate: function (v) { return !Object.values(v).find(function (x) { return x; }); } },
+        parameters:          { value: {}, validate: function (v) { return !v || !Array.isArray(v) || v.length === 0 || !v.find(function (p) { return p.required && p.value === ''; }); } },
+        requestContentType:  { value: '' },
+        responseContentType: { value: '' },
+        outputs:             { value: 1 },
+        responseOutputLabels:{ value: [{ code: 'default', text: 'default' }] },
+        responseAsPayload:   { value: false },
+        debugMode:           { value: false },
+        headers:             { value: [] },
+        _version:            { value: '' }
+      },
+
+      outputLabels: function (index) {
+        var base = RED.nodes.getType('openApi-red');
+        if (base && typeof base.outputLabels === 'function') {
+          return base.outputLabels.call(this, index);
+        }
+        var label = (this.responseOutputLabels || [])[index];
+        return label ? label.code + ': ' + label.text : '';
+      },
+
+      // ── Label shown on the canvas node ──────────────────────────────────
+      label: function () {
+        return this.name ||
+          (this.operationData && (this.operationData.title || this.operationData.id)) ||
+          'enmeshed connector';
+      },
+
+      // ── Editor lifecycle — lazy delegation to openapi-red's Svelte UI ───
+      oneditprepare: function () { callBase('oneditprepare', this, arguments); },
+      oneditsave:    function () { callBase('oneditsave',    this, arguments); },
+      oneditcancel:  function () { callBase('oneditcancel',  this, arguments); },
+      onadd:         function () { callBase('onadd',         this, arguments); }
+    });
+  })();
+</script>
+
+<script type="text/html" data-template-name="enmeshed-connector">
+  <div id="openApi-red-svelte-container" class="svelte-integration-red-node-container"></div>
+</script>
+
+<script type="text/html" data-help-name="enmeshed-connector">
+  <p>
+    <b>Enmeshed Connector</b> — calls enmeshed connector REST endpoints via an
+    OpenAPI specification.
+  </p>
+  <p>
+    Configure it like a standard <em>openAPI client</em> node: select a config
+    URL pointing to the enmeshed connector spec, pick an operation, and map the
+    parameters.
+  </p>
+  <h3>Outputs</h3>
+  <dl class="message-properties">
+    <dt>payload <span class="property-type">object</span></dt>
+    <dd>The API response body.</dd>
+    <dt>response <span class="property-type">object</span></dt>
+    <dd>Full HTTP response metadata (status, headers, …).</dd>
+  </dl>
+</script>

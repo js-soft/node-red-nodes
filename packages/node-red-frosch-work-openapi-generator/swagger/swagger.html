@@ -1,0 +1,1038 @@
+<!--
+  Copyright 2015 IBM Corp.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+ NOTICE: This file is a modified version of the original 
+ swagger.html file an addtional override tab has been added which allows
+ a user to completely override the generated swagger doc for an endpoint with their own JSON.(meant to aid quick custom changes)
+ Addtionally it introduces a new tab called frosch-ork which pushes different frosch-work specific properties to the open-api
+ doc using custom properties in the swagger doc node. 
+  -->
+
+
+
+
+<script type="text/x-red" data-template-name="swagger-doc">
+  <div class="form-row">
+      <label><span data-i18n="swagger.label.path"></span></label>
+      <span id="node-config-input-method"></span>
+      <span id="node-config-input-path"></span>
+  </div>
+
+  <div class="form-row">
+      <ul style="background: #fff; min-width: 600px; margin-bottom: 20px;" id="node-config-swagger-tabs"></ul>
+  </div>
+
+  <div id="node-config-swagger-tabs-content" style="min-height: 350px">
+      <div id="swagger-tab-info">
+          <div class="form-row">
+              <label id="node-config-input-summary-label" for="node-config-input-summary" class="popover-right" data-i18n="[data-content]swagger.data-content.summary"><span data-i18n="swagger.label.summary"></span></label>
+              <input type="text" id="node-config-input-summary">
+          </div>
+          <div class="form-row">
+              <label id="node-config-input-description-label" for="node-config-input-description" class="popover-right" data-i18n="[data-content]swagger.data-content.description"><span data-i18n="swagger.label.description"></span></label>
+              <input type="text" id="node-config-input-description">
+          </div>
+          <div class="form-row">
+              <label id="node-config-input-tags-label" for="node-config-input-tags" class="popover-right" data-i18n="[data-content]swagger.data-content.tags"><span data-i18n="swagger.label.tags"></span></label>
+              <input type="text" id="node-config-input-tags" data-i18n="[placeholder]swagger.placeholder.tags">
+          </div>
+          <div  class="form-row">
+              <input type="checkbox" id="node-config-input-deprecated" style="width: auto; vertical-align: top;"> <label id="node-config-input-deprecated-label" for="node-config-input-deprecated" class="popover-right" data-i18n="[data-content]swagger.data-content.deprecated"><span data-i18n="swagger.label.deprecated"></span></label>
+          </div>
+      </div>
+      <div id="swagger-tab-parameters">
+          <div class="form-row" style="box-sizing: border-box; border-radius: 5px; height: 310px; padding: 5px; border: 1px solid #ccc; overflow-y:scroll;">
+              <ul id="node-config-parameter-list" style="padding: 0; margin:0;"></ul>
+          </div>
+          <div class="form-row">
+              <a href="#" class="red-ui-button red-ui-button-small" id="node-config-input-add-parameter"><i class="fa fa-plus"></i> <span data-i18n="swagger.label.parameter"></span></a>
+              <a href="#" id="node-config-input-parameter-info" class="popover-closable" style="font-size: 10px; text-decoration: underline; float: right"><span data-i18n="swagger.label.parameters-help"></span></a>
+          </div>
+      </div>
+      <div id="swagger-tab-responses">
+          <div class="form-row" style="box-sizing: border-box; border-radius: 5px; height: 310px; padding: 5px; border: 1px solid #ccc; overflow-y:scroll;">
+              <ul id="node-config-response-list" style="padding: 0; margin:0;"></ul>
+          </div>
+          <div class="form-row">
+              <a href="#" class="red-ui-button red-ui-button-small" id="node-config-input-add-response"><i class="fa fa-plus"></i> <span data-i18n="swagger.label.response"></span></a>
+              <a href="#" id="node-config-input-response-info" class="popover-closable" style="font-size: 10px; text-decoration: underline; float: right"><span data-i18n="swagger.label.responses-help"></span></a>
+          </div>
+      </div>
+      <div id="swagger-tab-requestBody">
+        <div class="form-row">
+            <label for="node-swagger-requestBody-description"><span>Request Body Description</span></label>
+            <input type="text" id="node-swagger-requestBody-description" style="width:100%;">
+        </div>
+        <div class="form-row">
+            <label for="node-swagger-requestBody-required"><span>Required</span></label>
+            <input type="checkbox" id="node-swagger-requestBody-required" style="width: auto; vertical-align: top;">
+        </div>
+        <div class="form-row">
+            <label for="node-swagger-requestBody-contentType"><span>Content Type</span> <a href="#" class="popover-closable" data-i18n="[data-content]swagger.content.consumes-info"><i class="fa fa-info-circle"></i></a></label>
+            <input type="text" id="node-swagger-requestBody-contentType" value="application/json" style="width: 100%;">
+        </div>
+        <div class="form-row">
+            <label for="node-swagger-requestBody-json"><span>Request Body JSON Schema</span> <a href="#" class="popover-closable" data-i18n="[data-content]swagger.content.request-body-info"><i class="fa fa-info-circle"></i></a></label>
+            <textarea id="node-swagger-requestBody-json" style="width:100%; height: 200px;"></textarea>
+        </div>
+      </div>
+      <div id="swagger-tab-froschWork">
+          <div class="form-row">
+              <label for="node-config-input-buttonText"><span>Button Text</span></label>
+              <input type="text" id="node-config-input-buttonText" style="width: 70%;">
+          </div>
+          <div class="form-row">
+              <label for="node-config-input-buttonColor"><span>Button Color</span></label>
+              <input type="text" id="node-config-input-buttonColor" style="width: 70%;">
+          </div>
+      </div>
+      <div id="swagger-tab-override">
+          <div class="form-row">
+              <input type="checkbox" id="node-config-input-override" style="width: auto; vertical-align: top;">
+              <label for="node-config-input-override" style="width: auto; margin-left: 8px;"><span>Enable Override</span></label>
+          </div>
+          <div class="form-row">
+              <label for="node-config-input-overrideValue"><span>Override Value</span></label>
+              <textarea id="node-config-input-overrideValue" style="width: 100%; height: 240px;"></textarea>
+          </div>
+      </div>
+  </div>
+</script>
+
+<script type="text/x-red" data-help-name="swagger-doc">
+  <p>Describes an HTTP API using OpenAPI.</p>
+</script>
+
+<script type="text/javascript">
+  var swaggerDocUrl;
+  var openapiComponents = {};
+  (function () {
+    function populateComponentSelect(select, type) {
+      var currentVal = select.val();
+      if (!currentVal && select.attr("data-pending-val")) {
+        currentVal = select.attr("data-pending-val");
+      }
+      select.empty();
+      select.append($("<option/>").val("").text("Select " + type + "..."));
+      if (openapiComponents && openapiComponents[type]) {
+        for (var name in openapiComponents[type]) {
+          var ref = "#/components/" + type + "/" + name;
+          select.append($("<option/>").val(ref).text(name));
+        }
+      }
+      if (currentVal) {
+        select.val(currentVal);
+      }
+    }
+
+    function getArrayItems(row) {
+      var items = {};
+      var typeSelect = row.children(".node-swagger-type-select");
+      var ctype = typeSelect.val();
+      if (ctype) {
+        if (ctype != "ref") {
+          items.type = ctype;
+          if (ctype == "array") {
+            items.items = getArrayItems(row.children(".node-swagger-type-row"));
+          } else {
+            var format = row.children(".node-swagger-type-format").val();
+            if (format) items.format = format;
+          }
+        } else {
+          items["$ref"] = row.children(".node-swagger-type-format").val();
+        }
+      }
+      return items;
+    }
+
+    function createPropertyRow(opts) {
+      var row = $("<div/>", {
+        class: "node-swagger-property-name-row",
+        style: "margin-top: 3px; margin-left: 10px;",
+      });
+      $("<label/>", {
+        class: "node-swagger-prop-name-label",
+        style: "width: auto; margin-right: 10px;",
+      })
+        .text("Name")
+        .appendTo(row);
+      $("<input/>", {
+        class: "node-swagger-type-name",
+        style: "width: 150px;",
+        type: "text",
+      })
+        .val(opts.name)
+        .appendTo(row);
+      var remove = $("<a/>", {
+        href: "#",
+        class: "red-ui-button red-ui-button-small",
+        style: "float: right; margin-right: 5px; margin-top: 3px;",
+      }).appendTo(row);
+      $("<i/>", { class: "fa fa-remove" }).appendTo(remove);
+      remove.click(function (e) {
+        row.slideUp(100, function () {
+          row.remove();
+        });
+        e.preventDefault();
+      });
+      var propList = $("<div/>", {
+        class: "node-swagger-property-row",
+        style: "margin-top: 3px; margin-left: 10px;",
+      });
+      propList.appendTo(row);
+      opts.propertyRow = true;
+      createTypeRow(opts, true).appendTo(propList);
+      return row;
+    }
+
+    function createTypeRow(opts, top) {
+      var row = $("<div/>");
+      row.addClass("node-swagger-type-row");
+      row.css("margin-top", "3px");
+      if (top) {
+        row.addClass("node-swagger-type-top-row");
+      } else {
+        row.css("margin-left", "10px");
+      }
+
+      var typeLabel = $("<label/>").text("Type").appendTo(row);
+      var typeSelect = $("<select/>", {
+        class: "node-swagger-type-select",
+        style: "max-width: 150px",
+      }).appendTo(row);
+
+      var typeOptions = [
+        "string",
+        "number",
+        "integer",
+        "boolean",
+        "array",
+        "object",
+        "ref",
+      ];
+      typeOptions.forEach(function (opt) {
+        typeSelect.append($("<option/>").val(opt).text(opt));
+      });
+      typeSelect.val(opts.type || (opts["$ref"] ? "ref" : "string"));
+
+      $("<label/>", {
+        class: "node-swagger-type-format-label",
+        style: "width: auto; margin-left:20px; margin-right: 10px;",
+      })
+        .text("Format")
+        .appendTo(row);
+      $("<input/>", {
+        class: "node-swagger-type-format",
+        style: "width: 150px;",
+        type: "text",
+      })
+        .val(opts.format || opts["$ref"])
+        .appendTo(row);
+
+      var refSelect = $("<select/>", {
+        class: "node-swagger-type-ref-select",
+        style: "width: 150px;",
+      })
+        .appendTo(row)
+        .hide();
+
+      refSelect.change(function () {
+        $(this).parent().find(".node-swagger-type-format").val($(this).val());
+      });
+
+      if (!opts.propertyRow) {
+        var collFormatSelect = $("<select/>", {
+          class: "node-swagger-type-collection-format",
+          style: "width: 150px;",
+          type: "text",
+        }).appendTo(row);
+        ["csv", "ssv", "tsv", "pipes", "multi"].forEach(function (opt) {
+          collFormatSelect.append($("<option/>").val(opt).text(opt));
+        });
+        collFormatSelect.val(opts.collectionFormat || "csv");
+      }
+
+      typeSelect.change(function () {
+        var t = $(this).val();
+        var row = $(this).parent();
+        var formatInput = row.find(".node-swagger-type-format");
+        var formatLabel = row.find(".node-swagger-type-format-label");
+        var refSelect = row.find(".node-swagger-type-ref-select");
+        var collFormatSelect = row.find(".node-swagger-type-collection-format");
+        var propHeader = row.siblings(".node-swagger-propHeader-row");
+
+        if (t != "array" && t != "ref") {
+          row.find(".node-swagger-type-row").remove();
+          if (t === "object") {
+            formatInput.hide();
+            formatLabel.hide();
+            propHeader.show();
+          } else {
+            formatInput.show();
+            formatLabel.text("Format").show();
+            propHeader.hide();
+          }
+          refSelect.hide();
+          collFormatSelect.hide();
+        } else if (t == "array") {
+          propHeader.hide();
+          formatInput.hide();
+          formatLabel.hide();
+          refSelect.hide();
+          collFormatSelect.show();
+          if (opts.propertyRow) {
+            formatLabel.text("").show();
+            if (!opts.items) {
+              opts.items = {};
+            }
+            opts.items.propertyRow = true;
+          }
+          createTypeRow(opts.items || {}, false).appendTo(row);
+        } else if (t == "ref") {
+          row.find(".node-swagger-type-row").remove();
+          propHeader.hide();
+          formatInput.hide();
+          formatLabel.text("Reference").show();
+          refSelect.show();
+          collFormatSelect.hide();
+          populateComponentSelect(refSelect, "schemas");
+          if (opts["$ref"]) {
+            refSelect.attr("data-pending-val", opts["$ref"]);
+            refSelect.val(opts["$ref"]);
+          }
+        }
+      });
+      typeSelect.change();
+
+      return row;
+    }
+
+    function createParameterLine(opts, expand) {
+      var li = $("<li/>", {
+        style: "background: #fff; margin:4px 0; border: 1px solid #ccc;",
+      }).appendTo("#node-config-parameter-list");
+
+      var row1 = $("<div/>", {
+        style: "background:#f3f3f3; padding: 5px;",
+      }).appendTo(li);
+      var remove = $("<a/>", {
+        href: "#",
+        class: "red-ui-button red-ui-button-small",
+        style: "float: right; margin-right: 5px; margin-top: 3px;",
+      }).appendTo(row1);
+      $("<i/>", { class: "fa fa-remove" }).appendTo(remove);
+      remove.click(function (e) {
+        li.slideUp(100, function () {
+          li.remove();
+        });
+        e.preventDefault();
+      });
+
+      var expanderSpan = $("<span/>", {
+        style: "display:inline-block; width: 20px; margin-right:10px;",
+      }).appendTo(row1);
+      var expander = $("<a/>", {
+        href: "#",
+        style:
+          "text-align: center; display: inline-block; 5px; width: 20px; height: 30px; line-height: 30px;",
+      }).appendTo(expanderSpan);
+      var expanderIcon = $("<i/>", {
+        class: "fa fa-chevron-right",
+        style: "width: 15px; text-align:centre;",
+      }).appendTo(expander);
+
+      var showDetails = function () {
+        expanderIcon.removeClass("fa-chevron-right");
+        expanderIcon.addClass("fa-chevron-down");
+        nameRows.slideDown(200);
+      };
+      var hideDetails = function () {
+        expanderIcon.removeClass("fa-chevron-down");
+        expanderIcon.addClass("fa-chevron-right");
+        nameRows.slideUp(200);
+      };
+
+      expander.click(function (e) {
+        var icn = $(this).children(".fa");
+        if (icn.hasClass("fa-chevron-right")) {
+          showDetails();
+        } else {
+          hideDetails();
+        }
+        e.preventDefault();
+      });
+
+      var parameterSelect = $("<select/>", {
+        class: "node-swagger-name-select",
+        style: "max-width: 90px; margin-right: 10px;",
+      }).appendTo(row1);
+      parameterSelect.append($("<option/>").val("name").text("Name"));
+      parameterSelect.append($("<option/>").val("ref").text("Reference"));
+
+      var parameterName = $("<input/>", {
+        style: "max-width: 150px",
+        type: "text",
+        class: "node-swagger-name",
+      }).appendTo(row1);
+
+      var parameterRefSelect = $("<select/>", {
+        style: "max-width: 150px",
+        class: "node-swagger-ref-select",
+      })
+        .appendTo(row1)
+        .hide();
+
+      parameterRefSelect.change(function () {
+        $(this).parent().find(".node-swagger-name").val($(this).val());
+      });
+
+      parameterSelect.val(opts["$ref"] ? "ref" : "name");
+      parameterName.val(opts.name || opts["$ref"]);
+
+      parameterSelect.change(function () {
+        var p = $(this).val();
+        var row = $(this).parent();
+        var nameInput = row.find(".node-swagger-name");
+        var refSelect = row.find(".node-swagger-ref-select");
+        var inSpan = row.find(".node-swagger-in-form");
+
+        if (p == "name") {
+          expander.show();
+          inSpan.show();
+          nameInput.show().css({ maxWidth: "150px" });
+          refSelect.hide();
+          showDetails();
+        } else if (p == "ref") {
+          expander.hide();
+          inSpan.hide();
+          nameInput.hide();
+          refSelect.show();
+          populateComponentSelect(refSelect, "parameters");
+          if (opts["$ref"]) {
+            refSelect.attr("data-pending-val", opts["$ref"]);
+            refSelect.val(opts["$ref"]);
+            nameInput.val(opts["$ref"]);
+          }
+          hideDetails();
+        }
+      });
+
+      var inSpan = $("<span/>", {
+        class: "node-swagger-in-form",
+      }).appendTo(row1);
+      $("<label/>", {
+        style: "width: auto; margin-left:10px; margin-right: 10px;",
+      })
+        .text("In")
+        .appendTo(inSpan);
+      var inSelect = $("<select/>", {
+        class: "node-swagger-in-select",
+        style: "max-width: 150px",
+      }).appendTo(inSpan);
+      ["query", "header"].forEach(function (opt) {
+        inSelect.append($("<option></option>").val(opt).text(opt));
+      });
+      inSelect.val(opts.in);
+
+      var nameRows = $("<div/>", {
+        class: "node-swagger-name-row",
+        style: "padding: 15px;",
+      })
+        .appendTo(li)
+        .hide();
+
+      var row2 = $("<div/>", {
+        class: "form-row node-swagger-name-row",
+      }).appendTo(nameRows);
+      $("<label/>").text("Description").appendTo(row2);
+      $("<input/>", {
+        type: "text",
+        class: "node-swagger-description",
+        style: "max-width: 300px",
+      })
+        .val(opts.description)
+        .appendTo(row2);
+      var required = $("<input/>", {
+        type: "checkbox",
+        class: "node-swagger-required",
+        style:
+          "width: auto; float: right; margin-left: 10px; vertical-align: middle",
+      }).appendTo(row2);
+      $("<label/>", {
+        style:
+          "width: auto; float: right; margin-left:20px; vertical-align: middle",
+      })
+        .text("Required")
+        .appendTo(row2);
+      required.prop("checked", opts.required);
+
+      var row3 = createTypeRow(opts, true).appendTo(nameRows);
+
+      var rowPropHeader = $("<div/>", {
+        class: "form-row node-swagger-propHeader-row",
+      }).appendTo(nameRows);
+      $("<label/>", {
+        class: "node-swagger-propHeader-label",
+        style: "width: auto; font-weight: bold; margin-right: 10px",
+      })
+        .text("Properties")
+        .appendTo(rowPropHeader);
+      var addPropButton = $(
+        '<a href=#" class="red-ui-button red-ui-button-small node-swagger-add-property"><i class="fa fa-plus"></i> Property</a>'
+      ).appendTo(rowPropHeader);
+
+      var rowPropList = $("<div/>", {
+        class: "form-row node-swagger-prop-list",
+        style: "margin-left:10px",
+      }).appendTo(rowPropHeader);
+
+      addPropButton.click(function (e) {
+        createPropertyRow({}).appendTo(rowPropList);
+        var scrollContainer = $("#node-config-parameter-list").parent();
+        scrollContainer.scrollTop(scrollContainer.prop("scrollHeight"));
+        e.preventDefault();
+      });
+      if (opts.schema && opts.schema.properties) {
+        var props = opts.schema.properties;
+        for (var prop in props) {
+          var propOpt = opts.schema.properties[prop];
+          propOpt.name = prop;
+          createPropertyRow(propOpt).appendTo(rowPropList);
+        }
+      }
+
+      inSelect.change(function () {
+        var i = $(this).val();
+        var schemaRow = $(this)
+          .parent()
+          .parent()
+          .parent()
+          .children(".node-swagger-name-row")
+          .children(".node-swagger-propHeader-row");
+        var typeRow = $(this)
+          .parent()
+          .parent()
+          .parent()
+          .children(".node-swagger-name-row")
+          .children(".node-swagger-type-row");
+        if (i == "body") {
+          schemaRow.show();
+          typeRow.hide();
+        } else {
+          if (i == "formData") {
+            if (
+              typeRow
+                .children(".node-swagger-type-select")
+                .children("option[value='file']").length == 0
+            ) {
+              $("<option/>")
+                .val("file")
+                .text("file")
+                .appendTo(typeRow.children(".node-swagger-type-select"));
+            }
+          } else {
+            typeRow
+              .children(".node-swagger-type-select")
+              .children("option[value='file']")
+              .remove();
+          }
+          schemaRow.hide();
+          typeRow.show();
+        }
+      });
+
+      inSelect.change();
+      parameterSelect.change();
+      if (!expand) {
+        hideDetails();
+      }
+    }
+
+    function createResponseLine(opts, expand) {
+      var li = $("<li/>", {
+        style: "background: #fff; margin:4px 0; border: 1px solid #ccc;",
+      }).appendTo("#node-config-response-list");
+
+      var row1 = $("<div/>", {
+        style: "background:#f3f3f3; padding: 5px;",
+      }).appendTo(li);
+      var remove = $("<a/>", {
+        href: "#",
+        class: "red-ui-button red-ui-button-small",
+        style: "float: right; margin-right: 5px; margin-top: 3px;",
+      }).appendTo(row1);
+      $("<i/>", { class: "fa fa-remove" }).appendTo(remove);
+      remove.click(function (e) {
+        li.slideUp(100, function () {
+          li.remove();
+        });
+        e.preventDefault();
+      });
+
+      var expanderSpan = $("<span/>", {
+        style: "display:inline-block; width: 20px; margin-right:10px;",
+      }).appendTo(row1);
+      var expander = $("<a/>", {
+        href: "#",
+        style:
+          "text-align: center; display: inline-block; 5px; width: 20px; height: 30px; line-height: 30px;",
+      }).appendTo(expanderSpan);
+      var expanderIcon = $("<i/>", {
+        class: "fa fa-chevron-right",
+        style: "width: 15px; text-align:centre;",
+      }).appendTo(expander);
+
+      var showDetails = function () {
+        expanderIcon.removeClass("fa-chevron-right");
+        expanderIcon.addClass("fa-chevron-down");
+        nameRows.slideDown(200);
+      };
+      var hideDetails = function () {
+        expanderIcon.removeClass("fa-chevron-down");
+        expanderIcon.addClass("fa-chevron-right");
+        nameRows.slideUp(200);
+      };
+
+      expander.click(function (e) {
+        var icn = $(this).children(".fa");
+        if (icn.hasClass("fa-chevron-right")) {
+          showDetails();
+        } else {
+          hideDetails();
+        }
+        e.preventDefault();
+      });
+
+      var responseSelect = $("<select/>", {
+        class: "node-swagger-name-select",
+        style: "max-width: 90px; margin-right: 10px;",
+      }).appendTo(row1);
+      responseSelect.append($("<option/>").val("code").text("Code"));
+      responseSelect.append($("<option/>").val("default").text("Default"));
+      responseSelect.change(function () {
+        var p = $(this).val();
+        if (p == "code") {
+          expander.show();
+          $(this).parent().children(".node-swagger-respCode").show();
+          showDetails();
+        } else {
+          expander.show();
+          $(this).parent().children(".node-swagger-respCode").hide();
+          showDetails();
+        }
+      });
+
+      var responseRespCode = $("<input/>", {
+        style: "max-width: 150px",
+        type: "text",
+        class: "node-swagger-respCode",
+      }).appendTo(row1);
+
+      if (opts.code == "default") {
+        responseSelect.val("default");
+      } else {
+        responseSelect.val("code");
+        responseRespCode.val(opts.code);
+      }
+
+      var nameRows = $("<div/>", {
+        class: "node-swagger-name-row",
+        style: "padding: 15px;",
+      })
+        .appendTo(li)
+        .hide();
+
+      var row2 = $("<div/>", {
+        class: "form-row node-swagger-description-row",
+      }).appendTo(nameRows);
+      $("<label/>").text("Description").appendTo(row2);
+      $("<input/>", {
+        type: "text",
+        class: "node-swagger-description",
+      })
+        .val(opts.description)
+        .appendTo(row2);
+
+      var row3 = createTypeRow(opts.schema || {}, true).appendTo(nameRows);
+
+      var rowPropHeader = $("<div/>", {
+        class: "form-row node-swagger-propHeader-row",
+      }).appendTo(nameRows);
+      $("<label/>", {
+        class: "node-swagger-propHeader-label",
+        style: "width: auto; font-weight: bold; margin-right: 10px",
+      })
+        .text("Properties")
+        .appendTo(rowPropHeader);
+      var addPropButton = $(
+        '<a href=#" class="red-ui-button red-ui-button-small node-swagger-add-property"><i class="fa fa-plus"></i> Property</a>'
+      ).appendTo(rowPropHeader);
+
+      var rowPropList = $("<div/>", {
+        class: "form-row node-swagger-prop-list",
+        style: "margin-left:10px",
+      }).appendTo(rowPropHeader);
+
+      if (opts.schema && opts.schema.properties) {
+        var props = opts.schema.properties;
+        for (var prop in props) {
+          var propOpt = opts.schema.properties[prop];
+          propOpt.name = prop;
+          createPropertyRow(propOpt).appendTo(rowPropList);
+        }
+      }
+
+      addPropButton.click(function (e) {
+        createPropertyRow({}).appendTo(rowPropList);
+        var scrollContainer = $("#node-config-parameter-list").parent();
+        scrollContainer.scrollTop(scrollContainer.prop("scrollHeight"));
+        e.preventDefault();
+      });
+
+      responseSelect.change();
+      if (!expand) {
+        hideDetails();
+      }
+    }
+
+
+    function initializeUI(node) {
+      var tabs = RED.tabs.create({
+        id: "node-config-swagger-tabs",
+        onchange: function (tab) {
+          $("#node-config-swagger-tabs-content").children().hide();
+          $("#" + tab.id).show();
+        },
+      });
+
+      tabs.addTab({ id: "swagger-tab-info", label: "Info" });
+      tabs.addTab({ id: "swagger-tab-parameters", label: "Parameters" });
+      tabs.addTab({ id: "swagger-tab-responses", label: "Responses" });
+      tabs.addTab({ id: "swagger-tab-requestBody", label: "Request Body" });
+      tabs.addTab({ id: "swagger-tab-froschWork", label: "Frosch Work" });
+      tabs.addTab({ id: "swagger-tab-override", label: "Override5" });
+
+      setTimeout(function () {
+        tabs.resize();
+      }, 10);
+    }
+
+    RED.nodes.registerType("swagger-doc", {
+      category: "config",
+      exclusive: true,
+      defaults: {
+        summary: { value: "" },
+        description: { value: "" },
+        tags: { value: "" },
+        parameters: { value: [] },
+        responses: { value: null },
+        requestBody: { value: null },
+        deprecated: { value: false },
+        buttonText: { value: "" },
+        buttonColor: { value: "" },
+        override: { value: false },
+        overrideValue: { value: "" },
+      },
+      label: function () {
+        return this.summary || "openapi doc";
+      },
+      onpaletteadd: function () {
+        var content = $("<div/>", {
+          id: "tab-swagger-ui",
+          style:
+            "position: relative; padding: 0px 4px; height: 100%; overflow: hidden",
+        });
+
+        swaggerDocUrl =
+          window.location.protocol +
+          "//" +
+          window.location.hostname +
+          ":" +
+          window.location.port +
+          RED.settings.httpNodeRoot +
+          "http-api/swagger.json";
+        var swaggerFrame = $("<iframe/>", {
+          id: "swagger-ui-frame",
+          style:
+            "margin: 0; padding: 0; border: none; width: 100%; height: 100%",
+          src: "swagger-ui/swagger-ui.html",
+        }).appendTo(content);
+        RED.sidebar.addTab({
+          id: "swagger-ui",
+          label: this._("swagger.sidebar.label"),
+          name: this._("swagger.sidebar.name"),
+          content: content,
+          iconClass: "fa fa-file-text-o",
+        });
+      },
+
+      oneditprepare: function () {
+        var node = this;
+
+        $.getJSON("openapi/components", function (components) {
+          openapiComponents = components;
+          $(".node-swagger-type-ref-select").each(function () {
+            populateComponentSelect($(this), "schemas");
+          });
+          $(".node-swagger-ref-select").each(function () {
+            populateComponentSelect($(this), "parameters");
+          });
+        });
+
+        if ($("#node-input-method").length) {
+          $("#node-config-input-method").text(
+            $("#node-input-method").val().toUpperCase()
+          );
+          $("#node-config-input-path").html($("#node-input-url").val());
+        } else {
+          var httpNodes = RED.nodes.filterNodes({ type: "http in" });
+          for (var i = 0; i < httpNodes.length; i++) {
+            if (httpNodes[i].swaggerDoc === node.id) {
+              $("#node-config-input-method").text(
+                httpNodes[i].method.toUpperCase()
+              );
+              $("#node-config-input-path").html(httpNodes[i].url);
+              break;
+            }
+          }
+        }
+
+        initializeUI(node);
+
+        $("#node-config-input-add-parameter").click(function (e) {
+          createParameterLine({}, true);
+          var scrollContainer = $("#node-config-parameter-list").parent();
+          scrollContainer.scrollTop(scrollContainer.prop("scrollHeight"));
+          e.preventDefault();
+        });
+
+        $("#node-config-input-add-response").click(function (e) {
+          createResponseLine({}, true);
+          var scrollContainer = $("#node-config-response-list").parent();
+          scrollContainer.scrollTop(scrollContainer.prop("scrollHeight"));
+          e.preventDefault();
+        });
+
+
+        // Parse parameters and generate list
+        node.parameters.forEach(function (p) {
+          createParameterLine(p, false);
+        });
+
+        // Parse responses and generate list
+        for (var code in node.responses) {
+          var response = node.responses[code];
+          response.code = code;
+          createResponseLine(response, false);
+        }
+
+        $("#node-config-input-buttonText").val(node.buttonText || "");
+        $("#node-config-input-buttonColor").val(node.buttonColor || "");
+        $("#node-config-input-override").prop("checked", node.override || false);
+        $("#node-config-input-overrideValue").val(node.overrideValue || "");
+        if (node.requestBody) {
+          $("#node-swagger-requestBody-description").val(
+            node.requestBody.description
+          );
+          $("#node-swagger-requestBody-required").prop(
+            "checked",
+            node.requestBody.required || false
+          );
+
+          if (node.requestBody.content) {
+            var contentType = Object.keys(node.requestBody.content)[0];
+            if (contentType) {
+              $("#node-swagger-requestBody-contentType").val(contentType);
+
+              var schema = node.requestBody.content[contentType].schema;
+              if (schema) {
+                $("#node-swagger-requestBody-json").val(
+                  JSON.stringify(schema, null, 2)
+                );
+              }
+            }
+          }
+        }
+      },
+
+      oneditsave: function () {
+        var node = this;
+
+        // Debugging: Start of oneditsave function
+        console.log("Starting oneditsave function");
+
+        // Collect parameters
+        var params = [];
+        $("#node-config-parameter-list li").each(function () {
+          var param = {};
+          var nameType = $(this).find(".node-swagger-name-select").val();
+          var name = $(this).find(".node-swagger-name").val();
+          if (nameType == "ref") {
+            param["$ref"] = name;
+          } else {
+            param.name = name;
+            param.in = $(this).find(".node-swagger-in-select").val();
+            var desc = $(this).find(".node-swagger-description").val();
+            if (desc) {
+              param.description = desc;
+            }
+            param.required = $(this)
+              .find(".node-swagger-required")
+              .is(":checked");
+            if (param.in == "body") {
+              var properties = {};
+              $(this)
+                .find(".node-swagger-prop-list")
+                .children(".node-swagger-property-name-row")
+                .each(function () {
+                  var name = $(this).find(".node-swagger-type-name").val();
+                  var row = $(this).find(".node-swagger-type-top-row");
+                  properties[name] = getArrayItems(row);
+                });
+              param.schema = {
+                type: "object",
+              };
+              if (Object.keys(properties).length > 0) {
+                param.schema.properties = properties;
+              }
+            } else {
+              var row = $(this).find(".node-swagger-type-top-row");
+              param.schema = getArrayItems(row);
+            }
+          }
+          params.push(param);
+        });
+        node.parameters = params;
+
+        // Debugging: Parameters collected
+        console.log("Parameters collected:", params);
+
+        // Collect request body
+        var requestBody = {
+          description: $("#node-swagger-requestBody-description").val(),
+          content: {},
+        };
+
+        console.log("Initial request body:", requestBody);
+
+        var contentType = $("#node-swagger-requestBody-contentType").val();
+        var jsonSchema = $("#node-swagger-requestBody-json").val();
+
+        if (
+          contentType &&
+          contentType.trim() !== "" &&
+          jsonSchema &&
+          jsonSchema.trim() !== ""
+        ) {
+          try {
+            var schema = JSON.parse(jsonSchema);
+            requestBody.content[contentType] = {
+              schema: schema,
+            };
+          } catch (e) {
+            console.error("Invalid JSON schema:", e);
+            // Handle the error, maybe notify the user
+          }
+        }
+
+        var requestBodyRequired = $("#node-swagger-requestBody-required").is(
+          ":checked"
+        );
+        if (requestBodyRequired) {
+          requestBody.required = true;
+        }
+
+        if (
+          requestBody.description ||
+          Object.keys(requestBody.content).length > 0
+        ) {
+          node.requestBody = requestBody;
+        } else {
+          delete node.requestBody;
+        }
+
+        // Debugging: Final requestBody object
+        console.log("Final requestBody object:", node.requestBody);
+
+        // Collect responses
+        var responses = {};
+        $("#node-config-response-list li").each(function () {
+          var response = {};
+          var respCode;
+          var nameType = $(this).find(".node-swagger-name-select").val();
+          if (nameType === "default") {
+            respCode = "default";
+          } else {
+            respCode = $(this).find(".node-swagger-respCode").val();
+          }
+          var desc = $(this).find(".node-swagger-description").val();
+          response.description = desc || "";
+
+          var row = $(this).find(".node-swagger-type-top-row");
+          var ctype = row.children(".node-swagger-type-select").val();
+
+          if (ctype && ctype !== "object") {
+            if (ctype == "ref") {
+              response.schema = {
+                "$ref": row.children(".node-swagger-type-format").val(),
+              };
+            } else if (ctype == "array") {
+              var collFormat = row
+                .children(".node-swagger-type-collection-format")
+                .val();
+              response.schema = {
+                type: "array",
+                items: getArrayItems(row.children(".node-swagger-type-row")),
+              };
+              if (collFormat) response.schema.collectionFormat = collFormat;
+            } else {
+              response.schema = { type: ctype };
+              var format = row.children(".node-swagger-type-format").val();
+              if (format) response.schema.format = format;
+            }
+          } else {
+            var properties = {};
+            $(this)
+              .find(".node-swagger-prop-list")
+              .children(".node-swagger-property-name-row")
+              .each(function () {
+                var name = $(this).find(".node-swagger-type-name").val();
+                var row = $(this).find(".node-swagger-type-top-row");
+                properties[name] = getArrayItems(row);
+              });
+
+            if (Object.keys(properties).length > 0) {
+              response.schema = {
+                type: "object",
+                properties: properties,
+              };
+            }
+          }
+
+          responses[respCode] = response;
+        });
+        node.responses = responses;
+        // Debugging: Responses collected
+        console.log("Responses collected:", responses);
+
+        // Collect froschWork fields
+        node.buttonText = $("#node-config-input-buttonText").val();
+        node.buttonColor = $("#node-config-input-buttonColor").val();
+        node.override = $("#node-config-input-override").is(":checked");
+        node.overrideValue = $("#node-config-input-overrideValue").val();
+      },
+    });
+  })();
+</script>

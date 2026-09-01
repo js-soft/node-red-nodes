@@ -1,0 +1,35 @@
+{
+  "name": "@js-soft/node-red-enmeshed-connector",
+  "version": "0.1.0",
+  "publishConfig": {
+    "access": "public"
+  },
+  "description": "Frosch-styled OpenAPI wrapper for the enmeshed connector",
+  "keywords": [
+    "node-red",
+    "openapi",
+    "enmeshed",
+    "frosch"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/js-soft/node-red-nodes.git",
+    "directory": "packages/node-red-enmeshed-connector"
+  },
+  "files": [
+    "enmeshed-connector.js",
+    "enmeshed-connector.html",
+    "icons",
+    "README.md",
+    "LICENSE"
+  ],
+  "node-red": {
+    "nodes": {
+      "enmeshed-connector": "enmeshed-connector.js"
+    }
+  },
+  "engines": {
+    "node": "24.x"
+  }
+}

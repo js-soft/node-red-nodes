@@ -1,0 +1,52 @@
+{
+    "name": "@js-soft/node-red-frosch-work-openapi-generator",
+    "version": "1.0.0",
+    "publishConfig": {
+        "access": "public"
+    },
+    "description": "A modified version of @digital-tvilling/node-red-openapi-generator for the frosch works project",
+    "license": "Apache",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/js-soft/node-red-nodes.git",
+        "directory": "packages/node-red-frosch-work-openapi-generator"
+    },
+    "files": [
+        "swagger",
+        "locales",
+        "README.md",
+        "LICENSE"
+    ],
+    "keywords": [
+        "node-red",
+        "swagger",
+        "open-api"
+    ],
+    "node-red": {
+        "version": ">=3.0.0",
+        "nodes": {
+            "swagger": "swagger/swagger.js"
+        }
+    },
+    "conflicts": {
+        "node-red-node-swagger": "<0.3.0"
+    },
+    "contributors": [
+        "Nick O'Leary <nick.oleary@gmail.com>",
+        "Cody Walker <cody@cody-walker.com>",
+        "Jon Silver <js@jfdi.info>",
+        "Filip Åsblom <asblom@gmail.com>",
+        "Jakob Erben <jakob.erben@js-soft.com>"
+    ],
+    "dependencies": {
+        "i18next": "^26.3.4",
+        "swagger-ui": "^5.32.12",
+        "swagger-ui-dist": "^5.32.8"
+    },
+    "devDependencies": {
+        "eslint": "10.9.0"
+    },
+    "engines": {
+        "node": "24.x"
+    }
+}
