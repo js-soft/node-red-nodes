@@ -2,7 +2,8 @@
   "name": "@js-soft/node-red-enmeshed-connector",
   "version": "0.1.0",
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "provenance": true
   },
   "description": "Frosch-styled OpenAPI wrapper for the enmeshed connector",
   "keywords": [

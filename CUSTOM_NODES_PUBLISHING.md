@@ -21,18 +21,20 @@ packages/
 
 ### Prerequisites
 
-Ensure you have npm write access to the `@js-soft` packages and that the GitHub
-repository has an `NPM_TOKEN` secret with publish permissions.
+Ensure the packages are configured for npm publishing from GitHub Actions with
+trusted publishing/provenance.
 
 ### Tag Format
 
 Create git tags with the format `<package-identifier>@<version>`.
+Prerelease versions are supported.
 
 Examples:
 
 ```bash
 git tag enmeshed-connector@0.1.0
 git tag eudiplo@7.4.0
+git tag eudiplo@7.4.0-beta.1
 git tag frosch-work-openapi-generator@1.0.0
 ```
 
@@ -58,13 +60,13 @@ git push origin eudiplo@7.4.0
 
 ### Automated Publication
 
-The `.github/workflows/publish-npm-packages.yml` workflow will:
+The `.github/workflows/publish.yml` workflow will:
 
 - Parse the tag to extract the package identifier and version.
 - Verify the package directory exists.
 - Install dependencies in that package directory.
 - Update `package.json` to the tag version if necessary.
-- Publish to npm using the `NPM_TOKEN` secret.
+- Publish to npm with public access and provenance using `enhanced-publish`.
 
 ## Troubleshooting
 
@@ -74,11 +76,9 @@ If the workflow does not trigger or exits early:
 
 - Verify the tag format matches `<package-identifier>@<version>`.
 - Check that the tag identifier is one of the supported packages listed above.
-- Ensure `.github/workflows/publish-npm-packages.yml` exists on the default branch.
+- Ensure `.github/workflows/publish.yml` exists on the default branch.
 
 ### Publish Fails
 
-- Check that `NPM_TOKEN` is configured and valid.
 - Verify `package.json` is valid JSON.
-- Ensure the version does not already exist on npm.
 - Check that all required files from the package `files` field exist.

@@ -16,7 +16,7 @@ This repository contains the Node-RED packages that were extracted from
 ## Publishing
 
 Packages are published independently by pushing a tag in the format
-`<package-identifier>@<version>`.
+`<package-identifier>@<version>`. Prerelease versions are supported.
 
 ```bash
 git tag eudiplo@7.4.0
@@ -25,6 +25,6 @@ git push origin eudiplo@7.4.0
 
 The publish workflow installs dependencies in the matching package directory,
 updates the package version to match the tag if needed, and publishes the package
-to npm with public access.
+to npm with public access and provenance.
 
 See [CUSTOM_NODES_PUBLISHING.md](./CUSTOM_NODES_PUBLISHING.md) for details.

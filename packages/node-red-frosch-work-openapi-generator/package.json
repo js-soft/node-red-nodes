@@ -2,7 +2,8 @@
     "name": "@js-soft/node-red-frosch-work-openapi-generator",
     "version": "1.0.0",
     "publishConfig": {
-        "access": "public"
+        "access": "public",
+        "provenance": true
     },
     "description": "A modified version of @digital-tvilling/node-red-openapi-generator for the frosch works project",
     "license": "Apache",

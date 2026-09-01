@@ -2,7 +2,8 @@
   "name": "@js-soft/node-red-eudiplo",
   "version": "7.4.0",
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "provenance": true
   },
   "description": "Node-RED nodes for issuing and presenting credentials via a Eudiplo server",
   "keywords": [

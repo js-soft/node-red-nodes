@@ -18,8 +18,8 @@ jobs:
         id: parse_tag
         run: |
           TAG="${{ github.ref_name }}"
-          # Extract package name and version from tag like "eudiplo@1.0.0"
-          if [[ $TAG =~ ^([a-z0-9-]+)@([0-9]+\.[0-9]+\.[0-9]+)$ ]]; then
+          # Extract package name and version from tag like "eudiplo@1.0.0" or "eudiplo@1.0.0-beta.1"
+          if [[ $TAG =~ ^([a-z0-9-]+)@([0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.-]+)?)$ ]]; then
             PACKAGE_NAME="${BASH_REMATCH[1]}"
             VERSION="${BASH_REMATCH[2]}"
 
@@ -39,7 +39,7 @@ jobs:
             echo "package_dir=packages/node-red-$DIR_NAME" >> $GITHUB_OUTPUT
             echo "Package: $PACKAGE_NAME, Version: $VERSION"
           else
-            echo "Invalid tag format. Expected format: 'package-name@x.y.z'"
+            echo "Invalid tag format. Expected format: 'package-name@x.y.z' or 'package-name@x.y.z-prerelease'"
             exit 1
           fi
 
@@ -73,6 +73,4 @@ jobs:
 
       - name: Publish to npm
         working-directory: ${{ steps.parse_tag.outputs.package_dir }}
-        run: npm publish
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npx enhanced-publish --if-possible --use-preid-as-tag --access public
