@@ -1,6 +1,6 @@
 {
-  "name": "@js-soft/node-red-eudiplo",
-  "version": "0.1.0",
+  "name": "@js-soft/node-red-eudiplo-connector",
+  "version": "0.1.0-alpha.1",
   "publishConfig": {
     "access": "public",
     "provenance": true
