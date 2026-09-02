@@ -3,7 +3,7 @@ name: Publish NPM Packages
 on:
   push:
     tags:
-      - '*@*.*.*'
+      - "*@*.*.*"
 
 jobs:
   publish:
@@ -23,20 +23,9 @@ jobs:
             PACKAGE_NAME="${BASH_REMATCH[1]}"
             VERSION="${BASH_REMATCH[2]}"
 
-            case "$PACKAGE_NAME" in
-              enmeshed-connector|eudiplo|frosch-work-openapi-generator)
-                DIR_NAME="$PACKAGE_NAME"
-                ;;
-              *)
-                echo "Unsupported package tag: $PACKAGE_NAME"
-                echo "Expected one of: enmeshed-connector, eudiplo, frosch-work-openapi-generator"
-                exit 1
-                ;;
-            esac
-
             echo "package_name=$PACKAGE_NAME" >> $GITHUB_OUTPUT
             echo "version=$VERSION" >> $GITHUB_OUTPUT
-            echo "package_dir=packages/node-red-$DIR_NAME" >> $GITHUB_OUTPUT
+            echo "package_dir=packages/node-red-$PACKAGE_NAME" >> $GITHUB_OUTPUT
             echo "Package: $PACKAGE_NAME, Version: $VERSION"
           else
             echo "Invalid tag format. Expected format: 'package-name@x.y.z' or 'package-name@x.y.z-prerelease'"
@@ -53,7 +42,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version-file: .nvmrc
-          registry-url: 'https://registry.npmjs.org'
+          registry-url: "https://registry.npmjs.org"
 
       - name: Install dependencies
         working-directory: ${{ steps.parse_tag.outputs.package_dir }}
