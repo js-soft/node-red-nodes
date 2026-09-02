@@ -1,6 +1,6 @@
 {
   "name": "@js-soft/node-red-eudiplo",
-  "version": "7.4.0",
+  "version": "0.1.0",
   "publishConfig": {
     "access": "public",
     "provenance": true
