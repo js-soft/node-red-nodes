@@ -1,0 +1,10 @@
+<svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" role="img">
+<title>Datapond logo</title>
+<desc>A pond shape formed from concentric ripples, with small square data bits floating on the surface like lily pads.</desc>
+<ellipse cx="32" cy="40" rx="26" ry="14" fill="#183248"/>
+<path d="M12 40 C 20 36, 44 36, 52 40" fill="none" stroke="#FFB174" stroke-width="2" stroke-linecap="round" opacity="0.9"/>
+<path d="M16 46 C 23 43, 41 43, 48 46" fill="none" stroke="#FFB174" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
+<rect x="24" y="18" width="7" height="7" rx="1.5" fill="#FFB174"/>
+<rect x="34" y="10" width="7" height="7" rx="1.5" fill="#FFB174"/>
+<rect x="38" y="24" width="7" height="7" rx="1.5" fill="#FFB174"/>
+</svg>
