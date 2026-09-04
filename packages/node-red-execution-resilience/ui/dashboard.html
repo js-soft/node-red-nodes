@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Execution Resilience Dashboard</title>
+  <link rel="stylesheet" href="/execution-resilience-dashboard/dashboard.css">
+</head>
+<body>
+  <div id="authWarningBanner" class="auth-warning-banner" style="display: none;">
+    <strong>&#9888; This dashboard is not password-protected.</strong>
+    Anyone who can reach this page can view your flows' full execution history, including
+    recorded message payloads - potentially PII, secrets, or other sensitive business data.
+    Set <code>execHistoryAuth</code> in your Node-RED <code>settings.js</code> to secure it -
+    see the Documentation tab's "Securing the Dashboard" section.
+  </div>
+  <div class="container">
+    <div id="errorBanner" class="error-banner" style="display: none;"></div>
+
+    <header class="header">
+      <h1><i class="icon-history"></i> Execution Resilience</h1>
+    </header>
+
+    <div class="tabs">
+      <button type="button" class="tab-btn active" id="tabBtnExecutions" data-tab="executions">Executions</button>
+      <button type="button" class="tab-btn" id="tabBtnDeepSearch" data-tab="deepsearch" style="display: none;">Deep Search</button>
+      <button type="button" class="tab-btn" id="tabBtnDocs" data-tab="docs">Documentation</button>
+    </div>
+
+    <div class="tab-panel" id="tabPanelExecutions">
+      <p class="replay-intro">
+        Every execution can be replayed - always available as a full <strong>restart from the
+        flow's origin</strong>, plus an optional <code>Mark Replay Point</code> checkpoint when
+        a full restart would repeat something you don't want repeated. Click the
+        <strong>&#8635;</strong> icon on any row below to replay it (<strong>&#128065;</strong> opens
+        its details), or use the <strong>Replays</strong> card to see only executions that
+        were themselves produced by a replay.
+      </p>
+
+      <div class="header-controls">
+        <input type="text" id="searchInput" placeholder="Search execution ID..." class="search-input">
+        <input type="text" id="flowFilter" list="flowFilterOptions" placeholder="All flows (type to filter)" class="search-input" autocomplete="off">
+        <datalist id="flowFilterOptions"></datalist>
+        <select id="statusFilter" class="filter-select">
+          <option value="">All Statuses</option>
+          <option value="RUNNING">Running</option>
+          <option value="COMPLETED">Completed</option>
+          <option value="FAILED">Failed</option>
+        </select>
+        <button id="refreshBtn" class="btn btn-primary">Refresh</button>
+        <select id="clearScope" class="filter-select">
+          <option value="30d">Older than 30 days</option>
+          <option value="7d">Older than 7 days</option>
+          <option value="today">Older than today</option>
+          <option value="all">All</option>
+        </select>
+        <button id="clearBtn" class="btn btn-danger">Delete</button>
+        <label class="toggle-switch-wrap" title="Show a replayed/auto-retried execution and everything it led to as one row, instead of a separate row per attempt.">
+          <span class="toggle-switch">
+            <input type="checkbox" id="groupReplaysToggle" checked>
+            <span class="toggle-switch-track"></span>
+          </span>
+          Group replay chains
+        </label>
+      </div>
+
+      <div class="stats-bar">
+        <div class="stat-card" id="statCardAll" data-status="">
+          <div class="stat-value" id="totalCount">0</div>
+          <div class="stat-label">Total Executions</div>
+        </div>
+        <div class="stat-card running" id="statCardRunning" data-status="RUNNING">
+          <div class="stat-value" id="runningCount">0</div>
+          <div class="stat-label">Running</div>
+        </div>
+        <div class="stat-card completed" id="statCardCompleted" data-status="COMPLETED">
+          <div class="stat-value" id="completedCount">0</div>
+          <div class="stat-label">Completed</div>
+        </div>
+        <div class="stat-card failed" id="statCardFailed" data-status="FAILED">
+          <div class="stat-value" id="failedCount">0</div>
+          <div class="stat-label">Failed</div>
+        </div>
+        <div class="stat-card replays" id="statCardReplays">
+          <div class="stat-value" id="replaysCount">0</div>
+          <div class="stat-label">Replays</div>
+        </div>
+      </div>
+
+      <div class="main-content">
+        <div class="executions-list">
+          <table class="executions-table">
+            <thead>
+              <tr>
+                <th class="col-id">Execution ID</th>
+                <th class="col-flow">Flow</th>
+                <th class="col-tags">Tags</th>
+                <th class="col-status">Status</th>
+                <th class="col-duration">Flow-Duration</th>
+                <th class="col-time">Start Time</th>
+                <th class="col-actions">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="executionsTableBody">
+              <tr class="loading">
+                <td colspan="7">Loading executions...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="pagination">
+        <button id="prevBtn" class="btn btn-secondary" disabled>Previous</button>
+        <span id="pageInfo">Page 1</span>
+        <button id="nextBtn" class="btn btn-secondary" disabled>Next</button>
+      </div>
+    </div>
+
+    <div class="tab-panel" id="tabPanelDeepSearch" style="display: none;">
+      <div class="header-controls">
+        <input type="text" id="deepSearchInput" placeholder="Search message content..." class="search-input" style="flex: 2;">
+        <input type="text" id="deepSearchFlowFilter" list="flowFilterOptions" placeholder="All flows (type to filter)" class="search-input" autocomplete="off">
+        <select id="deepSearchStatusFilter" class="filter-select">
+          <option value="">All Statuses</option>
+          <option value="RUNNING">Running</option>
+          <option value="COMPLETED">Completed</option>
+          <option value="FAILED">Failed</option>
+        </select>
+        <span class="info-icon-wrap">
+          <select id="deepSearchMatchPosition" class="filter-select">
+            <option value="first" selected>Jump to first match</option>
+            <option value="last">Jump to last match</option>
+          </select>
+          <span class="info-icon" tabindex="0" aria-label="What this setting does">&#9432;
+            <span class="info-tooltip">
+              When an execution's content matches more than once, this picks which matching message the snippet
+              and the "View" jump refer to: <strong>first</strong> is the earliest match chronologically - usually
+              where the searched-for content entered the flow; <strong>last</strong> is the most recent one -
+              usually closer to the outcome.
+            </span>
+          </span>
+        </span>
+        <button id="deepSearchBtn" class="btn btn-primary">Search</button>
+      </div>
+
+      <div id="deepSearchNotice" class="deep-search-notice" style="display: none;"></div>
+
+      <div class="main-content">
+        <div class="executions-list">
+          <div id="deepSearchResults">
+            <div class="deep-search-empty">Enter a search term above to search message content across every recorded execution.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="pagination">
+        <button id="deepSearchPrevBtn" class="btn btn-secondary" disabled>Previous</button>
+        <span id="deepSearchPageInfo">Page 1</span>
+        <button id="deepSearchNextBtn" class="btn btn-secondary" disabled>Next</button>
+      </div>
+    </div>
+
+    <div class="replay-modal-backdrop" id="replayModalBackdrop" style="display: none;">
+      <div class="replay-modal" id="replayModal"></div>
+    </div>
+
+    <div class="detail-pane" id="detailPane" style="display: none;">
+      <button class="btn-close" id="closeDetailBtn">&times;</button>
+      <div class="detail-content">
+        <h2 id="detailTitle">Execution Details</h2>
+        <div id="detailBody"></div>
+      </div>
+    </div>
+
+    <div class="tab-panel" id="tabPanelDocs" style="display: none;">
+      <div class="docs-content">
+
+        <h2>Securing the Dashboard</h2>
+        <p>
+          This dashboard shows recorded message <strong>payloads</strong> - potentially PII,
+          secrets, or other sensitive business data - not just flow structure. That's a
+          meaningfully more sensitive surface than the Node-RED editor itself, and it is served
+          on its own, <strong>separate from Node-RED's own <code>adminAuth</code></strong> -
+          configuring <code>adminAuth</code> for the editor does <em>not</em> also protect this
+          dashboard. Left unconfigured, anyone who can reach the Node-RED HTTP port can browse
+          full execution history with no login at all - the orange banner at the top of every
+          page whenever that's the case exists precisely so this never happens silently.
+        </p>
+        <p>
+          Set <code>execHistoryAuth</code> in <code>settings.js</code> to require HTTP Basic
+          Auth (the browser's native login prompt - no separate session/cookie mechanism to
+          manage) for the whole dashboard surface, pages and API alike:
+        </p>
+        <div class="docs-code">execHistoryAuth: {
+  username: 'admin',
+  password: '$2b$08$...' // a bcrypt hash - never plaintext
+}</div>
+        <p>
+          Generate the hash exactly like you would for Node-RED's own <code>adminAuth</code> -
+          this uses the same <code>bcryptjs</code> library and hash format, so a hash you
+          already generated for <code>adminAuth</code> works here too:
+          <code>node-red admin hash-pw</code>, or without the Node-RED CLI:
+          <code>node -e "console.log(require('bcryptjs').hashSync('yourpassword', 8))"</code>.
+        </p>
+        <p>
+          The editor's own "Execution Resilience" sidebar tab shows a live system health overview
+          (stat counts, recent executions) without opening this dashboard at all - it never
+          attempts an authenticated fetch itself, since that would trigger the browser's native
+          Basic Auth prompt just from opening the editor. When <code>execHistoryAuth</code> is
+          configured, it shows a "Protected - open the dashboard to sign in" note instead of live
+          data.
+        </p>
+
+        <h2>How tracking works</h2>
+        <p>
+          Every <code>inject</code> and <code>http in</code> node is treated as a flow origin - the moment one
+          fires, a unique execution id is generated and stamped onto <code>msg._executionId</code>. No node needs
+          to be placed anywhere for this to happen; it's done by global hooks (<code>onSend</code>,
+          <code>onComplete</code>) registered once for the whole runtime, not by an instance of any node this
+          package ships.
+        </p>
+        <p>
+          From there, every node in the flow gets exactly one message recorded automatically: the origin gets one
+          <code>input</code> entry (its outgoing payload - what starts everything), and every node after that gets
+          one <code>output</code> entry, recorded when it calls its <code>done()</code> callback. No node needs to be
+          placed anywhere for this - the only node this package still offers,
+          <strong>Mark Execution Complete</strong>, exists purely to flag when a flow with no <code>http response</code>
+          node is actually done (see below), not to enable tracking itself.
+        </p>
+
+        <h2>When is an execution marked COMPLETED?</h2>
+        <p>
+          There isn't a universal "the flow is done" signal in Node-RED, so this node uses the one terminal point
+          most HTTP flows actually have: an <strong><code>http response</code></strong> node. When one completes, its
+          output is flagged <code>isResult: true</code> and the whole execution flips to <code>COMPLETED</code>.
+          Most non-HTTP flows have no equivalent, so this package ships a dedicated
+          <strong><code>execution-complete</code></strong> ("Mark Execution Complete") node that does the exact same
+          thing on purpose - drop it wherever a flow actually ends and it flips to <code>COMPLETED</code> too, flagged
+          <code>isResult: true</code> just like an http response node would be.
+        </p>
+        <table class="docs-table">
+          <thead><tr><th>Status</th><th>Meaning</th><th>Trigger</th></tr></thead>
+          <tbody>
+            <tr><td><span class="status-badge status-running">RUNNING</span></td><td>Execution in progress</td><td>An <code>inject</code>/<code>http in</code> node fires</td></tr>
+            <tr><td><span class="status-badge status-completed">COMPLETED</span></td><td>Successfully finished</td><td>An <code>http response</code> node completes, or a <strong>Mark Execution Complete</strong> node is reached</td></tr>
+            <tr><td><span class="status-badge status-failed">FAILED</span></td><td>Error occurred</td><td>Any node calls its <code>done(err)</code> callback with an error</td></tr>
+          </tbody>
+        </table>
+        <p>
+          Two consequences worth knowing. First: a flow with no <code>http response</code> node and no
+          <strong>Mark Execution Complete</strong> node placed anywhere stays <code>RUNNING</code> forever as far as
+          this feature is concerned - that's expected, not a bug; there's simply no terminal signal for it to observe.
+        </p>
+        <p>
+          Second, <code>FAILED</code> detection has a real blind spot worth knowing about. It's wired up via the same
+          runtime hook (<code>onComplete</code>) used for everything else, which fires whenever a node calls
+          <code>done(err)</code> - the same mechanism behind Node-RED's own <strong>Catch</strong> node, so this
+          catches the same failures a Catch node would. It does <em>not</em>, however, catch a node that throws
+          <em>synchronously</em> inside its own input handler (Node-RED routes that straight to the node's error log
+          without ever calling <code>done()</code>), nor a node that simply hangs and never calls <code>done()</code>
+          at all. Both of those leave the execution stuck <code>RUNNING</code> rather than flipping to
+          <code>FAILED</code> - a limitation of Node-RED's hook API, not something this node works around.
+        </p>
+
+        <h2>Why the message tree is structured the way it is</h2>
+        <p>
+          The dashboard doesn't show messages as a flat, timestamp-ordered list. Instead it replays the actual
+          wiring of the flow: every node's <code>send()</code> call is also recorded as an edge (source node/port
+          &rarr; destination node), and the detail view reconstructs a tree from those edges rooted at the origin's
+          one <code>input</code> message. That's what makes it possible to render a genuine branch structure -
+          "Output 1 - next-node-name", "Output 2 - other-node-name" - rather than interleaving two unrelated
+          branches' messages together just because they happened close in time.
+        </p>
+        <p>
+          Only the branch leading to the first <code>isResult</code>-flagged message (typically the path to an
+          <code>http response</code>) auto-expands; sibling branches start collapsed, since that's usually the
+          outcome you actually care about. If no <code>isResult</code> message exists anywhere (most non-HTTP
+          flows), every branch defaults to expanded instead - there's no principled way to prefer one over another.
+        </p>
+        <p>
+          A node that ran more than once for the same execution - a Split node, and everything downstream of it
+          until the matching Join - is rendered as <em>one</em> box tagged <span class="status-badge status-split">split</span>
+          with &larr;/&rarr; arrows to step through each part, rather than one box per part. Once a Join
+          recombines the parts, downstream nodes automatically go back to a single box each - nothing to
+          configure.
+        </p>
+        <p>
+          When one output is wired to <em>several</em> destination nodes (not a Split - just multiple wires off one
+          port), each destination gets its own nested, independently collapsible sub-branch inside that output's box -
+          <em>as long as they never reconverge</em>. Whether they do is checked by comparing each destination's full
+          downstream reachable set (everything reachable by following recorded edges forward): if any node is
+          reachable from more than one of them, they're not independent stories - they're a "diamond" that merges
+          back together - so they're deliberately left flat, one after another with no sub-branch chrome, exactly
+          like a single destination would be. Splitting a reconverging pair into two separate dropdowns would
+          misrepresent a shared continuation as two unrelated ones (and, depending on where they merge, would either
+          duplicate or arbitrarily assign the shared portion to just one of the two).
+        </p>
+
+        <h2>Known limitation: hand-rolled message fan-out</h2>
+        <p>
+          Tracking is carried entirely by the <code>msg._executionId</code> property. Node-RED does not copy custom
+          properties onto message objects you construct yourself, so a node that fans a single input out into
+          several new messages can silently drop tracking for everything past that point - not because of a bug in
+          this node, but because there's nothing on the new message tying it back to the execution.
+        </p>
+        <p>
+          A common case - a node that <code>node.send()</code>s several times in a synchronous loop, e.g.
+          <code>msg.payload.forEach(item =&gt; node.send({ payload: item }))</code> - is handled automatically: the
+          tracker temporarily remembers "this node is currently processing execution X" for exactly the duration of
+          that synchronous call, so sends made from inside it inherit the id even though they never carried it
+          explicitly.
+        </p>
+        <p>
+          This can only ever cover work that finishes before the node's input handler <em>returns</em>, though. If
+          part of the fan-out is asynchronous - for example, you have a list of URLs and fire off a
+          <code>fetch()</code> per URL, sending each result whenever it resolves later - those sends happen after
+          the synchronous window has already closed, often after the node has already called <code>done()</code>.
+          At that point there's no way to reliably attribute the send to one execution over another (two unrelated
+          messages could be mid-flight on the same node at once), so those results won't be tracked.
+        </p>
+        <p><strong>Workaround:</strong> keep the fan-out and the async work in separate nodes, one URL per message,
+        rather than doing both inside one loop:</p>
+        <ol>
+          <li>Split the list into individual messages <em>synchronously</em> first - either with Node-RED's built-in
+            <strong>Split</strong> node, or a simple <code>forEach</code> + <code>node.send()</code> loop (now
+            covered by the fallback above).</li>
+          <li>Do the actual <code>fetch()</code> in the <em>next</em> node, one call per incoming message - and
+            build the outgoing message by mutating or cloning the one you received, not a bare new object:</li>
+        </ol>
+        <pre class="docs-code">// fetch-one-url node - one message in, one async call, one message out
+fetch(msg.url).then(result =&gt; {
+  msg.payload = result;   // reuse the SAME message object
+  send(msg);
+  done();
+});</pre>
+        <p>
+          Because each URL is its own message from the start, <code>_executionId</code> travels with it the
+          ordinary way Node-RED already handles message properties - no fallback needed, and no ambiguity about
+          which async result belongs to which execution.
+        </p>
+
+        <h2>Replay</h2>
+        <p>
+          Every row on the <strong>Executions</strong> tab has a <strong>&#8635;</strong> (Replay)
+          icon that resumes it - typically a <code>FAILED</code> execution, after fixing whatever
+          caused it - as a brand-new, separately tracked execution. Every execution can always
+          be replayed as a full <strong>Restart from Origin</strong>, re-running the whole flow
+          from the beginning with its original input - that's the default, always-available
+          option, no node placement required. Executions produced by a replay are tagged with
+          a <span class="status-badge status-replayed">replay</span> badge and a subtle tint in
+          the list, and the <strong>Replays</strong> stat card filters the list down to just
+          them (combine it with a status filter for e.g. "failed replays").
+        </p>
+        <p>
+          A full restart isn't always the right choice, though: if the original execution
+          already wrote to a database, charged a payment, or sent a notification before it
+          failed, restarting from scratch would repeat that side effect. That's what <strong>
+          Mark Replay Point</strong> - the one node this feature adds to the package, sharing
+          <strong>Mark Execution Complete</strong>'s color since both are the same kind of
+          thing: a deliberately-placed marker, not a message transform - is for: an
+          <em>additional</em>, optional resume point that skips everything before it. Where
+          that node belongs in a flow is a judgment call about side effects that only the
+          flow's author can make, so this package deliberately doesn't try to infer it
+          automatically (e.g. by detecting "was a database call made yet?"). Placing the node
+          forces that choice to be explicit and visible in the flow itself, rather than the
+          dashboard silently guessing whether a restart is safe. Its name is required (not
+          just cosmetic, like Mark Execution Complete's) since it's how the checkpoint picker
+          below and a replayed execution's message tree tell one checkpoint apart from
+          another.
+        </p>
+        <p>
+          When you open the Replay dialog for an execution, "Restart from Origin" is always
+          the first option. If its flow contains at least one <strong>Mark Replay Point</strong>
+          node that the message actually passed through <em>during that specific
+          execution</em>, each recorded checkpoint appears as an additional option below it,
+          most recent selected by default - adding the node later doesn't retroactively make
+          older, already-recorded executions offer a checkpoint; they still restart from
+          scratch until re-run. A <strong>Mark Auto Replay Point</strong> node's own recorded
+          checkpoints (see "Automatic Replay" below) show up here too, tagged
+          <span class="replay-auto-tag">auto</span> - it's exactly as safe a manual reset
+          location as a Mark Replay Point one, so there's no need for a redundant Mark Replay
+          Point node right next to it. Picking one of these raises a second, follow-up question
+          before actually resuming: <strong>reset the automatic retry count, or keep it?</strong>
+          Resetting (the default, and the only behavior every other kind of replay has ever had)
+          gives the resumed execution a full fresh budget of "Max attempts" again. Keeping it
+          instead has the resumed execution inherit the checkpoint's own current attempt count -
+          useful when you're manually continuing the <em>same</em> incident rather than treating
+          the intervention as a brand-new failure chain.
+        </p>
+        <p>
+          Whichever you pick, the resume target - the flow's true origin (found by following
+          an already-replayed execution's own history back to whichever execution a real
+          <code>inject</code>/<code>http in</code> node actually began - so restart keeps
+          working correctly even many replays deep) for a restart, or the checkpoint node
+          itself for a checkpoint resume - is re-triggered following the flow's <em>current</em>
+          wiring, not a wiring snapshot from whenever the original execution ran. If that
+          node no longer exists, or currently has no outgoing connection at all, the tab
+          reports that clearly rather than guessing at a substitute.
+        </p>
+        <p>
+          Because a checkpoint node genuinely runs again as part of the new execution, its
+          own output is itself a fresh, valid checkpoint - <strong>a resumed execution can be
+          resumed again from the same checkpoint, any number of times</strong>, if the retry
+          fails too. That seed message is flagged with a
+          <span class="status-badge status-replayed">replayed from here</span> badge (or
+          <span class="status-badge status-replayed">restarted from here</span> for a restart)
+          in the message tree, and the execution's metadata panel shows "Replayed From"/
+          "Replayed As" links to jump between an execution and whatever it was resumed from or
+          into.
+        </p>
+
+        <h3>Checkpoints downstream of a Split</h3>
+        <p>
+          A node downstream of a Split - and everything until its matching Join - runs once
+          per part, so a checkpoint there can have several recorded messages for the same
+          execution. The Replay dialog groups those parts together, colored consistently
+          (the same color-hashing the message tree's carousel boxes use, so a repeated node's
+          identity is recognizable in both places), and shows a checkbox per part -
+          <strong>any number of them from 1 up to all</strong>, not just "all or exactly one" -
+          all checked by default, with "All"/"None" links for convenience.
+        </p>
+        <p>
+          Which parts actually make sense to replay is a judgment call the dialog leaves to
+          you: each part still carries its original <code>msg.parts</code> metadata unchanged,
+          and a downstream Join relies on that to know how many parts to wait for. Resuming
+          from fewer than all of them will typically leave it waiting forever for the rest -
+          unless that's specifically what you want, e.g. deliberately narrowing in on one or
+          two failing parts for debugging, where Join never completing is expected and fine.
+        </p>
+
+        <h3>Debugging: resume from any node (unsafe)</h3>
+        <p>
+          Separately from Mark Replay Point, an operator can enable
+          <code>execHistoryUnsafeReplay: true</code> in <code>settings.js</code> to reveal a
+          collapsed "Debugging: resume from any node" section in the Replay dialog, listing
+          <em>every</em> message the execution recorded - not just ones flagged as a
+          sanctioned checkpoint. Picking one resumes from it exactly like a normal checkpoint
+          would. This is deliberately unsafe and disabled by default: it bypasses the whole
+          point of Mark Replay Point, which is forcing a considered decision about where a
+          retry is actually safe. Use it for debugging a specific failure, not as a routine
+          way to retry things. Messages resumed this way are flagged
+          <span class="status-badge status-debug">unsafe debug resume</span> in the message
+          tree, and deliberately do <em>not</em> count as a sanctioned checkpoint themselves -
+          resuming from one again still requires debug mode, it doesn't retroactively become
+          safe.
+        </p>
+
+        <h2>Automatic Replay</h2>
+        <p>
+          <strong>Mark Auto Replay Point</strong> is a second checkpoint node, alongside
+          <strong>Mark Replay Point</strong>: it marks the same kind of safe-to-resume-from
+          spot, but instead of waiting for a person to click <strong>Replay</strong>, it
+          triggers the resume itself automatically the moment the execution fails somewhere
+          downstream - up to a configured number of attempts, with a configurable delay
+          strategy (immediate, fixed, or exponential backoff with jitter) between them. It's a
+          bigger decision than a manual checkpoint: place it only where you're confident it's
+          safe for the flow to retry itself, possibly several times, completely unattended.
+        </p>
+        <p>
+          Executions produced this way carry <code>replayMode: auto</code>, shown as
+          <span class="status-badge status-replayed">auto-retried</span> in the metadata panel,
+          and the seed message that re-entered the flow is flagged
+          <span class="status-badge status-replayed">auto-retried from here</span> in the
+          message tree - the same "Replayed From"/"Replayed As" links the manual checkpoint
+          flow uses still work here to jump between an execution and whatever it was
+          automatically resumed from or into.
+        </p>
+        <p>
+          A pending automatic retry is durably recorded, not just held in memory - if Node-RED
+          restarts while one is waiting, it's picked back up and still fires once the flow is
+          running again, instead of silently disappearing.
+        </p>
+        <p>
+          Once the node's configured maximum attempts is reached and the last one has also
+          failed, no further automatic retry happens - that execution is flagged
+          <span class="status-badge status-failed">retries exhausted</span> in the Executions
+          list either way. The node's <strong>When exhausted</strong> setting decides what
+          happens in addition to that: <strong>Throw error</strong> (the default) raises it via
+          <code>node.error()</code>, catchable with a <code>Catch</code> node, and creates
+          nothing new - deliberately the default, since a second output nobody wired up would
+          otherwise leave a brand-new tracked execution stuck <code>RUNNING</code> forever (see
+          "When is an execution marked COMPLETED?" above). <strong>Separate output</strong>
+          instead adds a second output that fires exactly once, carrying the last failed
+          payload plus the recorded error, as a new, fully tracked execution
+          (<code>replayMode: auto-exhausted</code>), tagged
+          <span class="status-badge status-failed">automatic replay failed</span> rather than
+          the generic <span class="status-badge status-replayed">replay</span> badge - it's the
+          retry mechanism giving up, not another attempt - wire it to an alert, a dead-letter
+          path, or a Mark Execution Complete node so it actually terminates.
+        </p>
+        <p>
+          Like Mark Replay Point, a checkpoint placed downstream of a Split always resumes
+          <strong>all of that execution's recorded parts together</strong> - retrying only the
+          one part that actually failed isn't supported yet, since it would need a persistent,
+          package-owned Join this package doesn't have. This node doesn't replace Restart from
+          Origin or Mark Replay Point either; all three coexist, and manually replaying an
+          execution resets its automatic attempt count back to zero for whatever happens next.
+          This node's own checkpoint is also a valid <strong>manual</strong> reset location (see
+          "Replay" above) - no need for a separate Mark Replay Point node right next to it just
+          to be able to manually jump back once whatever was flaky is working again.
+        </p>
+
+        <h2>Grouping Replay/Retry Chains</h2>
+        <p>
+          Every replay - restart, checkpoint, debug, or automatic - creates a brand new,
+          independently tracked execution. Left ungrouped, a flow that fails and gets retried a
+          few times before succeeding shows up as several separate rows in the Executions list,
+          which gets noisy fast, especially with <strong>Mark Auto Replay Point</strong> in the
+          mix.
+        </p>
+        <p>
+          The <strong>Group replay chains</strong> toggle above the Executions list (on by
+          default) instead shows one row per chain - the original execution plus everything it
+          eventually led to, however many replay generations deep. The row's Execution ID is the
+          chain's <strong>root</strong> (the same execution "Restart from Origin" would restart
+          from); its own <strong>Tags</strong> column carries a
+          <span class="status-badge status-replayed">replay</span> badge and/or
+          <span class="status-badge status-failed">retries exhausted</span> if any member of the
+          chain used up its automatic retry budget; its Status is the <strong>last</strong>
+          execution's status, so a chain that eventually succeeds shows as
+          <span class="status-badge status-completed">COMPLETED</span> even if earlier attempts
+          failed; its <strong>Flow-Duration</strong> spans from the first execution's first message
+          to the last execution's completion. View/Replay act on the chain's latest execution - its
+          current state - and the detail view's existing "Replayed From"/"Replayed As" links still
+          show the full chain from there.
+        </p>
+        <p>
+          Turning the toggle off ungroups the entire list, which is more disruptive than wanting
+          to look closely at just one chain. Instead, any grouped row with more than one execution
+          gets a large expand arrow (&#9656;) next to its id - every other row (a chain with only
+          one execution, or a non-oldest member inside an already-expanded chain) shows a plain dot
+          (&#8226;) in the same spot instead, purely so the id column stays aligned. Clicking the
+          arrow swaps that one summary row for its actual member executions,
+          <strong>oldest at the top, newest at the bottom</strong>,
+          each shown exactly as it would be in the ungrouped view. The arrow moves to the top
+          (oldest) row and now collapses the chain back to its one summary row.
+        </p>
+
+        <h2>Deep Search</h2>
+        <p>
+          The <strong>Deep Search</strong> tab searches the actual <em>content</em> of every recorded message
+          across all executions - not just the execution ID or flow name the Executions tab searches by. It's
+          disabled by default; enable it by setting <code>execHistoryDeepSearch: true</code> in <code>settings.js</code>.
+          It's opt-in because, unlike the rest of this dashboard, a search has no index to fall back on - it scans
+          message content directly, so its cost scales with how much history you've accumulated.
+        </p>
+        <p>
+          A search is a literal, case-insensitive substring match against every message's payload values (not its
+          JSON keys/structure), so searching for part of a string buried anywhere in a payload - an order ID, an
+          error code, a customer name - will find it, without needing to know which field it lives in. Results are
+          grouped one row per <em>execution</em>, even if the term appears in several of its messages, with a short
+          snippet shown inline. Clicking a result opens the same detail view as the Executions
+          tab, already scrolled to and briefly highlighting the exact message that matched (jumping straight to it
+          even if it's deep inside a collapsed branch or a multi-part Split/Join carousel).
+        </p>
+        <p>
+          When an execution matches more than once, the <strong>"Jump to first/last match"</strong> control decides
+          which one the snippet and the deep-link refer to: <strong>first</strong> (the default) is the earliest
+          matching message chronologically - usually where the searched-for content actually entered the flow;
+          <strong>last</strong> is the most recent one - usually closer to the outcome. Switching it re-runs the
+          current search.
+        </p>
+        <p>
+          A search scans at most 5000 matching messages (newest first) before giving up and reporting the results
+          found so far - a safety valve against a very common term turning one search into an unbounded scan. If
+          you hit that limit regularly, it's a sign either the search term needs to be more specific, or your
+          message volume has outgrown a plain regex scan (at which point a dedicated search backend, e.g.
+          Elasticsearch, would be the next step - not something this dashboard implements today).
+        </p>
+
+        <h2>Other design decisions</h2>
+        <ul>
+          <li><strong>No node placement required for tracking itself.</strong> It's global runtime instrumentation
+            (<code>RED.hooks</code>), so every flow is covered automatically the moment a database is configured.
+            The only node this package ships, <strong>Mark Execution Complete</strong>, is a deliberately dumb
+            pass-through marker - it carries no configuration of its own beyond a name, and exists solely to give
+            non-HTTP flows a COMPLETED signal to reach, nothing more.</li>
+          <li><strong>A failed node's message is flagged, not hidden.</strong> The message a node was processing
+            when it called <code>done(err)</code> is still recorded like any other <code>output</code> entry, just
+            flagged <code>isError: true</code> - so the dashboard's message tree shows exactly where things went
+            wrong, alongside the execution-level error details (node, message, stack trace) shown above.</li>
+          <li><strong>MongoDB via a pluggable adapter.</strong> Storage goes through an abstract
+            <code>DatabaseAdapter</code> class; only a MongoDB implementation exists today, but the interface is
+            designed so a Postgres/file-based/etc. adapter could be swapped in later without touching the tracking
+            logic.</li>
+          <li><strong>Cleanup is manual only.</strong> The Delete dropdown (30d/7d/today/all) is the only way to
+            remove old executions right now - there's no scheduled retention job enforcing the node's configured
+            retention period yet.</li>
+          <li><strong>Vanilla JS dashboard, no framework.</strong> This page is static HTML/CSS/JS served directly
+            by the node (no React/Vue, no dependency on Node-RED's own editor framework, and deliberately no
+            <code>express</code> dependency, since this package may be installed outside Node-RED's own
+            <code>node_modules</code> resolution path).</li>
+        </ul>
+
+      </div>
+    </div>
+  </div>
+
+  <script src="/execution-resilience-dashboard/renderjson.js"></script>
+  <script src="/execution-resilience-dashboard/dashboard.js"></script>
+</body>
+</html>
