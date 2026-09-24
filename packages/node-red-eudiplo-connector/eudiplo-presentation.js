@@ -34,7 +34,7 @@ module.exports = function (RED) {
     }
 
     // EudiploClient handles token acquisition and refresh internally.
-    // The SDK uses ${baseUrl}/oauth2/token as the token endpoint.
+    // The SDK uses ${baseUrl}/api/oauth2/token as the token endpoint.
     let sdkClient = null;
     if (!configurationError) {
       sdkClient = new EudiploClient({
