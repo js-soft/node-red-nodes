@@ -1,0 +1,550 @@
+<script type="text/javascript">
+  RED.nodes.registerType('execution-complete', {
+    category: 'debug',
+    color: '#a6bbf7',
+    defaults: {
+      name: { value: '' }
+    },
+    inputs: 1,
+    outputs: 1,
+    icon: 'font-awesome/fa-flag-checkered',
+    paletteLabel: 'Mark Execution Complete',
+    label: function() {
+      return this.name || 'Mark Execution Complete';
+    }
+  });
+
+  // Sidebar icon so developers don't need to know/type the dashboard's URL -
+  // registered once when the editor loads this node type, independent of
+  // any node instance being present in the flow. Also shows a live system
+  // health overview (stat counts + recent executions) directly in the
+  // sidebar, so a glance at the editor is enough to notice trouble without
+  // opening the full dashboard - the dashboard remains where you actually
+  // act on it (view/replay).
+  (function() {
+    const content = $('<div>', { style: 'padding: 15px; font-size: 13px;' });
+    $('<p>', { style: 'margin: 0 0 12px;' })
+      .text('View tracked workflow executions - status, timing, and the message at every node.')
+      .appendTo(content);
+
+    const button = $('<button>', { type: 'button', class: 'red-ui-button', style: 'margin-bottom: 16px;' }).appendTo(content);
+    $('<i>', { class: 'fa fa-external-link', style: 'margin-right: 6px;' }).appendTo(button);
+    button.append('Open Dashboard');
+    button.on('click', function() {
+      window.open('/execution-resilience-dashboard', 'executions', 'width=1200,height=800');
+    });
+
+    function openDashboard(executionId) {
+      const url = executionId
+        ? `/execution-resilience-dashboard?executionId=${encodeURIComponent(executionId)}`
+        : '/execution-resilience-dashboard';
+      window.open(url, 'executions', 'width=1200,height=800');
+    }
+
+    const healthLine = $('<div>', { id: 'exec-history-health-line', style: 'padding: 8px 10px; border-radius: 4px; font-weight: 600; margin-bottom: 12px;' }).appendTo(content);
+
+    const statsGrid = $('<div>', { style: 'display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 16px;' }).appendTo(content);
+    const statTile = (id, label) => {
+      const tile = $('<div>', { style: 'background: #f5f5f5; border-radius: 4px; padding: 6px 8px;' }).appendTo(statsGrid);
+      $('<div>', { id, style: 'font-size: 16px; font-weight: 700; color: #333;' }).text('-').appendTo(tile);
+      $('<div>', { style: 'font-size: 10px; color: #777; text-transform: uppercase; letter-spacing: 0.5px;' }).text(label).appendTo(tile);
+      return tile;
+    };
+    const statEls = {
+      total: statTile('exec-history-stat-total', 'Total'),
+      running: statTile('exec-history-stat-running', 'Running'),
+      completed: statTile('exec-history-stat-completed', 'Completed'),
+      failed: statTile('exec-history-stat-failed', 'Failed'),
+      replays: statTile('exec-history-stat-replays', 'Replays'),
+      exhausted: statTile('exec-history-stat-exhausted', 'Exhausted')
+    };
+
+    $('<div>', { style: 'font-size: 11px; font-weight: 700; color: #777; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px;' })
+      .text('Recent Executions')
+      .appendTo(content);
+    const recentList = $('<div>', { id: 'exec-history-recent-list', style: 'display: flex; flex-direction: column; gap: 4px;' }).appendTo(content);
+
+    function relativeTime(iso) {
+      const diffMs = Date.now() - new Date(iso).getTime();
+      const mins = Math.round(diffMs / 60000);
+      if (mins < 1) return 'just now';
+      if (mins < 60) return `${mins}m ago`;
+      const hours = Math.round(mins / 60);
+      if (hours < 24) return `${hours}h ago`;
+      return `${Math.round(hours / 24)}d ago`;
+    }
+
+    const STATUS_COLORS = {
+      RUNNING: { bg: '#fff3e0', color: '#e65100' },
+      COMPLETED: { bg: '#e8f5e9', color: '#2e7d32' },
+      FAILED: { bg: '#ffebee', color: '#c62828' }
+    };
+
+    function renderHealth(stats) {
+      if (stats.failed > 0 || stats.exhausted > 0) {
+        healthLine.css({ background: '#ffebee', color: '#c62828' });
+        const parts = [];
+        if (stats.exhausted > 0) parts.push(`${stats.exhausted} exhausted retries`);
+        if (stats.failed > 0) parts.push(`${stats.failed} failed`);
+        healthLine.html(`&#9888; ${parts.join(', ')}`);
+      } else {
+        healthLine.css({ background: '#e8f5e9', color: '#2e7d32' });
+        healthLine.html('&#10003; All healthy');
+      }
+
+      statEls.total.find('div').first().text(stats.total);
+      statEls.running.find('div').first().text(stats.running);
+      statEls.completed.find('div').first().text(stats.completed);
+      statEls.failed.find('div').first().text(stats.failed);
+      statEls.replays.find('div').first().text(stats.replays);
+      statEls.exhausted.find('div').first().text(stats.exhausted);
+    }
+
+    function renderRecent(executions) {
+      recentList.empty();
+      if (executions.length === 0) {
+        $('<div>', { style: 'color: #999; font-size: 12px;' }).text('No executions recorded yet.').appendTo(recentList);
+        return;
+      }
+
+      executions.forEach(exec => {
+        const targetId = exec.lastExecutionId || exec.executionId;
+        const statusStyle = STATUS_COLORS[exec.status] || STATUS_COLORS.RUNNING;
+        const row = $('<div>', {
+          style: 'display: flex; align-items: center; justify-content: space-between; gap: 6px; padding: 5px 6px; border-radius: 3px; cursor: pointer; background: #fafafa;'
+        }).appendTo(recentList);
+        row.on('click', () => openDashboard(targetId));
+        row.on('mouseenter', () => row.css('background', '#f0f0f0'));
+        row.on('mouseleave', () => row.css('background', '#fafafa'));
+
+        const left = $('<div>', { style: 'overflow: hidden;' }).appendTo(row);
+        $('<div>', { style: 'font-size: 12px; color: #333; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;' })
+          .text(exec.flowName || exec.flowId || exec.executionId)
+          .appendTo(left);
+        $('<div>', { style: 'font-size: 10px; color: #999;' }).text(relativeTime(exec.startTime)).appendTo(left);
+
+        $('<span>', { style: `flex-shrink: 0; font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 3px; background: ${statusStyle.bg}; color: ${statusStyle.color};` })
+          .text(exec.status)
+          .appendTo(row);
+      });
+    }
+
+    async function refresh() {
+      try {
+        // Deliberately the one /api/executions* route reachable with no
+        // credentials even when execHistoryAuth is set - see its handler
+        // in execution-resilience.js for why that's safe. Checked first every
+        // time (not just once) so flipping the setting takes effect here
+        // without needing to reopen the editor.
+        const configRes = await fetch('/api/executions/config');
+        const config = await configRes.json();
+
+        if (config.authConfigured) {
+          healthLine.css({ background: '#fff3e0', color: '#7a4a00' });
+          healthLine.html('&#128274; Protected - open the dashboard to sign in');
+          statsGrid.hide();
+          recentList.empty();
+          return;
+        }
+
+        const statsRes = await fetch('/api/executions/stats/default');
+        if (!statsRes.ok) throw new Error('stats request failed');
+        const stats = await statsRes.json();
+        statsGrid.show();
+        renderHealth(stats);
+
+        const recentRes = await fetch('/api/executions?database=default&limit=5&grouped=true');
+        if (!recentRes.ok) throw new Error('executions request failed');
+        const recentData = await recentRes.json();
+        renderRecent(recentData.executions || []);
+      } catch (err) {
+        healthLine.css({ background: '#f5f5f5', color: '#777' });
+        healthLine.text('No data yet - check execHistoryDB_default in settings.js.');
+        statsGrid.hide();
+        recentList.empty();
+      }
+    }
+
+    refresh();
+    setInterval(refresh, 10000);
+
+    RED.sidebar.addTab({
+      id: 'execution-resilience',
+      label: 'Execution Resilience',
+      name: 'Execution Resilience',
+      iconClass: 'fa fa-history',
+      content: content
+    });
+  })();
+</script>
+
+<script type="text/html" data-template-name="execution-complete">
+  <div class="form-row">
+    <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+    <input type="text" id="node-input-name" placeholder="Mark Execution Complete">
+  </div>
+
+  <div class="form-tips">
+    <b>Tip:</b> Only needed for flows with no <code>http response</code> node - place this
+    wherever the flow actually ends to flip its execution to <code>COMPLETED</code>.
+    Everything else (tracking, per-node message recording) happens automatically without
+    placing any node at all - see the Documentation tab in the dashboard for details.
+  </div>
+</script>
+
+<script type="text/javascript">
+  RED.nodes.registerType('replay-point', {
+    category: 'debug',
+    color: '#a6bbf7',
+    defaults: {
+      // required: true - unlike Mark Execution Complete's name, this one
+      // isn't cosmetic: it's how a developer tells one checkpoint apart
+      // from another in the Replay dialog's picker (see dashboard.js's
+      // renderReplayChoice) and in a replayed execution's message tree, so
+      // an unnamed node there would leave the user picking between
+      // indistinguishable options.
+      name: { value: '', required: true }
+    },
+    inputs: 1,
+    outputs: 1,
+    icon: 'font-awesome/fa-history',
+    paletteLabel: 'Mark Replay Point',
+    label: function() {
+      return this.name || 'Mark Replay Point';
+    }
+  });
+</script>
+
+<script type="text/html" data-template-name="replay-point">
+  <div class="form-row">
+    <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+    <input type="text" id="node-input-name" placeholder="Mark Replay Point">
+  </div>
+
+  <div class="form-tips">
+    <b>Tip:</b> Every execution can already be replayed with a full restart from the flow's
+    origin - this node is an optional, <em>better</em> alternative for when a full restart
+    would repeat something you don't want repeated (a database write, a payment charge, an
+    email sent, ...). Place it right after such a step. Replaying from this checkpoint skips
+    everything before it - nothing upstream of it ever runs again. The name is required since
+    it's how the Replay dialog identifies this checkpoint - give it something specific enough
+    to recognize later, e.g. "After DB Write".
+  </div>
+</script>
+
+<script type="text/html" data-help-name="replay-point">
+  <p>
+    Marks an additional, optional point in the flow that's safe to resume execution from,
+    skipping everything before it. A plain pass-through node otherwise - the message
+    continues on unchanged.
+  </p>
+
+  <h3>Why this node exists</h3>
+  <p>
+    Every tracked execution can always be replayed as a full restart from the flow's true
+    origin - see "Restart is always available" below. That's often exactly right, but not
+    always: if the flow already wrote to a database, charged a payment, or sent a
+    notification before it failed, restarting from scratch would repeat that side effect.
+    Whether that's acceptable is a judgment call only the flow's author can make - this node
+    makes that choice explicit and visible in the flow itself, offering a smarter resume
+    point <em>in addition to</em> the restart option, not instead of it.
+  </p>
+  <p>
+    Place it wherever you've decided it's safe to resume from - typically right after any
+    non-repeatable step, and before whatever's likely to fail (an external API call, for
+    example). Resuming from this checkpoint re-runs this node with the exact message it
+    recorded, as a brand-new tracked execution - everything upstream of it never runs again.
+    Because this node genuinely runs again as part of that new execution, its own output is
+    itself a fresh, valid checkpoint - so if the resumed execution fails too, it can be
+    resumed again from the same point, any number of times.
+  </p>
+
+  <h3>Placed downstream of a Split?</h3>
+  <p>
+    If this node sits between a Split and its matching Join, it runs once per part, so it
+    records one checkpoint per part for the same execution. The Replay dialog lets you pick
+    <strong>any number of those parts, from 1 up to all</strong> - each still carries the
+    original <code>msg.parts</code> metadata the Join needs, but resuming from fewer than all
+    of them will typically leave the Join waiting forever for the rest, unless that's
+    deliberately what you want (e.g. narrowing in on one failing part for debugging).
+  </p>
+
+  <h3>Restart is always available</h3>
+  <p>
+    A flow is always repeatable from the very start, with or without this node - the
+    dashboard's <strong>&#8635;</strong> (Replay) icon offers "Restart from Origin" on every execution.
+    Adding this node doesn't change that; it just adds a second, more targeted option
+    alongside it, whenever you've decided a full restart isn't good enough.
+  </p>
+
+  <h3>Debugging: resume from any node</h3>
+  <p>
+    Separately, an operator can enable an unsafe "debug mode" (<code>execHistoryUnsafeReplay:
+    true</code> in <code>settings.js</code>) that allows resuming from literally any node an
+    execution passed through, not just ones marked with this node. That's deliberately
+    unsafe and meant for debugging only - it bypasses the whole point of this node, which is
+    forcing a considered decision about where a retry is actually safe.
+  </p>
+
+  <h3>Dashboard</h3>
+  <p>Use the "Execution Resilience" sidebar tab, or the button below, to open the dashboard.</p>
+</script>
+
+<script type="text/javascript">
+  RED.nodes.registerType('auto-replay-point', {
+    category: 'debug',
+    color: '#a6bbf7',
+    defaults: {
+      // required: true - same reasoning as replay-point: it's how one
+      // automatic checkpoint is told apart from another in the dashboard.
+      name: { value: '', required: true },
+      maxAttempts: { value: 3, required: true, validate: RED.validators.number() },
+      strategy: { value: 'exponential' },
+      delayMs: { value: 1000, required: true, validate: RED.validators.number() },
+      maxDelayMs: { value: 60000, required: true, validate: RED.validators.number() },
+      jitter: { value: true },
+      // Default 'error' - a second output nobody wired up would otherwise
+      // silently leave a brand-new tracked execution stuck RUNNING forever
+      // (see the "Execution Status" README table: nothing ever marks it
+      // COMPLETED or FAILED without a real downstream node). Raising it as
+      // a node.error() instead means the safe-by-default path creates no
+      // new execution at all - it just surfaces through Node-RED's own
+      // error log / Catch node mechanism.
+      onExhausted: { value: 'error' }
+    },
+    inputs: 1,
+    // Only 2 outputs in 'output' mode - 'error' mode has nothing to wire a
+    // second output to, so hiding it avoids a permanently-unwired output
+    // that looks like it should be connected.
+    outputs: function() {
+      return this.onExhausted === 'output' ? 2 : 1;
+    },
+    outputLabels: function(index) {
+      return index === 0 ? 'pass-through' : 'retries exhausted';
+    },
+    icon: 'font-awesome/fa-repeat',
+    paletteLabel: 'Mark Auto Replay Point',
+    label: function() {
+      return this.name || 'Mark Auto Replay Point';
+    },
+    oneditprepare: function() {
+      const $strategy = $('#node-input-strategy');
+      const $delayRow = $('#node-row-delayMs');
+      const $maxDelayRow = $('#node-row-maxDelayMs');
+      const $jitter = $('#node-input-jitter');
+      const $onExhausted = $('#node-input-onExhausted');
+
+      // A node deployed before "When exhausted" existed has no
+      // this.onExhausted at all - Node-RED's own field population only
+      // ever does $(field).val(node[d]), with no schema-default fallback,
+      // so left alone this renders as a blank/unselected dropdown even
+      // though the runtime (see AutoReplayPointNode's constructor) already
+      // treats a missing value as 'error'. Make the editor visibly agree
+      // with what's actually running.
+      if ($onExhausted.val() !== 'output') {
+        $onExhausted.val('error');
+      }
+
+      function updateVisibility() {
+        const strategy = $strategy.val();
+        $delayRow.toggle(strategy !== 'immediate');
+        $maxDelayRow.toggle(strategy === 'exponential');
+        if (strategy === 'exponential') {
+          $jitter.prop('checked', true).prop('disabled', true);
+        } else {
+          $jitter.prop('disabled', false);
+        }
+      }
+
+      $strategy.on('change', updateVisibility);
+      updateVisibility();
+    }
+  });
+</script>
+
+<script type="text/html" data-template-name="auto-replay-point">
+  <div class="form-row">
+    <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+    <input type="text" id="node-input-name" placeholder="Mark Auto Replay Point">
+  </div>
+
+  <div class="form-row">
+    <label for="node-input-maxAttempts"><i class="fa fa-repeat"></i> Max attempts</label>
+    <input type="number" id="node-input-maxAttempts" min="1" step="1" style="width: 100px;">
+  </div>
+
+  <div class="form-row">
+    <label for="node-input-strategy"><i class="fa fa-clock-o"></i> Strategy</label>
+    <select id="node-input-strategy" style="width: 200px;">
+      <option value="immediate">Immediate</option>
+      <option value="fixed">Fixed delay</option>
+      <option value="exponential">Exponential backoff</option>
+    </select>
+  </div>
+
+  <div class="form-row" id="node-row-delayMs">
+    <label for="node-input-delayMs"><i class="fa fa-hourglass-half"></i> Delay (ms)</label>
+    <input type="number" id="node-input-delayMs" min="0" step="100" style="width: 100px;">
+  </div>
+
+  <div class="form-row" id="node-row-maxDelayMs">
+    <label for="node-input-maxDelayMs"><i class="fa fa-hourglass-end"></i> Max delay (ms)</label>
+    <input type="number" id="node-input-maxDelayMs" min="0" step="100" style="width: 100px;">
+  </div>
+
+  <div class="form-row">
+    <label for="node-input-jitter"><i class="fa fa-random"></i> Jitter</label>
+    <input type="checkbox" id="node-input-jitter" style="display: inline-block; width: auto; vertical-align: middle;">
+  </div>
+
+  <div class="form-row">
+    <label for="node-input-onExhausted"><i class="fa fa-exclamation-triangle"></i> When exhausted</label>
+    <select id="node-input-onExhausted" style="width: 200px;">
+      <option value="error">Throw error</option>
+      <option value="output">Separate output</option>
+    </select>
+  </div>
+  <div class="form-tips" id="node-tip-onExhausted">
+    <b>Throw error</b> (default): once "Max attempts" is used up, nothing new is created -
+    it's raised via <code>node.error()</code>, catchable with a <code>Catch</code> node,
+    same as any other node failure. <b>Separate output</b> instead adds a second output that
+    fires once, carrying a new fully-tracked execution - only pick this if you're going to
+    wire something to it, otherwise that execution stays stuck <code>RUNNING</code> forever
+    (see the Documentation tab's "Execution Status" table). The output only appears on the
+    node once you save this change.
+  </div>
+
+  <div class="form-tips">
+    <b>Tip:</b> Like <code>Mark Replay Point</code>, this marks a spot that's safe to resume
+    from - but here, resuming happens <em>automatically</em> when the execution later fails
+    downstream, up to "Max attempts" times, with no one clicking anything. Only place this
+    where you'd genuinely be comfortable with the flow retrying itself, possibly several
+    times, unattended. Exponential backoff always applies jitter, to avoid many retries
+    landing on the same instant.
+  </div>
+</script>
+
+<script type="text/html" data-help-name="auto-replay-point">
+  <p>
+    Marks a point in the flow that's safe to resume execution from automatically, without a
+    person clicking anything, when the execution later fails somewhere downstream. A plain
+    pass-through node on its normal (first) output otherwise - the message continues on
+    unchanged. This is the same checkpoint idea as <code>Mark Replay Point</code>, but the
+    resume itself is triggered by the failure, not by a human deciding it in the dashboard.
+  </p>
+
+  <h3>This is a bigger decision than a manual replay point</h3>
+  <p>
+    A manual checkpoint only ever resumes when a person looks at the failure and decides to.
+    This node resumes on its own, potentially several times in a row, unattended. Place it
+    only where you're confident it's genuinely safe to re-run automatically and repeatedly -
+    typically right after a non-repeatable step (a database write, a payment charge, a
+    notification sent), never before one.
+  </p>
+
+  <h3>Settings</h3>
+  <ul>
+    <li><b>Max attempts</b> - hard cap on how many automatic retries this checkpoint will
+      trigger for one failure chain. Once reached, no further automatic retry happens and
+      "When exhausted" decides what happens next (see below).</li>
+    <li><b>Strategy</b> - <code>Immediate</code> retries right away; <code>Fixed delay</code>
+      waits the same "Delay" before every attempt; <code>Exponential backoff</code> doubles
+      the delay on each attempt, up to "Max delay".</li>
+    <li><b>Jitter</b> - randomizes the actual delay to avoid many retries landing at the exact
+      same instant. Always on for exponential backoff.</li>
+    <li><b>When exhausted</b> - <code>Throw error</code> (default) or
+      <code>Separate output</code>, see below.</li>
+  </ul>
+
+  <h3>When exhausted: Throw error (default) vs. Separate output</h3>
+  <p>
+    Once the final attempt has also failed and "Max attempts" is reached, one of two things
+    happens - nothing else. The failed execution itself is already recorded as
+    <code>FAILED</code> either way; this setting only controls what happens <em>in addition</em>
+    to that.
+  </p>
+  <p>
+    <b>Throw error</b> raises it via <code>node.error()</code> - the same mechanism any node
+    failure uses, catchable with a <code>Catch</code> node scoped to this tab (or any tab, for
+    a catch-all). Nothing new is created. This is the default because a second output that
+    nobody wired up would otherwise leave a brand-new tracked execution stuck
+    <code>RUNNING</code> forever - see "Execution Status" in the Documentation tab: nothing
+    marks an execution COMPLETED or FAILED except reaching an actual downstream node, and an
+    unwired output never reaches one.
+  </p>
+  <p>
+    <b>Separate output</b> instead adds a second output that fires once, carrying the last
+    failed payload plus the recorded error as a new, fully tracked execution
+    (<code>replayMode: auto-exhausted</code>) - wire this to an alert, a dead-letter queue, or
+    a <b>Mark Execution Complete</b> node so it actually terminates instead of running forever.
+    Switching to this mode only adds the output to the node once you save the edit dialog.
+  </p>
+
+  <h3>Restarting durably across a Node-RED restart</h3>
+  <p>
+    A pending automatic retry is persisted, not just held in memory - if Node-RED restarts
+    while a retry is waiting, it's picked back up and still fires once this node's flow is
+    running again.
+  </p>
+
+  <h3>Placed downstream of a Split?</h3>
+  <p>
+    Same behavior as <code>Mark Replay Point</code>: if this node sits between a Split and its
+    matching Join, an automatic retry always resumes <strong>all recorded parts together</strong>,
+    never just the one that failed. Retrying only the failed part isn't supported yet - it
+    needs a persistent, package-owned Join that this package doesn't have.
+  </p>
+
+  <h3>Restart and manual replay are still available</h3>
+  <p>
+    This node doesn't replace the dashboard's "Restart from Origin" or manual
+    <code>Mark Replay Point</code> options - all three can coexist. Manually replaying an
+    execution resets this checkpoint's own automatic attempt count back to zero for whatever
+    happens next.
+  </p>
+  <p>
+    This node's own checkpoint is also a valid manual reset location in the dashboard's Replay
+    dialog - no need to also add a <code>Mark Replay Point</code> node right next to it just to
+    unlock manual replay at the same spot. Useful once whatever was failing (an external
+    service, say) is working again and you'd rather jump straight back here than restart the
+    whole flow.
+  </p>
+
+  <h3>Dashboard</h3>
+  <p>Use the "Execution Resilience" sidebar tab, or the button below, to open the dashboard.</p>
+</script>
+
+<script type="text/html" data-help-name="execution-complete">
+  <p>
+    Marks the currently in-flight execution as <code>COMPLETED</code> when a message reaches
+    this node. A plain pass-through node otherwise - the message continues on unchanged.
+  </p>
+
+  <h3>When you need this</h3>
+  <p>
+    An <code>http response</code> node already marks its execution <code>COMPLETED</code>
+    automatically. Most non-HTTP flows (an <code>inject</code>-triggered automation, an MQTT
+    handler, ...) have no equivalent terminal node, so without one, tracked executions stay
+    <code>RUNNING</code> forever. Place this node at whichever point the flow is actually
+    "done" to give it that signal.
+  </p>
+
+  <h3>Automatic tracking (no node required)</h3>
+  <p>
+    Every <code>inject</code> and <code>http in</code> node is treated as a flow origin and is
+    tracked <b>automatically</b> the moment it fires - no node needs to be placed anywhere for
+    a <code>RUNNING</code> execution record to be created, and every node downstream gets its
+    input/output recorded automatically too.
+  </p>
+
+  <h3>Execution Status</h3>
+  <ul>
+    <li><code>RUNNING</code> - Execution in progress</li>
+    <li><code>COMPLETED</code> - Reached an <code>http response</code> node, or this node</li>
+    <li><code>FAILED</code> - A node called <code>done(err)</code> (or threw, if Node-RED
+      routes that through the same mechanism)</li>
+  </ul>
+
+  <h3>Dashboard</h3>
+  <p>Use the "Execution Resilience" sidebar tab, or the button below, to open the dashboard.</p>
+</script>

@@ -1,0 +1,1450 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  background: #f5f5f5;
+  color: #333;
+}
+
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Deliberately outside .container (full width, no max-width) and sticky at
+   the very top - this needs to be impossible to miss, not just present
+   somewhere on the page. See execHistoryAuth in README.md. */
+.auth-warning-banner {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: #fff3e0;
+  color: #7a4a00;
+  border-bottom: 2px solid #ef6c00;
+  padding: 10px 20px;
+  font-size: 13px;
+  text-align: center;
+}
+
+.auth-warning-banner code {
+  background: rgba(0, 0, 0, 0.08);
+  padding: 1px 5px;
+  border-radius: 0;
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+}
+
+.error-banner {
+  background: #ffebee;
+  color: #c62828;
+  border: 1px solid #ffcdd2;
+  border-radius: 0;
+  padding: 12px 16px;
+  margin-bottom: 20px;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.error-banner .btn-close {
+  position: static;
+  color: #c62828;
+  font-size: 20px;
+  width: auto;
+  height: auto;
+}
+
+.header {
+  background: white;
+  padding: 20px;
+  border-radius: 0;
+  margin-bottom: 20px;
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.15);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header h1 {
+  font-size: 24px;
+  color: #333;
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+  letter-spacing: 1px;
+}
+
+.header-controls {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 20px;
+  border-bottom: 2px solid #e0e0e0;
+}
+
+.tab-btn {
+  padding: 10px 20px;
+  border: none;
+  background: none;
+  font-size: 14px;
+  font-weight: 600;
+  color: #666;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.tab-btn:hover {
+  color: #333;
+}
+
+.tab-btn.active {
+  color: #0066cc;
+  border-bottom-color: #0066cc;
+}
+
+.docs-content {
+  background: white;
+  border-radius: 0;
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.15);
+  padding: 24px 32px;
+  max-width: 900px;
+  line-height: 1.6;
+}
+
+.docs-content h2 {
+  font-size: 16px;
+  color: #333;
+  margin: 28px 0 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #eee;
+}
+
+.docs-content h2:first-child {
+  margin-top: 0;
+}
+
+.docs-content p {
+  font-size: 14px;
+  color: #444;
+  margin-bottom: 12px;
+}
+
+.docs-content ul,
+.docs-content ol {
+  font-size: 14px;
+  color: #444;
+  margin: 0 0 12px;
+  padding-left: 24px;
+}
+
+.docs-content li {
+  margin-bottom: 6px;
+}
+
+.docs-content code {
+  background: #f0f0f0;
+  color: #ab5000;
+  padding: 1px 5px;
+  border-radius: 0;
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+  font-size: 12px;
+}
+
+.docs-code {
+  background: #f9f9f9;
+  border: 1px solid #eee;
+  border-radius: 0;
+  padding: 12px 16px;
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+  font-size: 12px;
+  line-height: 1.5;
+  overflow-x: auto;
+  margin-bottom: 12px;
+}
+
+.docs-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 16px;
+  font-size: 13px;
+}
+
+.docs-table th,
+.docs-table td {
+  text-align: left;
+  padding: 8px 12px;
+  border-bottom: 1px solid #eee;
+}
+
+.docs-table th {
+  color: #666;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.search-input,
+.filter-select {
+  padding: 10px 12px;
+  border: 1px solid #ddd;
+  border-radius: 0;
+  font-size: 14px;
+  min-width: 150px;
+}
+
+.search-input:focus,
+.filter-select:focus {
+  outline: none;
+  border-color: #0066cc;
+  box-shadow: 0 0 0 2px rgba(0, 102, 204, 0.4);
+}
+
+.toggle-switch-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #444;
+  cursor: pointer;
+  user-select: none;
+  margin-left: auto;
+}
+
+.toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 36px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.toggle-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggle-switch-track {
+  position: absolute;
+  inset: 0;
+  background: #ccc;
+  border-radius: 0;
+  transition: background 0.15s;
+}
+
+.toggle-switch-track::before {
+  content: '';
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  left: 2px;
+  top: 2px;
+  background: white;
+  border-radius: 0;
+  transition: transform 0.15s;
+}
+
+.toggle-switch input:checked + .toggle-switch-track {
+  background: #0066cc;
+}
+
+.toggle-switch input:checked + .toggle-switch-track::before {
+  transform: translateX(16px);
+}
+
+.toggle-switch input:focus-visible + .toggle-switch-track {
+  box-shadow: 0 0 0 2px rgba(0, 102, 204, 0.5);
+}
+
+.btn {
+  padding: 10px 16px;
+  border: none;
+  border-radius: 0;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: all 0.2s;
+  /* Chunky offset shadow with zero blur, no rounded corners anywhere - the
+     whole dashboard's "blocky/pixel" look. :active below shifts the
+     button by the same offset and drops the shadow, simulating it being
+     pressed flat against the page. */
+  box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.25);
+}
+
+.btn:active:not(:disabled) {
+  transform: translate(2px, 2px);
+  box-shadow: none;
+}
+
+/* Small square icon-only actions (View/Replay in the executions table and
+   the detail pane's replay-chain links) - same press effect as .btn, but
+   sized like .btn-copy-icon rather than a padded text button. */
+.btn-icon {
+  flex-shrink: 0;
+  border: none;
+  min-width: 28px;
+  height: 28px;
+  font-size: 14px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0;
+  border-radius: 0;
+  box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.25);
+  transition: transform 0.1s, box-shadow 0.1s, background 0.15s;
+}
+
+.btn-icon:active {
+  transform: translate(2px, 2px);
+  box-shadow: none;
+}
+
+.btn-icon-view {
+  background: #f0f0f0;
+  color: #333;
+}
+
+.btn-icon-view:hover {
+  background: #e0e0e0;
+}
+
+.btn-icon-replay {
+  background: #0066cc;
+  color: white;
+}
+
+.btn-icon-replay:hover {
+  background: #0052a3;
+}
+
+.btn-primary {
+  background: #0066cc;
+  color: white;
+}
+
+.btn-primary:hover {
+  background: #0052a3;
+}
+
+.btn-secondary {
+  background: #f0f0f0;
+  color: #333;
+  border: 1px solid #ddd;
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background: #e0e0e0;
+}
+
+.btn-secondary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-danger {
+  background: #d32f2f;
+  color: white;
+}
+
+.btn-danger:hover {
+  background: #b71c1c;
+}
+
+.stats-bar {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.stat-card {
+  background: white;
+  padding: 20px;
+  border-radius: 0;
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.15);
+  text-align: center;
+  border-left: 4px solid #999;
+  cursor: pointer;
+  transition: box-shadow 0.15s, transform 0.15s;
+}
+
+.stat-card:hover {
+  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.2);
+  transform: translateY(-1px);
+}
+
+.stat-card.active {
+  box-shadow: 0 0 0 2px #0066cc, 3px 3px 0 rgba(0, 0, 0, 0.15);
+}
+
+.stat-card.running {
+  border-left-color: #ff9800;
+}
+
+.stat-card.completed {
+  border-left-color: #4caf50;
+}
+
+.stat-card.failed {
+  border-left-color: #f44336;
+}
+
+.stat-card.replays {
+  border-left-color: #4527a0;
+}
+
+.stat-value {
+  font-size: 32px;
+  font-weight: bold;
+  margin-bottom: 8px;
+  color: #333;
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+}
+
+.stat-label {
+  font-size: 12px;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.main-content {
+  display: flex;
+  gap: 20px;
+  position: relative;
+}
+
+.executions-list {
+  flex: 1;
+  background: white;
+  border-radius: 0;
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+}
+
+.executions-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.executions-table thead {
+  background: #f9f9f9;
+  border-bottom: 2px solid #e0e0e0;
+}
+
+.executions-table th {
+  padding: 16px;
+  text-align: left;
+  font-weight: 600;
+  color: #666;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.executions-table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid #eee;
+  font-size: 14px;
+}
+
+.executions-table tbody tr:hover {
+  background: #f9f9f9;
+}
+
+/* An execution produced by a replay (restart/checkpoint/debug) - see the
+   "replay" badge next to its flow name for an explicit, color-independent
+   signal of the same thing. */
+.executions-table tbody tr.row-replay {
+  background: #f9f7fd;
+  box-shadow: inset 4px 0 0 #4527a0;
+}
+
+.executions-table tbody tr.row-replay:hover {
+  background: #f1ecfa;
+}
+
+.executions-table tbody tr.loading td {
+  text-align: center;
+  color: #999;
+  padding: 40px 16px;
+}
+
+/* A chain expanded via its per-row caret (see .btn-expand-chain) - its
+   member rows sit visually nested under where the one summary row was,
+   distinct from a normal top-level row. */
+.executions-table tbody tr.row-chain-member {
+  background: #fafafa;
+}
+
+.executions-table tbody tr.row-chain-member:hover {
+  background: #f1f1f1;
+}
+
+.executions-table tbody tr.row-chain-member .col-id {
+  padding-left: 28px;
+}
+
+.btn-expand-chain {
+  flex-shrink: 0;
+  background: none;
+  border: none;
+  color: #666;
+  cursor: pointer;
+  font-size: 20px;
+  line-height: 1;
+  padding: 0;
+  min-width: 20px;
+  text-align: center;
+}
+
+.btn-expand-chain:hover {
+  color: #0066cc;
+}
+
+/* Sits wherever an expand caret WOULD be on a row that has nothing further
+   to expand (an already-singular execution, or a non-oldest member inside
+   an expanded chain) - keeps the id column aligned across every row
+   regardless of which ones can expand. */
+.row-leaf-dot {
+  flex-shrink: 0;
+  display: inline-block;
+  min-width: 20px;
+  font-size: 20px;
+  line-height: 1;
+  text-align: center;
+  color: #bbb;
+}
+
+.col-id {
+  width: 20%;
+  font-family: monospace;
+  font-size: 12px;
+}
+
+.id-cell {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-copy-icon {
+  flex-shrink: 0;
+  background: #f0f0f0;
+  border: 1px solid #ddd;
+  color: #555;
+  border-radius: 0;
+  min-width: 22px;
+  height: 22px;
+  font-size: 11px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0 4px;
+  white-space: nowrap;
+}
+
+.btn-copy-icon:hover {
+  background: #e0e0e0;
+  color: #333;
+}
+
+.col-flow {
+  width: 15%;
+}
+
+.col-tags {
+  width: 12%;
+}
+
+.tag-cell {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.col-status {
+  width: 10%;
+}
+
+.col-duration {
+  width: 12%;
+}
+
+.col-time {
+  width: 18%;
+}
+
+.col-actions {
+  width: 10%;
+}
+
+td.col-actions {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 0;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+/* Execution status values (RUNNING/COMPLETED/FAILED) are already
+   uppercase in the data - message tags like "FIRST"/"result"/"split"
+   intentionally aren't, so text-transform doesn't live here anymore
+   (it would silently force everything uppercase regardless of what's
+   actually in the markup). */
+.status-running {
+  background: #fff3e0;
+  color: #e65100;
+}
+
+.status-completed {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+
+.status-failed {
+  background: #ffebee;
+  color: #c62828;
+}
+
+.status-split {
+  background: #fff9c4;
+  color: #9e7d00;
+}
+
+.status-replayed {
+  background: #ede7f6;
+  color: #4527a0;
+}
+
+.status-debug {
+  background: #fce4ec;
+  color: #ad1457;
+}
+
+.detail-pane {
+  position: fixed;
+  right: 0;
+  top: 0;
+  width: 800px;
+  height: 100vh;
+  background: white;
+  box-shadow: -4px 0 0 rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  flex-direction: column;
+}
+
+.detail-pane.show {
+  display: flex !important;
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.btn-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #666;
+  padding: 0;
+  width: 32px;
+  height: 32px;
+}
+
+.btn-close:hover {
+  color: #333;
+}
+
+.detail-content {
+  padding: 60px 20px 20px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.detail-content h2 {
+  margin-bottom: 20px;
+  font-size: 18px;
+  color: #333;
+  flex-shrink: 0;
+}
+
+#detailBody {
+  flex: 1;
+  min-height: 0;
+}
+
+/* Two independently-scrollable columns: metadata/error on the left, the
+   message tree on the right - so scrolling through a long message tree
+   never scrolls the metadata out of view, and vice versa. */
+.detail-columns {
+  display: flex;
+  gap: 20px;
+  height: 100%;
+}
+
+.detail-col {
+  overflow-y: auto;
+  min-width: 0;
+}
+
+.detail-col-meta {
+  flex: 0 0 320px;
+  padding-right: 20px;
+  border-right: 1px solid #eee;
+}
+
+.detail-col-messages {
+  flex: 1;
+}
+
+.detail-section {
+  margin-bottom: 24px;
+}
+
+.detail-section h3 {
+  font-size: 14px;
+  font-weight: 600;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 12px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 8px;
+}
+
+.detail-field {
+  margin-bottom: 12px;
+  font-size: 13px;
+}
+
+.detail-label {
+  color: #999;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+}
+
+.detail-value {
+  color: #333;
+  word-break: break-all;
+  font-family: monospace;
+  background: #f9f9f9;
+  padding: 8px;
+  border-radius: 0;
+}
+
+.messages-list {
+  border: 1px solid #eee;
+  border-radius: 0;
+}
+
+.message-item {
+  padding: 12px;
+  border-bottom: 1px solid #eee;
+  font-size: 12px;
+}
+
+.message-item:last-child {
+  border-bottom: none;
+}
+
+/* Briefly flashed on the message box a Deep Search result linked to, so
+   it's obvious which one of possibly many boxes is the actual match once
+   the detail view scrolls it into view. */
+.message-item.highlight-flash {
+  animation: highlightFlash 2.5s ease-out;
+}
+
+@keyframes highlightFlash {
+  0% { background: #fff9c4; }
+  100% { background: transparent; }
+}
+
+.info-icon-wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.info-icon {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 0;
+  background: #e0e0e0;
+  color: #666;
+  font-size: 13px;
+  line-height: 1;
+  cursor: default;
+  flex-shrink: 0;
+}
+
+.info-icon:hover,
+.info-icon:focus {
+  background: #d0d0d0;
+  outline: none;
+}
+
+.info-icon .info-tooltip {
+  display: none;
+}
+
+.info-icon:hover .info-tooltip,
+.info-icon:focus .info-tooltip {
+  display: block;
+}
+
+.info-tooltip {
+  position: absolute;
+  top: 24px;
+  right: 0;
+  z-index: 20;
+  width: 260px;
+  background: #333;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.5;
+  text-align: left;
+  padding: 10px 12px;
+  border-radius: 0;
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.3);
+  white-space: normal;
+}
+
+.deep-search-empty {
+  padding: 40px 16px;
+  text-align: center;
+  color: #999;
+  font-size: 14px;
+}
+
+.deep-search-notice {
+  background: #fff3e0;
+  color: #e65100;
+  border: 1px solid #ffe0b2;
+  border-radius: 0;
+  padding: 10px 16px;
+  margin-bottom: 16px;
+  font-size: 13px;
+}
+
+.deep-search-result {
+  padding: 14px 16px;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+}
+
+.deep-search-result:last-child {
+  border-bottom: none;
+}
+
+.deep-search-result:hover {
+  background: #f9f9f9;
+}
+
+.deep-search-result-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 6px;
+  flex-wrap: wrap;
+}
+
+.deep-search-result-flow {
+  font-weight: 600;
+  font-size: 14px;
+  color: #333;
+}
+
+.deep-search-result-id {
+  font-family: monospace;
+  font-size: 12px;
+  color: #999;
+}
+
+.deep-search-result-meta {
+  margin-left: auto;
+  font-size: 12px;
+  color: #999;
+  white-space: nowrap;
+}
+
+.deep-search-result-snippet {
+  font-family: monospace;
+  font-size: 12px;
+  color: #555;
+  background: #f9f9f9;
+  padding: 8px 10px;
+  border-radius: 0;
+  word-break: break-word;
+}
+
+.deep-search-result-snippet mark {
+  background: #fff59d;
+  color: #333;
+  border-radius: 0;
+  padding: 0 1px;
+}
+
+.deep-search-result-node {
+  font-size: 11px;
+  color: #999;
+  margin-top: 6px;
+}
+
+.branch {
+  border-bottom: 1px solid #eee;
+}
+
+.branch:last-child {
+  border-bottom: none;
+}
+
+.branch-toggle-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  padding: 8px 12px;
+  background: #f9f9f9;
+  border: none;
+  border-bottom: 1px solid #eee;
+  font-size: 12px;
+  font-weight: 600;
+  color: #555;
+  cursor: pointer;
+  text-align: left;
+}
+
+.branch-toggle-btn:hover {
+  background: #f0f0f0;
+}
+
+.branch-icon {
+  font-size: 10px;
+  color: #0066cc;
+  width: 10px;
+  display: inline-block;
+}
+
+.branch-content {
+  padding-left: 16px;
+  border-left: 2px solid #e0e0e0;
+  margin-left: 12px;
+}
+
+/* A destination sharing an output port with other, genuinely independent
+   destinations (never reconverging - see the `disjoint` check in
+   dashboard.js) - visually lighter than the "Output N" branch that contains
+   it, since it's one of several parallel continuations, not a distinct
+   output port of the flow itself. */
+.sub-branch {
+  border-bottom: 1px solid #f2f2f2;
+}
+
+.sub-branch > .branch-toggle-btn {
+  background: transparent;
+  font-weight: 500;
+  color: #777;
+}
+
+.sub-branch > .branch-toggle-btn:hover {
+  background: #f5f5f5;
+}
+
+.sub-branch > .branch-content {
+  border-left-color: #eee;
+}
+
+.message-direction {
+  display: inline-block;
+  padding: 2px 6px;
+  border-radius: 0;
+  font-size: 11px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.carousel-nav {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 6px 0;
+}
+
+.carousel-btn {
+  background: #fff9c4;
+  border: 1px solid #e6d84f;
+  color: #9e7d00;
+  border-radius: 0;
+  width: 24px;
+  height: 24px;
+  font-size: 13px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.carousel-btn:hover:not(:disabled) {
+  background: #fff59d;
+}
+
+.carousel-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.carousel-counter {
+  font-size: 11px;
+  color: #666;
+  font-weight: 600;
+}
+
+.direction-input {
+  background: #e3f2fd;
+  color: #1565c0;
+}
+
+.direction-output {
+  background: #f3e5f5;
+  color: #6a1b9a;
+}
+
+.replay-intro {
+  background: white;
+  border-radius: 0;
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.15);
+  padding: 14px 16px;
+  margin-bottom: 20px;
+  font-size: 13px;
+  color: #555;
+  line-height: 1.5;
+}
+
+.replay-intro code {
+  background: #f0f0f0;
+  color: #ab5000;
+  padding: 1px 5px;
+  border-radius: 0;
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+  font-size: 12px;
+}
+
+.btn-sm {
+  padding: 6px 10px;
+  font-size: 12px;
+}
+
+.replay-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 1100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.replay-modal {
+  background: white;
+  border-radius: 0;
+  box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.3);
+  padding: 24px;
+  width: 100%;
+  max-width: 520px;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.replay-modal h3 {
+  font-size: 16px;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+.replay-modal-subtitle {
+  font-size: 12px;
+  color: #999;
+  font-family: monospace;
+  margin-bottom: 16px;
+  word-break: break-all;
+}
+
+.replay-modal p {
+  font-size: 13px;
+  color: #444;
+  margin-bottom: 12px;
+  line-height: 1.5;
+}
+
+.replay-modal-body {
+  font-size: 13px;
+  color: #999;
+  text-align: center;
+  padding: 20px 0;
+}
+
+.replay-guidance ol {
+  font-size: 13px;
+  color: #444;
+  margin: 0 0 4px;
+  padding-left: 22px;
+  line-height: 1.6;
+}
+
+.replay-guidance code {
+  background: #f0f0f0;
+  color: #ab5000;
+  padding: 1px 5px;
+  border-radius: 0;
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+  font-size: 12px;
+}
+
+.replay-options {
+  margin-bottom: 16px;
+  border: 1px solid #eee;
+  border-radius: 0;
+  overflow: hidden;
+}
+
+.replay-option {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 12px;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.replay-option:last-child {
+  border-bottom: none;
+}
+
+.replay-option:hover {
+  background: #f9f9f9;
+}
+
+.replay-option input[type="radio"] {
+  margin-top: 3px;
+  flex-shrink: 0;
+}
+
+.replay-option-label {
+  display: block;
+  font-weight: 600;
+  color: #333;
+}
+
+.replay-option-sublabel {
+  display: block;
+  font-size: 12px;
+  color: #888;
+  margin-top: 2px;
+}
+
+.replay-unsafe-tag {
+  display: inline-block;
+  background: #fce4ec;
+  color: #ad1457;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 1px 6px;
+  border-radius: 0;
+  margin-left: 6px;
+}
+
+/* Marks a checkpoint recorded at a Mark Auto Replay Point node (vs a
+   regular Mark Replay Point one) in the replay picker - same purple family
+   as every other "auto"/replay-related badge in this dashboard. */
+.replay-auto-tag {
+  display: inline-block;
+  background: #ede7f6;
+  color: #4527a0;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 1px 6px;
+  border-radius: 0;
+  margin-left: 6px;
+}
+
+.replay-group {
+  border-bottom: 1px solid #eee;
+}
+
+.replay-group:last-child {
+  border-bottom: none;
+}
+
+.replay-group .replay-option {
+  border-bottom: none;
+}
+
+.replay-parts-picker {
+  padding: 4px 12px 10px 30px;
+}
+
+.replay-parts-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  color: #999;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+}
+
+.replay-parts-link {
+  background: none;
+  border: none;
+  color: #0066cc;
+  font-size: 11px;
+  text-transform: none;
+  letter-spacing: normal;
+  cursor: pointer;
+  padding: 0;
+}
+
+.replay-parts-link:hover {
+  text-decoration: underline;
+}
+
+.replay-part-checkbox {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 6px 10px;
+  margin-bottom: 2px;
+  border-radius: 0;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.replay-part-checkbox input[type="checkbox"] {
+  margin-top: 3px;
+  flex-shrink: 0;
+}
+
+.replay-part-checkbox:hover {
+  filter: brightness(0.97);
+}
+
+.replay-debug-details {
+  border-top: 1px solid #eee;
+  background: #fff8f9;
+}
+
+.replay-debug-details summary {
+  cursor: pointer;
+  padding: 10px 12px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #ad1457;
+}
+
+.replay-debug-details .replay-option {
+  background: #fff8f9;
+}
+
+.replay-unsafe-warning {
+  margin: 0;
+  padding: 0 12px 10px;
+  font-size: 12px;
+  color: #ad1457;
+}
+
+.replay-field {
+  margin-bottom: 16px;
+}
+
+.replay-field label {
+  display: block;
+  font-size: 11px;
+  color: #999;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 6px;
+}
+
+.replay-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.replay-error {
+  background: #ffebee;
+  color: #c62828;
+  border: 1px solid #ffcdd2;
+  border-radius: 0;
+  padding: 10px 12px;
+  font-size: 13px;
+  margin-bottom: 12px;
+}
+
+.replay-success {
+  background: #e8f5e9;
+  color: #2e7d32;
+  border: 1px solid #c8e6c9;
+  border-radius: 0;
+  padding: 10px 12px;
+  font-size: 13px;
+  margin-bottom: 16px;
+}
+
+.pagination {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+}
+
+.pagination #pageInfo {
+  min-width: 100px;
+  text-align: center;
+  color: #666;
+  font-size: 14px;
+}
+
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .header-controls {
+    width: 100%;
+    margin-top: 16px;
+    flex-wrap: wrap;
+  }
+
+  .stats-bar {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .detail-pane {
+    width: 100%;
+  }
+
+  .detail-columns {
+    flex-direction: column;
+  }
+
+  .detail-col-meta {
+    flex: 0 0 auto;
+    max-height: 45%;
+    padding-right: 0;
+    border-right: none;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 12px;
+  }
+
+  .detail-col-messages {
+    flex: 1;
+    min-height: 0;
+  }
+
+  .col-id,
+  .col-flow,
+  .col-tags,
+  .col-duration {
+    display: none;
+  }
+
+  .executions-table th,
+  .executions-table td {
+    padding: 12px 8px;
+  }
+}
+
+/* renderjson (https://github.com/caldwell/renderjson) collapsible JSON tree
+   theme, matching the rest of the dashboard's palette. */
+.renderjson {
+  margin: 0;
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+  font-size: 12px;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.renderjson a.disclosure {
+  color: #0066cc;
+  text-decoration: none;
+  margin-right: 2px;
+}
+
+.renderjson a.disclosure:hover {
+  text-decoration: underline;
+}
+
+.renderjson .syntax {
+  color: #999;
+}
+
+.renderjson .string {
+  color: #2e7d32;
+}
+
+.renderjson .number {
+  color: #ab5000;
+}
+
+.renderjson .boolean {
+  color: #6a1b9a;
+}
+
+.renderjson .key {
+  color: #0d47a1;
+  font-weight: 600;
+}
+
+.renderjson .keyword {
+  color: #999;
+  font-style: italic;
+}

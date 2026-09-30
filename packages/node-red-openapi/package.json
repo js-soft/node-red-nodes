@@ -1,0 +1,53 @@
+{
+  "name": "openapi-red",
+  "version": "2.8.0",
+  "description": "OpenAPI (Swagger) client for node-red ",
+  "author": "Sebastian Meier",
+  "contributors": [
+    "Sebastian Meier",
+    "Christian Geiger"
+  ],
+  "main": "src/openApi-red.js",
+  "scripts": {
+    "setup": "npm install && mkdir -p /home/node/.node-red/ && cd /home/node/.node-red/ && npm link /workspaces/openapi-red --save && cd /workspaces/openapi-red",
+    "dev": "node-red examples/petstore.json",
+    "build": "sir",
+    "build:watch": "nodemon --watch src --ext svelte --exec 'npm run build'"
+  },
+  "keywords": [
+    "node-red",
+    "swagger",
+    "swagger client",
+    "openAPI",
+    "openAPI client",
+    "open api",
+    "open api client",
+    "open",
+    "api"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://gitlab.com/2WeltenChris/openapi-red.git"
+  },
+  "license": "MIT",
+  "node-red": {
+    "version": ">=3.0.0",
+    "nodes": {
+      "openApi-red": "src/openapi.js",
+      "openApi-red-url": "src/config.js"
+    }
+  },
+  "engines": {
+    "node": ">=18.0"
+  },
+  "dependencies": {
+    "node-fetch": "^3.3.2",
+    "swagger-client": "^3.36.0",
+    "tinypool": "^2.0.0",
+    "yaml": "^2.8.1"
+  },
+  "devDependencies": {
+    "standard": "^17.1.2",
+    "svelte-integration-red": "^2.10.4"
+  }
+}
