@@ -1,9 +1,10 @@
-**⚠️ This project moved to [nodefox-team(openapi-red)](https://gitlab.com/nodefox-team/openapi-red). ⚠️**
+# OpenAPI-RED (js-soft Edition)
 
-Version 3 is underway. Development takes place in the new repository. Please stay tuned.
+> **Note:** This package (`@js-soft/node-red-openapi`) is a modified version of
+> [openapi-red](https://gitlab.com/2WeltenChris/openapi-red) by Sebastian Meier and
+> Christian Geiger, maintained by js-soft. It adds improved error handling on top of
+> the upstream version 2.8.0. Versioning restarts at 1.0.0 and is independent of upstream.
 
-
-# OpenAPI-RED
 
 This node allows to work with APIs defined by OpenAPI 3 (Swagger). You can set parameters within the Node-RED-UI and trigger the flow from within your flow.
 
@@ -77,6 +78,26 @@ Use the filter button between the checkbox and the parameter name to conditional
 This can be handy if you have an array and want to filter some values.
 
 The function has access to the `msg` object, the `value` (not for editor, array, each) and the current each value (set in the `as` input of each). It is recommended that the result is a boolean.
+
+### 4.2 File uploads
+
+For `multipart/form-data` requests, file values can be native `File` objects or objects containing the file data and metadata. Multer-style upload objects are supported directly:
+
+```js
+msg.payload = msg.request.files.file
+```
+
+Alternatively, use an explicit file descriptor:
+
+```js
+msg.payload = {
+  buffer: msg.request.files.file.buffer,
+  filename: msg.request.files.file.originalname,
+  contentType: msg.request.files.file.mimetype
+}
+```
+
+Configure the file property in the OpenAPI node to read this value from `msg.payload`. When the original upload collection is still available in `msg.request.files`, the node can also match a raw Buffer to its upload object and restore its filename and content type automatically. A standalone Buffer without accompanying metadata retains the legacy filename `blob`.
 
 ## 5. Headers
 

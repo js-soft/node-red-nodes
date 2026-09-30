@@ -1,18 +1,24 @@
 {
-  "name": "openapi-red",
-  "version": "2.8.0",
-  "description": "OpenAPI (Swagger) client for node-red ",
+  "name": "@js-soft/node-red-openapi",
+  "version": "1.0.0",
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "description": "A modified version of openapi-red (OpenAPI/Swagger client for Node-RED) with improved error handling, maintained by js-soft",
   "author": "Sebastian Meier",
   "contributors": [
     "Sebastian Meier",
-    "Christian Geiger"
+    "Christian Geiger",
+    "Jakob Erben <jakob.erben@js-soft.com>"
   ],
   "main": "src/openApi-red.js",
   "scripts": {
     "setup": "npm install && mkdir -p /home/node/.node-red/ && cd /home/node/.node-red/ && npm link /workspaces/openapi-red --save && cd /workspaces/openapi-red",
     "dev": "node-red examples/petstore.json",
     "build": "sir",
-    "build:watch": "nodemon --watch src --ext svelte --exec 'npm run build'"
+    "build:watch": "nodemon --watch src --ext svelte --exec 'npm run build'",
+    "test": "node --test"
   },
   "keywords": [
     "node-red",
@@ -25,20 +31,26 @@
     "open",
     "api"
   ],
+  "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://gitlab.com/2WeltenChris/openapi-red.git"
+    "url": "https://github.com/js-soft/node-red-nodes.git",
+    "directory": "packages/node-red-openapi"
   },
-  "license": "MIT",
+  "files": [
+    "src",
+    "icons",
+    "editor.js",
+    "README.md",
+    "CHANGELOG.md",
+    "LICENSE"
+  ],
   "node-red": {
     "version": ">=3.0.0",
     "nodes": {
       "openApi-red": "src/openapi.js",
       "openApi-red-url": "src/config.js"
     }
-  },
-  "engines": {
-    "node": ">=18.0"
   },
   "dependencies": {
     "node-fetch": "^3.3.2",
@@ -49,5 +61,8 @@
   "devDependencies": {
     "standard": "17.1.2",
     "svelte-integration-red": "2.13.4"
+  },
+  "engines": {
+    "node": "24.x"
   }
 }
