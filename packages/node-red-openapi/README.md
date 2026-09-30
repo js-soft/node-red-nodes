@@ -1,9 +1,10 @@
-**⚠️ This project moved to [nodefox-team(openapi-red)](https://gitlab.com/nodefox-team/openapi-red). ⚠️**
+# OpenAPI-RED (js-soft Edition)
 
-Version 3 is underway. Development takes place in the new repository. Please stay tuned.
+> **Note:** This package (`@js-soft/node-red-openapi`) is a modified version of
+> [openapi-red](https://gitlab.com/2WeltenChris/openapi-red) by Sebastian Meier and
+> Christian Geiger, maintained by js-soft. It adds improved error handling on top of
+> the upstream version 2.8.0. Versioning restarts at 1.0.0 and is independent of upstream.
 
-
-# OpenAPI-RED
 
 This node allows to work with APIs defined by OpenAPI 3 (Swagger). You can set parameters within the Node-RED-UI and trigger the flow from within your flow.
 
