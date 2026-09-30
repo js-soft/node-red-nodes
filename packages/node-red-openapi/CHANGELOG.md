@@ -3,6 +3,7 @@
 ## @js-soft/node-red-openapi 1.0.0 (30th of September 2026)
 - Forked from openapi-red 2.8.0 and published as `@js-soft/node-red-openapi`
 - Improved error handling
+- Fixed `multipart/form-data` file uploads losing filename and content type
 
 ## Version 2.8.0 (12th of November 2025)
 - Updated dependencies

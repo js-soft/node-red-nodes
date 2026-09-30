@@ -79,6 +79,26 @@ This can be handy if you have an array and want to filter some values.
 
 The function has access to the `msg` object, the `value` (not for editor, array, each) and the current each value (set in the `as` input of each). It is recommended that the result is a boolean.
 
+### 4.2 File uploads
+
+For `multipart/form-data` requests, file values can be native `File` objects or objects containing the file data and metadata. Multer-style upload objects are supported directly:
+
+```js
+msg.payload = msg.request.files.file
+```
+
+Alternatively, use an explicit file descriptor:
+
+```js
+msg.payload = {
+  buffer: msg.request.files.file.buffer,
+  filename: msg.request.files.file.originalname,
+  contentType: msg.request.files.file.mimetype
+}
+```
+
+Configure the file property in the OpenAPI node to read this value from `msg.payload`. When the original upload collection is still available in `msg.request.files`, the node can also match a raw Buffer to its upload object and restore its filename and content type automatically. A standalone Buffer without accompanying metadata retains the legacy filename `blob`.
+
 ## 5. Headers
 
 ### 5.1 Custom headers
