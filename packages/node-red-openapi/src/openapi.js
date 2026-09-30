@@ -1,6 +1,7 @@
 const Swagger = require('swagger-client')
 
 const { setRED, restructureParamFromArray, createParameters, evaluateNodeProp } = require('./utils/parameters')
+const { normalizeMultipartFiles } = require('./utils/multipart')
 let nodeFetch // lazy import below
 
 module.exports = function (RED) {
@@ -177,6 +178,9 @@ module.exports = function (RED) {
       // fallback if no content type can be found
       let requestContentType = 'application/json'
       if (config.requestContentType) requestContentType = config.requestContentType
+      if (requestContentType === 'multipart/form-data') {
+        requestBody = normalizeMultipartFiles(requestBody, msg.request?.files)
+      }
       const opData = config.operationData
       // try to get it if source was unavailable on startup (e.g. NodeRed creates specification or server/shuttle was not ready yet)
       let spec

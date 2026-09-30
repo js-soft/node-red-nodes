@@ -17,7 +17,8 @@
     "setup": "npm install && mkdir -p /home/node/.node-red/ && cd /home/node/.node-red/ && npm link /workspaces/openapi-red --save && cd /workspaces/openapi-red",
     "dev": "node-red examples/petstore.json",
     "build": "sir",
-    "build:watch": "nodemon --watch src --ext svelte --exec 'npm run build'"
+    "build:watch": "nodemon --watch src --ext svelte --exec 'npm run build'",
+    "test": "node --test"
   },
   "keywords": [
     "node-red",
