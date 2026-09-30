@@ -59,8 +59,8 @@
     "yaml": "^2.8.1"
   },
   "devDependencies": {
-    "standard": "^17.1.2",
-    "svelte-integration-red": "^2.10.4"
+    "standard": "17.1.2",
+    "svelte-integration-red": "2.13.4"
   },
   "engines": {
     "node": "24.x"
