@@ -14,7 +14,8 @@ the `packages/` directory.
 packages/
 ├── node-red-enmeshed-connector/
 ├── node-red-eudiplo/
-└── node-red-frosch-work-openapi-generator/
+├── node-red-frosch-work-openapi-generator/
+└── node-red-openapi/
 ```
 
 ## Publishing a Package
@@ -36,6 +37,7 @@ git tag enmeshed-connector@0.1.0
 git tag eudiplo@7.4.0
 git tag eudiplo@7.4.0-beta.1
 git tag frosch-work-openapi-generator@1.0.0
+git tag openapi@1.0.0
 ```
 
 `node-red-eudiplo`'s version is kept in lockstep with its `@eudiplo/sdk-core`
@@ -51,6 +53,7 @@ follows:
 | `enmeshed-connector` | `packages/node-red-enmeshed-connector` | `@js-soft/node-red-enmeshed-connector` |
 | `eudiplo` | `packages/node-red-eudiplo` | `@js-soft/node-red-eudiplo` |
 | `frosch-work-openapi-generator` | `packages/node-red-frosch-work-openapi-generator` | `@js-soft/node-red-frosch-work-openapi-generator` |
+| `openapi` | `packages/node-red-openapi` | `@js-soft/node-red-openapi` |
 
 ### Push the Tag
 

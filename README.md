@@ -12,6 +12,7 @@ This repository contains the Node-RED packages that were extracted from
 | `packages/node-red-enmeshed-connector` | `@js-soft/node-red-enmeshed-connector` | `enmeshed-connector@x.y.z` |
 | `packages/node-red-eudiplo` | `@js-soft/node-red-eudiplo` | `eudiplo@x.y.z` |
 | `packages/node-red-frosch-work-openapi-generator` | `@js-soft/node-red-frosch-work-openapi-generator` | `frosch-work-openapi-generator@x.y.z` |
+| `packages/node-red-openapi` | `@js-soft/node-red-openapi` | `openapi@x.y.z` |
 
 ## Publishing
 
