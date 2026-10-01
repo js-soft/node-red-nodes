@@ -1,0 +1,2854 @@
+[
+    {
+        "id": "eecec5c9.d293c8",
+        "type": "tab",
+        "label": "openAPI red",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "fe8c7d2d17882ff9",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "372a2ed3c7edf8ac",
+        "type": "group",
+        "z": "eecec5c9.d293c8",
+        "style": {
+            "stroke": "#999999",
+            "stroke-opacity": "1",
+            "fill": "none",
+            "fill-opacity": "1",
+            "label": true,
+            "label-position": "nw",
+            "color": "#a4a4a4"
+        },
+        "nodes": [
+            "81f648a.a13dbb8",
+            "bc5a954c.210948",
+            "423115ed.a74b2c",
+            "c2f27279.70298",
+            "379ceb6f.87fc64",
+            "9edad4d7.c99418",
+            "381d4523.7e3eea",
+            "d3d1558.e8727a8",
+            "3e64e817.4ae0f8",
+            "1e78345b.25293c",
+            "c502a9ca.77c868",
+            "5aae1704.4f2018",
+            "b85f329.467e4d",
+            "3d30b8d8.f9b808",
+            "7b0b589c.010518",
+            "d86e5d17.4cc13",
+            "554a061.43990f8",
+            "7f148ae3.6365e4"
+        ],
+        "x": 1094,
+        "y": 579,
+        "w": 832,
+        "h": 442
+    },
+    {
+        "id": "338306f56177a633",
+        "type": "group",
+        "z": "eecec5c9.d293c8",
+        "style": {
+            "stroke": "#999999",
+            "stroke-opacity": "1",
+            "fill": "none",
+            "fill-opacity": "1",
+            "label": true,
+            "label-position": "nw",
+            "color": "#a4a4a4"
+        },
+        "nodes": [
+            "f1741c0474a248c6",
+            "bc85d92a45d8a0f8",
+            "d0645574f722c3c1",
+            "5c6ea8f1a5a3355e",
+            "e94b72f3aaa5eccd",
+            "5306d5164187bb95",
+            "fcb39ca531f7ac20",
+            "717ed8e0ee123862",
+            "310b94ccfb9fb3cb",
+            "e03670ccfe2c0370",
+            "d00d8424a5f09321",
+            "0716154cae28be01",
+            "592e7f24ba7dbd99",
+            "a8caaddce92519c9",
+            "28510d1b25614392",
+            "52ea984dc31bd149",
+            "b98031c53a39ddc9",
+            "7cb16eaa807e84db",
+            "dfa2fd53351681d8"
+        ],
+        "x": 1094,
+        "y": 59,
+        "w": 772,
+        "h": 482
+    },
+    {
+        "id": "dd76de3bf7598dce",
+        "type": "group",
+        "z": "eecec5c9.d293c8",
+        "style": {
+            "stroke": "#999999",
+            "stroke-opacity": "1",
+            "fill": "none",
+            "fill-opacity": "1",
+            "label": true,
+            "label-position": "nw",
+            "color": "#a4a4a4"
+        },
+        "nodes": [
+            "2c6df600.c39c6a",
+            "3bd38321.4e833c",
+            "5d60a096.605a9",
+            "688666ad.618928",
+            "b2539810.0e5e38",
+            "267955d2.95f4ba",
+            "d7e1e394.36442",
+            "86681ccb.d292f",
+            "442f1205bdfc8e6e",
+            "a7b8f2bd24952c68",
+            "766aed465993c38a",
+            "b43e02e855ab0fbf",
+            "86621ef610b1e4dd",
+            "d0fc015f1f8ca123",
+            "4b4afa4141b0dc80",
+            "b89da2dec433c483",
+            "0166b6999c9c847e",
+            "0b79892b4a1a6852",
+            "292af65ab74bca5d",
+            "80b87282060496aa",
+            "f7c29b766a9a548a",
+            "68c0bc8079445345",
+            "f3879a1d8d8d109d",
+            "5f69275ecf44918e",
+            "6ff4d6e6f4ea5de7",
+            "4ec82841fa6d0710",
+            "d2a41ae8ac819aac",
+            "2b67610b618ac59d",
+            "e9898fe301e773fc",
+            "1b6346ef4cfbba4c",
+            "444c19141c28706a",
+            "eeb0511fb0f04e80",
+            "71873e6834e2b1f0",
+            "c283d71d7b7399b7",
+            "a2c6893296eba8a4",
+            "11ce8512b68c2b7f",
+            "2d91484a43d6fdd1",
+            "0944b51dbadc22f4",
+            "6264d06712f4b623",
+            "6b53329dc65f1776",
+            "c1d1e693ccadcf44",
+            "96e4f9c4c448a4bf"
+        ],
+        "x": 54,
+        "y": 59,
+        "w": 872,
+        "h": 1022
+    },
+    {
+        "id": "4fc15b76b4d55d7d",
+        "type": "openApi-red-url",
+        "name": "petstore openApi (v3)",
+        "url": "https://petstore3.swagger.io/api/v3/openapi.json",
+        "urlType": "str",
+        "server": "https://petstore3.swagger.io/api/v3",
+        "serverType": "server",
+        "devMode": false,
+        "headers": [],
+        "timestamp": 1753687731465,
+        "useAuthCertificate": "",
+        "_version": "2.7.9"
+    },
+    {
+        "id": "4e8e4d5957412be2",
+        "type": "openApi-red-url",
+        "name": "petstore swagger (v2)",
+        "url": "https://petstore.swagger.io/v2/swagger.json",
+        "urlType": "str",
+        "server": "",
+        "serverType": "custom",
+        "devMode": false,
+        "headers": [
+            {
+                "key": "HUND",
+                "valueType": "str",
+                "value": "Katze"
+            },
+            {
+                "key": "Bearer",
+                "valueType": "str",
+                "value": ""
+            }
+        ],
+        "_version": "2.7.9"
+    },
+    {
+        "id": "2c6df600.c39c6a",
+        "type": "inject",
+        "z": "eecec5c9.d293c8",
+        "g": "dd76de3bf7598dce",
+        "name": "add pet 451",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{ \"id\": 451,  \"name\": \"Benny\", \"photoUrl\": [] }",
+        "payloadType": "json",
+        "x": 170,
+        "y": 200,
+        "wires": [
+            [
+                "5d60a096.605a9"
+            ]
+        ]
+    },
+    {
+        "id": "3bd38321.4e833c",
+        "type": "debug",
+        "z": "eecec5c9.d293c8",
+        "g": "dd76de3bf7598dce",
+        "name": "success",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 580,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "5d60a096.605a9",
+        "type": "openApi-red",
+        "z": "eecec5c9.d293c8",
+        "g": "dd76de3bf7598dce",
+        "name": "",
+        "configUrlNode": "4e8e4d5957412be2",
+        "apiTag": "pet",
+        "keepAuth": "",
+        "operationData": {
+            "id": "addPet",
+            "hasOperationId": true,
+            "path": "/pet",
+            "method": "post"
+        },
+        "target": "payload",
+        "targetType": "msg",
+        "outputStyle": "each response",
+        "errorHandling": "throw exception",
+        "internalErrors": {
+            "readUrl": false,
+            "text": "",
+            "url": false,
+            "urlNotRead": false,
+            "parameters": false,
+            "source": ""
+        },
+        "parameters": {
+            "body body": {
+                "name": "body",
+                "isActive": true,
+                "activeFilter": "",
+                "required": true,
+                "type": "editor:body",
+                "collapsed": false,
+                "parameters": {
+                    "id": {
+                        "name": "id",
+                        "isActive": true,
+                        "activeFilter": "",
+                        "type": "msg",
+                        "collapsed": false,
+                        "value": "payload.id"
+                    },
+                    "category": {
+                        "name": "category",
+                        "activeFilter": "",
+                        "type": "editor:Category",
+                        "parameters": {
+                            "id": {
+                                "name": "id",
+                                "activeFilter": ""
+                            },
+                            "name": {
+                                "name": "name",
+                                "activeFilter": ""
+                            }
+                        }
+                    },
+                    "name": {
+                        "name": "name",
+                        "isActive": true,
+                        "activeFilter": "",
+                        "required": true,
+                        "type": "msg",
+                        "value": "payload.name"
+                    },
+                    "photoUrls": {
+                        "name": "photoUrls",
+                        "isActive": true,
+                        "activeFilter": "",
+                        "required": true,
+                        "type": "msg",
+                        "value": "payload.photoUrls"
+                    },
+                    "tags": {
+                        "name": "tags",
+                        "activeFilter": ""
+                    },
+                    "status": {
+                        "name": "status",
+                        "activeFilter": "",
+                        "type": "select",
+                        "value": "available"
+                    }
+                },
+                "in": "body"
+            }
+        },
+        "requestContentType": "application/json",
+        "responseContentType": "application/json",
+        "outputs": 2,
+        "responseOutputLabels": [
+            {
+                "code": "successful",
+                "text": "all successful responses (2xx)"
+            },
+            {
+                "code": "405",
+                "text": "Invalid input"
+            }
+        ],
+        "responseAsPayload": false,
+        "debugMode": "",
+        "headers": [
+            {
+                "key": "Affe",
+                "valueType": "str",
+                "value": "Elefant"
+            }
+        ],
+        "_version": "2.7.9",
+        "x": 360,
+        "y": 200,
+        "wires": [
+            [
+                "3bd38321.4e833c"
+            ],
+            [
+                "d0fc015f1f8ca123"
+            ]
+        ]
+    },
+    {
+        "id": "81f648a.a13dbb8",
+        "type": "inject",
+        "z": "eecec5c9.d293c8",
+        "g": "372a2ed3c7edf8ac",
+        "name": "",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 1200,
+        "y": 720,
+        "wires": [
+            [
+                "7b0b589c.010518"
+            ]
+        ]
+    },
+    {
+        "id": "bc5a954c.210948",
+        "type": "switch",
+        "z": "eecec5c9.d293c8",
+        "g": "372a2ed3c7edf8ac",
+        "name": "check msg.response.ok",
+        "property": "payload.ok",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "true"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 1630,
+        "y": 720,
+        "wires": [
+            [
+                "423115ed.a74b2c"
+            ],
+            [
+                "c2f27279.70298"
+            ]
+        ]
+    },
+    {
+        "id": "423115ed.a74b2c",
+        "type": "debug",
+        "z": "eecec5c9.d293c8",
+        "g": "372a2ed3c7edf8ac",
+        "name": "ok",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1830,
+        "y": 700,
+        "wires": []
+    },
+    {
+        "id": "c2f27279.70298",
+        "type": "debug",
+        "z": "eecec5c9.d293c8",
+        "g": "372a2ed3c7edf8ac",
+        "name": "error",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "x": 1830,
+        "y": 740,
+        "wires": []
+    },
+    {
+        "id": "379ceb6f.87fc64",
+        "type": "comment",
+        "z": "eecec5c9.d293c8",
+        "g": "372a2ed3c7edf8ac",
+        "name": "Standard",
+        "info": "",
+        "x": 1200,
+        "y": 680,
+        "wires": []
+    },
+    {
+        "id": "9edad4d7.c99418",
+        "type": "inject",
+        "z": "eecec5c9.d293c8",
+        "g": "372a2ed3c7edf8ac",
+        "name": "",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 1200,
+        "y": 820,
+        "wires": [
+            [
+                "d86e5d17.4cc13"
+            ]
+        ]
+    },
+    {
+        "id": "381d4523.7e3eea",
+        "type": "debug",
+        "z": "eecec5c9.d293c8",
+        "g": "372a2ed3c7edf8ac",
+        "name": "ok",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "x": 1570,
+        "y": 800,
+        "wires": []
+    },
+    {
+        "id": "d3d1558.e8727a8",
+        "type": "debug",
+        "z": "eecec5c9.d293c8",
+        "g": "372a2ed3c7edf8ac",
+        "name": "error",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "x": 1570,
+        "y": 840,
+        "wires": []
+    },
+    {
+        "id": "3e64e817.4ae0f8",
+        "type": "comment",
+        "z": "eecec5c9.d293c8",
+        "g": "372a2ed3c7edf8ac",
+        "name": "Other output",
+        "info": "",
+        "x": 1210,
+        "y": 780,
+        "wires": []
+    },
+    {
+        "id": "1e78345b.25293c",
+        "type": "inject",
+        "z": "eecec5c9.d293c8",
+        "g": "372a2ed3c7edf8ac",
+        "name": "",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 1200,
+        "y": 940,
+        "wires": [
+            [
+                "554a061.43990f8"
+            ]
+        ]
+    },
+    {
+        "id": "c502a9ca.77c868",
+        "type": "debug",
+        "z": "eecec5c9.d293c8",
+        "g": "372a2ed3c7edf8ac",
+        "name": "ok",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "x": 1570,
+        "y": 940,
+        "wires": []
+    },
+    {
+        "id": "5aae1704.4f2018",
+        "type": "comment",
+        "z": "eecec5c9.d293c8",
+        "g": "372a2ed3c7edf8ac",
+        "name": "Throw exception",
+        "info": "",
+        "x": 1220,
+        "y": 900,
+        "wires": []
+    },
+    {
+        "id": "b85f329.467e4d",
+        "type": "catch",
+        "z": "eecec5c9.d293c8",
+        "g": "372a2ed3c7edf8ac",
+        "name": "",
+        "scope": [
+            "554a061.43990f8"
+        ],
+        "uncaught": false,
+        "x": 1370,
+        "y": 980,
+        "wires": [
+            [
+                "3d30b8d8.f9b808"
+            ]
+        ]
+    },
+    {
+        "id": "3d30b8d8.f9b808",
+        "type": "debug",
+        "z": "eecec5c9.d293c8",
+        "g": "372a2ed3c7edf8ac",
+        "name": "error",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "x": 1570,
+        "y": 980,
+        "wires": []
+    },
+    {
+        "id": "7b0b589c.010518",
+        "type": "openApi-red",
+        "z": "eecec5c9.d293c8",
+        "g": "372a2ed3c7edf8ac",
+        "name": "set an error",
+        "configUrlNode": "4e8e4d5957412be2",
+        "apiTag": "pet",
+        "keepAuth": "",
+        "operationData": {
+            "id": "addPet",
+            "hasOperationId": true,
+            "path": "/pet",
+            "method": "post"
+        },
+        "target": "payload",
+        "targetType": "msg",
+        "outputStyle": "classic",
+        "errorHandling": "default",
+        "internalErrors": {
+            "readUrl": false,
+            "text": "",
+            "urlNotRead": false,
+            "url": false,
+            "source": ""
+        },
+        "parameters": {
+            "body body": {
+                "name": "body",
+                "isActive": true,
+                "activeFilter": "",
+                "required": true,
+                "type": "json",
+                "value": "{\"name\":\"bad cat\",\"photoUrls\":\"not an array\"}",
+                "in": "body"
+            }
+        },
+        "requestContentType": "application/json",
+        "responseContentType": "application/json",
+        "outputs": 1,
+        "responseOutputLabels": [
+            {
+                "code": "successful",
+                "text": "all successful responses (2xx)"
+            }
+        ],
+        "responseAsPayload": false,
+        "debugMode": "",
+        "headers": [],
+        "_version": "2.7.9",
+        "x": 1390,
+        "y": 720,
+        "wires": [
+            [
+                "bc5a954c.210948"
+            ]
+        ]
+    },
+    {
+        "id": "7f148ae3.6365e4",
+        "type": "comment",
+        "z": "eecec5c9.d293c8",
+        "g": "372a2ed3c7edf8ac",
+        "name": "Classic error handling",
+        "info": "",
+        "x": 1240,
+        "y": 620,
+        "wires": []
+    },
+    {
+        "id": "688666ad.618928",
+        "type": "comment",
+        "z": "eecec5c9.d293c8",
+        "g": "dd76de3bf7598dce",
+        "name": "pet shop swagger example",
+        "info": "\n",
+        "x": 210,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "d86e5d17.4cc13",
+        "type": "openApi-red",
+        "z": "eecec5c9.d293c8",
+        "g": "372a2ed3c7edf8ac",
+        "name": "set an error",
+        "configUrlNode": "4e8e4d5957412be2",
+        "apiTag": "pet",
+        "keepAuth": "",
+        "operationData": {
+            "id": "addPet",
+            "hasOperationId": true,
+            "path": "/pet",
+            "method": "post"
+        },
+        "target": "payload",
+        "targetType": "msg",
+        "outputStyle": "classic",
+        "errorHandling": "other output",
+        "internalErrors": {
+            "readUrl": false,
+            "text": "",
+            "urlNotRead": false,
+            "url": false,
+            "source": ""
+        },
+        "parameters": {
+            "body body": {
+                "name": "body",
+                "isActive": true,
+                "activeFilter": "",
+                "required": true,
+                "type": "json",
+                "value": "{\"name\":\"bad cat\",\"photoUrls\":\"Not an array\"}",
+                "in": "body"
+            }
+        },
+        "requestContentType": "application/json",
+        "responseContentType": "application/json",
+        "outputs": 2,
+        "responseOutputLabels": [
+            {
+                "code": "all",
+                "text": "all responses"
+            },
+            {
+                "code": "undefinedResponses",
+                "text": "all undefined responses"
+            }
+        ],
+        "responseAsPayload": false,
+        "debugMode": "",
+        "headers": [],
+        "_version": "2.7.9",
+        "x": 1390,
+        "y": 820,
+        "wires": [
+            [
+                "381d4523.7e3eea"
+            ],
+            [
+                "d3d1558.e8727a8"
+            ]
+        ]
+    },
+    {
+        "id": "554a061.43990f8",
+        "type": "openApi-red",
+        "z": "eecec5c9.d293c8",
+        "g": "372a2ed3c7edf8ac",
+        "name": "set an error",
+        "configUrlNode": "4e8e4d5957412be2",
+        "apiTag": "pet",
+        "keepAuth": "",
+        "operationData": {
+            "id": "addPet",
+            "hasOperationId": true,
+            "path": "/pet",
+            "method": "post"
+        },
+        "target": "payload",
+        "targetType": "msg",
+        "outputStyle": "classic",
+        "errorHandling": "throw exception",
+        "internalErrors": {
+            "readUrl": false,
+            "text": "",
+            "urlNotRead": false,
+            "url": false,
+            "source": ""
+        },
+        "parameters": {
+            "body body": {
+                "name": "body",
+                "isActive": true,
+                "activeFilter": "",
+                "required": true,
+                "type": "json",
+                "collapsed": false,
+                "value": "{\"name\":\"bad cat\",\"photoUrls\":\"Not an array\"}",
+                "in": "body"
+            }
+        },
+        "requestContentType": "application/json",
+        "responseContentType": "application/json",
+        "outputs": 1,
+        "responseOutputLabels": [
+            {
+                "code": "all",
+                "text": "all responses"
+            }
+        ],
+        "responseAsPayload": false,
+        "debugMode": "",
+        "headers": [],
+        "_version": "2.7.9",
+        "x": 1390,
+        "y": 940,
+        "wires": [
+            [
+                "c502a9ca.77c868"
+            ]
+        ]
+    },
+    {
+        "id": "b2539810.0e5e38",
+        "type": "inject",
+        "z": "eecec5c9.d293c8",
+        "g": "dd76de3bf7598dce",
+        "name": "add pet 66",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "test",
+                "v": "dog",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 160,
+        "y": 520,
+        "wires": [
+            [
+                "d7e1e394.36442"
+            ]
+        ]
+    },
+    {
+        "id": "267955d2.95f4ba",
+        "type": "debug",
+        "z": "eecec5c9.d293c8",
+        "g": "dd76de3bf7598dce",
+        "name": "success",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 600,
+        "y": 500,
+        "wires": []
+    },
+    {
+        "id": "d7e1e394.36442",
+        "type": "openApi-red",
+        "z": "eecec5c9.d293c8",
+        "g": "dd76de3bf7598dce",
+        "name": "add pet",
+        "configUrlNode": "4fc15b76b4d55d7d",
+        "apiTag": "pet",
+        "keepAuth": "",
+        "operationData": {
+            "id": "addPet",
+            "hasOperationId": true,
+            "path": "/pet",
+            "method": "post"
+        },
+        "target": "payload",
+        "targetType": "msg",
+        "outputStyle": "each response",
+        "errorHandling": "throw exception",
+        "internalErrors": {
+            "readUrl": false,
+            "text": "",
+            "url": false,
+            "urlNotRead": false,
+            "parameters": false,
+            "source": ""
+        },
+        "parameters": {
+            "requestBody": {
+                "name": "Request body",
+                "required": true,
+                "isActive": true,
+                "activeFilter": "",
+                "type": "json",
+                "value": "{\"id\":\"66\",\"name\":\"Krawallnudel: Lilli : ABC\",\"photoUrls\":[],\"category\":{},\"tags\":[],\"status\":\"available\"}",
+                "collapsed": false
+            }
+        },
+        "requestContentType": "application/json",
+        "responseContentType": "application/json",
+        "outputs": 4,
+        "responseOutputLabels": [
+            {
+                "code": "200",
+                "text": "Successful operation"
+            },
+            {
+                "code": "400",
+                "text": "Invalid input"
+            },
+            {
+                "code": "422",
+                "text": "Validation exception"
+            },
+            {
+                "code": "default",
+                "text": "Unexpected error"
+            }
+        ],
+        "responseAsPayload": false,
+        "debugMode": false,
+        "headers": [
+            {
+                "key": "abc",
+                "valueType": "msg",
+                "value": "test"
+            }
+        ],
+        "_version": "2.7.9",
+        "x": 360,
+        "y": 520,
+        "wires": [
+            [
+                "267955d2.95f4ba"
+            ],
+            [
+                "f3879a1d8d8d109d"
+            ],
+            [
+                "f3879a1d8d8d109d"
+            ],
+            [
+                "f3879a1d8d8d109d"
+            ]
+        ]
+    },
+    {
+        "id": "86681ccb.d292f",
+        "type": "comment",
+        "z": "eecec5c9.d293c8",
+        "g": "dd76de3bf7598dce",
+        "name": "pet shop openAPI 3 example",
+        "info": "",
+        "x": 220,
+        "y": 480,
+        "wires": []
+    },
+    {
+        "id": "442f1205bdfc8e6e",
+        "type": "inject",
+        "z": "eecec5c9.d293c8",
+        "g": "dd76de3bf7598dce",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 160,
+        "y": 1020,
+        "wires": [
+            [
+                "766aed465993c38a"
+            ]
+        ]
+    },
+    {
+        "id": "a7b8f2bd24952c68",
+        "type": "debug",
+        "z": "eecec5c9.d293c8",
+        "g": "dd76de3bf7598dce",
+        "name": "success",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 740,
+        "y": 1000,
+        "wires": []
+    },
+    {
+        "id": "766aed465993c38a",
+        "type": "file in",
+        "z": "eecec5c9.d293c8",
+        "g": "dd76de3bf7598dce",
+        "name": "",
+        "filename": "./examples/dog.jpg",
+        "filenameType": "str",
+        "format": "utf8",
+        "chunk": false,
+        "sendError": false,
+        "encoding": "none",
+        "allProps": false,
+        "x": 370,
+        "y": 1020,
+        "wires": [
+            [
+                "b43e02e855ab0fbf"
+            ]
+        ]
+    },
+    {
+        "id": "b43e02e855ab0fbf",
+        "type": "openApi-red",
+        "z": "eecec5c9.d293c8",
+        "g": "dd76de3bf7598dce",
+        "name": "",
+        "configUrlNode": "4fc15b76b4d55d7d",
+        "apiTag": "pet",
+        "keepAuth": "",
+        "operationData": {
+            "id": "uploadFile",
+            "hasOperationId": true,
+            "path": "/pet/{petId}/uploadImage",
+            "method": "post"
+        },
+        "target": "payload",
+        "targetType": "msg",
+        "outputStyle": "compact",
+        "errorHandling": "other output",
+        "internalErrors": {
+            "readUrl": false,
+            "text": "",
+            "urlNotRead": false,
+            "url": false,
+            "parameters": false,
+            "source": ""
+        },
+        "parameters": {
+            "requestBody": {
+                "name": "Request body",
+                "isActive": true,
+                "activeFilter": "",
+                "type": "msg",
+                "value": "payload"
+            },
+            "petId path": {
+                "name": "petId",
+                "isActive": true,
+                "activeFilter": "",
+                "required": true,
+                "type": "num",
+                "value": "66",
+                "in": "path"
+            },
+            "additionalMetadata query": {
+                "name": "additionalMetadata",
+                "activeFilter": "",
+                "type": "str",
+                "value": "",
+                "in": "query"
+            }
+        },
+        "requestContentType": "application/octet-stream",
+        "responseContentType": "application/json",
+        "outputs": 4,
+        "responseOutputLabels": [
+            {
+                "code": "2xx",
+                "text": "Handles all response codes with the schema \"2xx\"."
+            },
+            {
+                "code": "4xx",
+                "text": "Handles all response codes with the schema \"4xx\"."
+            },
+            {
+                "code": "dxx",
+                "text": "Handles all response codes with the schema \"dxx\"."
+            },
+            {
+                "code": "undefinedResponses",
+                "text": "all undefined responses"
+            }
+        ],
+        "responseAsPayload": true,
+        "debugMode": "",
+        "headers": [],
+        "_version": "2.7.9",
+        "x": 570,
+        "y": 1020,
+        "wires": [
+            [
+                "a7b8f2bd24952c68"
+            ],
+            [
+                "444c19141c28706a"
+            ],
+            [
+                "444c19141c28706a"
+            ],
+            [
+                "444c19141c28706a"
+            ]
+        ]
+    },
+    {
+        "id": "86621ef610b1e4dd",
+        "type": "comment",
+        "z": "eecec5c9.d293c8",
+        "g": "dd76de3bf7598dce",
+        "name": "set a path to an existing file",
+        "info": "",
+        "x": 390,
+        "y": 980,
+        "wires": []
+    },
+    {
+        "id": "d0fc015f1f8ca123",
+        "type": "debug",
+        "z": "eecec5c9.d293c8",
+        "g": "dd76de3bf7598dce",
+        "name": "defined response 405",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 620,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "f1741c0474a248c6",
+        "type": "inject",
+        "z": "eecec5c9.d293c8",
+        "g": "338306f56177a633",
+        "name": "set payload",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{ \"id\": 451,  \"name\": \"Benny Superstar\", \"photoUrl\": [] }",
+        "payloadType": "json",
+        "x": 1210,
+        "y": 140,
+        "wires": [
+            [
+                "d0645574f722c3c1"
+            ]
+        ]
+    },
+    {
+        "id": "bc85d92a45d8a0f8",
+        "type": "debug",
+        "z": "eecec5c9.d293c8",
+        "g": "338306f56177a633",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1570,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "d0645574f722c3c1",
+        "type": "openApi-red",
+        "z": "eecec5c9.d293c8",
+        "g": "338306f56177a633",
+        "name": "",
+        "configUrlNode": "4e8e4d5957412be2",
+        "apiTag": "pet",
+        "keepAuth": "",
+        "operationData": {
+            "id": "addPet",
+            "hasOperationId": true,
+            "path": "/pet",
+            "method": "post"
+        },
+        "target": "payload",
+        "targetType": "msg",
+        "outputStyle": "classic",
+        "errorHandling": "throw exception",
+        "internalErrors": {
+            "readUrl": false,
+            "text": "",
+            "url": false,
+            "urlNotRead": false,
+            "parameters": false,
+            "source": ""
+        },
+        "parameters": {
+            "body body": {
+                "name": "body",
+                "isActive": true,
+                "activeFilter": "",
+                "required": true,
+                "type": "editor:body",
+                "collapsed": false,
+                "parameters": {
+                    "id": {
+                        "name": "id",
+                        "isActive": true,
+                        "activeFilter": "",
+                        "type": "msg",
+                        "value": "payload.id"
+                    },
+                    "category": {
+                        "name": "category",
+                        "activeFilter": "",
+                        "type": "editor:Category",
+                        "parameters": {
+                            "id": {
+                                "name": "id",
+                                "activeFilter": "",
+                                "type": "msg",
+                                "value": "payload.category.id"
+                            },
+                            "name": {
+                                "name": "name",
+                                "activeFilter": "",
+                                "type": "msg",
+                                "value": "payload.category.name"
+                            }
+                        }
+                    },
+                    "name": {
+                        "name": "name",
+                        "isActive": true,
+                        "activeFilter": "",
+                        "required": true,
+                        "type": "msg",
+                        "value": "payload.name"
+                    },
+                    "photoUrls": {
+                        "name": "photoUrls",
+                        "isActive": true,
+                        "activeFilter": "",
+                        "required": true,
+                        "type": "json",
+                        "value": "[]"
+                    },
+                    "tags": {
+                        "name": "tags",
+                        "activeFilter": "",
+                        "type": "json",
+                        "value": "true"
+                    },
+                    "status": {
+                        "name": "status",
+                        "activeFilter": "",
+                        "type": "msg",
+                        "value": "payload.status"
+                    }
+                },
+                "in": "body"
+            }
+        },
+        "requestContentType": "application/json",
+        "responseContentType": "application/json",
+        "outputs": 1,
+        "responseOutputLabels": [
+            {
+                "code": "all",
+                "text": "all responses"
+            }
+        ],
+        "responseAsPayload": false,
+        "debugMode": "",
+        "headers": [],
+        "_version": "2.7.9",
+        "x": 1380,
+        "y": 140,
+        "wires": [
+            [
+                "bc85d92a45d8a0f8"
+            ]
+        ]
+    },
+    {
+        "id": "5c6ea8f1a5a3355e",
+        "type": "comment",
+        "z": "eecec5c9.d293c8",
+        "g": "338306f56177a633",
+        "name": "pet shop swagger example (classic)",
+        "info": "",
+        "x": 1280,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "e94b72f3aaa5eccd",
+        "type": "inject",
+        "z": "eecec5c9.d293c8",
+        "g": "338306f56177a633",
+        "name": "",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 1200,
+        "y": 360,
+        "wires": [
+            [
+                "e03670ccfe2c0370"
+            ]
+        ]
+    },
+    {
+        "id": "5306d5164187bb95",
+        "type": "debug",
+        "z": "eecec5c9.d293c8",
+        "g": "338306f56177a633",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1590,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "fcb39ca531f7ac20",
+        "type": "inject",
+        "z": "eecec5c9.d293c8",
+        "g": "338306f56177a633",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payloadType": "date",
+        "x": 1200,
+        "y": 420,
+        "wires": [
+            [
+                "310b94ccfb9fb3cb"
+            ]
+        ]
+    },
+    {
+        "id": "717ed8e0ee123862",
+        "type": "debug",
+        "z": "eecec5c9.d293c8",
+        "g": "338306f56177a633",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1590,
+        "y": 420,
+        "wires": []
+    },
+    {
+        "id": "310b94ccfb9fb3cb",
+        "type": "openApi-red",
+        "z": "eecec5c9.d293c8",
+        "g": "338306f56177a633",
+        "name": "",
+        "configUrlNode": "4fc15b76b4d55d7d",
+        "apiTag": "pet",
+        "keepAuth": "",
+        "operationData": {
+            "id": "getPetById",
+            "hasOperationId": true,
+            "path": "/pet/{petId}",
+            "method": "get"
+        },
+        "target": "payload",
+        "targetType": "msg",
+        "outputStyle": "classic",
+        "errorHandling": "default",
+        "internalErrors": {
+            "readUrl": false,
+            "text": "",
+            "url": false,
+            "urlNotRead": false,
+            "source": ""
+        },
+        "parameters": {
+            "petId path": {
+                "name": "petId",
+                "isActive": true,
+                "activeFilter": "",
+                "required": true,
+                "type": "num",
+                "value": "47",
+                "in": "path"
+            }
+        },
+        "requestContentType": "application/json",
+        "responseContentType": "application/json",
+        "outputs": 1,
+        "responseOutputLabels": [
+            {
+                "code": "successful",
+                "text": "all successful responses (2xx)"
+            }
+        ],
+        "responseAsPayload": false,
+        "debugMode": "",
+        "headers": [],
+        "_version": "2.7.9",
+        "x": 1390,
+        "y": 420,
+        "wires": [
+            [
+                "717ed8e0ee123862"
+            ]
+        ]
+    },
+    {
+        "id": "e03670ccfe2c0370",
+        "type": "openApi-red",
+        "z": "eecec5c9.d293c8",
+        "g": "338306f56177a633",
+        "name": "",
+        "configUrlNode": "4fc15b76b4d55d7d",
+        "apiTag": "pet",
+        "keepAuth": "",
+        "operationData": {
+            "id": "addPet",
+            "hasOperationId": true,
+            "path": "/pet",
+            "method": "post"
+        },
+        "target": "payload",
+        "targetType": "msg",
+        "outputStyle": "classic",
+        "errorHandling": "default",
+        "internalErrors": {
+            "readUrl": false,
+            "text": "",
+            "url": false,
+            "urlNotRead": false,
+            "source": ""
+        },
+        "parameters": {
+            "requestBody": {
+                "name": "Request body",
+                "required": true,
+                "isActive": true,
+                "activeFilter": "",
+                "type": "json",
+                "value": "{\"id\":47,\"name\":\"Hildegard\",\"photoUrls\":[]}",
+                "collapsed": false
+            }
+        },
+        "requestContentType": "application/json",
+        "responseContentType": "application/json",
+        "outputs": 1,
+        "responseOutputLabels": [
+            {
+                "code": "successful",
+                "text": "all successful responses (2xx)"
+            }
+        ],
+        "responseAsPayload": false,
+        "debugMode": "",
+        "headers": [],
+        "_version": "2.7.9",
+        "x": 1380,
+        "y": 360,
+        "wires": [
+            [
+                "5306d5164187bb95"
+            ]
+        ]
+    },
+    {
+        "id": "d00d8424a5f09321",
+        "type": "comment",
+        "z": "eecec5c9.d293c8",
+        "g": "338306f56177a633",
+        "name": "pet shop openAPI 3 example (classic)",
+        "info": "",
+        "x": 1290,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "0716154cae28be01",
+        "type": "inject",
+        "z": "eecec5c9.d293c8",
+        "g": "338306f56177a633",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 1200,
+        "y": 500,
+        "wires": [
+            [
+                "a8caaddce92519c9"
+            ]
+        ]
+    },
+    {
+        "id": "592e7f24ba7dbd99",
+        "type": "debug",
+        "z": "eecec5c9.d293c8",
+        "g": "338306f56177a633",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1770,
+        "y": 500,
+        "wires": []
+    },
+    {
+        "id": "a8caaddce92519c9",
+        "type": "file in",
+        "z": "eecec5c9.d293c8",
+        "g": "338306f56177a633",
+        "name": "",
+        "filename": "./examples/dog.jpg",
+        "filenameType": "str",
+        "format": "utf8",
+        "chunk": false,
+        "sendError": false,
+        "encoding": "none",
+        "allProps": false,
+        "x": 1410,
+        "y": 500,
+        "wires": [
+            [
+                "28510d1b25614392"
+            ]
+        ]
+    },
+    {
+        "id": "28510d1b25614392",
+        "type": "openApi-red",
+        "z": "eecec5c9.d293c8",
+        "g": "338306f56177a633",
+        "name": "",
+        "configUrlNode": "4fc15b76b4d55d7d",
+        "apiTag": "pet",
+        "keepAuth": "",
+        "operationData": {
+            "id": "uploadFile",
+            "hasOperationId": true,
+            "path": "/pet/{petId}/uploadImage",
+            "method": "post"
+        },
+        "target": "payload",
+        "targetType": "msg",
+        "outputStyle": "classic",
+        "errorHandling": "default",
+        "internalErrors": {
+            "readUrl": false,
+            "text": "",
+            "urlNotRead": false,
+            "url": false,
+            "source": ""
+        },
+        "parameters": {
+            "requestBody": {
+                "name": "Request body",
+                "isActive": true,
+                "activeFilter": "",
+                "type": "msg",
+                "value": "payload"
+            },
+            "petId path": {
+                "name": "petId",
+                "isActive": true,
+                "activeFilter": "",
+                "required": true,
+                "type": "num",
+                "value": "66",
+                "in": "path"
+            },
+            "additionalMetadata query": {
+                "name": "additionalMetadata",
+                "activeFilter": "",
+                "type": "str",
+                "value": "",
+                "in": "query"
+            }
+        },
+        "requestContentType": "application/octet-stream",
+        "responseContentType": "application/json",
+        "outputs": 1,
+        "responseOutputLabels": [
+            {
+                "code": "successful",
+                "text": "all successful responses (2xx)"
+            }
+        ],
+        "responseAsPayload": true,
+        "debugMode": "",
+        "headers": [],
+        "_version": "2.7.9",
+        "x": 1610,
+        "y": 500,
+        "wires": [
+            [
+                "592e7f24ba7dbd99"
+            ]
+        ]
+    },
+    {
+        "id": "52ea984dc31bd149",
+        "type": "comment",
+        "z": "eecec5c9.d293c8",
+        "g": "338306f56177a633",
+        "name": "set a path to an existing file",
+        "info": "",
+        "x": 1430,
+        "y": 460,
+        "wires": []
+    },
+    {
+        "id": "b98031c53a39ddc9",
+        "type": "inject",
+        "z": "eecec5c9.d293c8",
+        "g": "338306f56177a633",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 1200,
+        "y": 220,
+        "wires": [
+            [
+                "dfa2fd53351681d8"
+            ]
+        ]
+    },
+    {
+        "id": "7cb16eaa807e84db",
+        "type": "debug",
+        "z": "eecec5c9.d293c8",
+        "g": "338306f56177a633",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1590,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "dfa2fd53351681d8",
+        "type": "openApi-red",
+        "z": "eecec5c9.d293c8",
+        "g": "338306f56177a633",
+        "name": "",
+        "configUrlNode": "4e8e4d5957412be2",
+        "apiTag": "pet",
+        "keepAuth": false,
+        "operationData": {
+            "id": "getPetById",
+            "hasOperationId": true,
+            "path": "/pet/{petId}",
+            "method": "get"
+        },
+        "target": "payload",
+        "targetType": "msg",
+        "outputStyle": "classic",
+        "errorHandling": "default",
+        "internalErrors": {
+            "readUrl": false,
+            "text": "",
+            "url": false,
+            "urlNotRead": false,
+            "parameters": false,
+            "source": ""
+        },
+        "parameters": {
+            "petId path": {
+                "name": "petId",
+                "isActive": true,
+                "activeFilter": "",
+                "required": true,
+                "type": "num",
+                "value": "451",
+                "in": "path"
+            }
+        },
+        "requestContentType": "application/json",
+        "responseContentType": "application/json",
+        "outputs": 1,
+        "responseOutputLabels": [
+            {
+                "code": "successful",
+                "text": "all successful responses (2xx)"
+            }
+        ],
+        "responseAsPayload": true,
+        "debugMode": "",
+        "headers": [],
+        "_version": "2.7.9",
+        "x": 1390,
+        "y": 220,
+        "wires": [
+            [
+                "7cb16eaa807e84db"
+            ]
+        ]
+    },
+    {
+        "id": "4b4afa4141b0dc80",
+        "type": "inject",
+        "z": "eecec5c9.d293c8",
+        "g": "dd76de3bf7598dce",
+        "name": "get pet 451",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "451",
+        "payloadType": "num",
+        "x": 160,
+        "y": 320,
+        "wires": [
+            [
+                "0b79892b4a1a6852"
+            ]
+        ]
+    },
+    {
+        "id": "b89da2dec433c483",
+        "type": "debug",
+        "z": "eecec5c9.d293c8",
+        "g": "dd76de3bf7598dce",
+        "name": "defined response 200",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 620,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "0166b6999c9c847e",
+        "type": "debug",
+        "z": "eecec5c9.d293c8",
+        "g": "dd76de3bf7598dce",
+        "name": "defined response 404",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 620,
+        "y": 380,
+        "wires": []
+    },
+    {
+        "id": "0b79892b4a1a6852",
+        "type": "openApi-red",
+        "z": "eecec5c9.d293c8",
+        "g": "dd76de3bf7598dce",
+        "name": "",
+        "configUrlNode": "4e8e4d5957412be2",
+        "apiTag": "pet",
+        "keepAuth": "",
+        "operationData": {
+            "id": "getPetById",
+            "hasOperationId": true,
+            "path": "/pet/{petId}",
+            "method": "get"
+        },
+        "target": "payload",
+        "targetType": "msg",
+        "outputStyle": "each response",
+        "errorHandling": "throw exception",
+        "internalErrors": {
+            "readUrl": false,
+            "text": "",
+            "urlNotRead": false,
+            "url": false,
+            "parameters": false,
+            "source": ""
+        },
+        "parameters": {
+            "petId path": {
+                "name": "petId",
+                "isActive": true,
+                "activeFilter": "",
+                "required": true,
+                "type": "msg",
+                "value": "payload",
+                "in": "path"
+            }
+        },
+        "requestContentType": "application/json",
+        "responseContentType": "application/json",
+        "outputs": 3,
+        "responseOutputLabels": [
+            {
+                "code": "200",
+                "text": "successful operation"
+            },
+            {
+                "code": "400",
+                "text": "Invalid ID supplied"
+            },
+            {
+                "code": "404",
+                "text": "Pet not found"
+            }
+        ],
+        "responseAsPayload": false,
+        "debugMode": false,
+        "headers": [
+            {
+                "key": "Hund",
+                "valueType": "str",
+                "value": "katze"
+            }
+        ],
+        "_version": "2.7.9",
+        "x": 370,
+        "y": 340,
+        "wires": [
+            [
+                "b89da2dec433c483"
+            ],
+            [
+                "292af65ab74bca5d"
+            ],
+            [
+                "0166b6999c9c847e"
+            ]
+        ]
+    },
+    {
+        "id": "292af65ab74bca5d",
+        "type": "debug",
+        "z": "eecec5c9.d293c8",
+        "g": "dd76de3bf7598dce",
+        "name": "defined response 400",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 620,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "80b87282060496aa",
+        "type": "inject",
+        "z": "eecec5c9.d293c8",
+        "g": "dd76de3bf7598dce",
+        "name": "error 404",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 160,
+        "y": 360,
+        "wires": [
+            [
+                "0b79892b4a1a6852"
+            ]
+        ]
+    },
+    {
+        "id": "f7c29b766a9a548a",
+        "type": "catch",
+        "z": "eecec5c9.d293c8",
+        "g": "dd76de3bf7598dce",
+        "name": "catching all undefined responses",
+        "scope": null,
+        "uncaught": true,
+        "x": 230,
+        "y": 100,
+        "wires": [
+            [
+                "68c0bc8079445345"
+            ]
+        ]
+    },
+    {
+        "id": "68c0bc8079445345",
+        "type": "debug",
+        "z": "eecec5c9.d293c8",
+        "g": "dd76de3bf7598dce",
+        "name": "error log",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 580,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "f3879a1d8d8d109d",
+        "type": "debug",
+        "z": "eecec5c9.d293c8",
+        "g": "dd76de3bf7598dce",
+        "name": "errors",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 590,
+        "y": 540,
+        "wires": []
+    },
+    {
+        "id": "5f69275ecf44918e",
+        "type": "inject",
+        "z": "eecec5c9.d293c8",
+        "g": "dd76de3bf7598dce",
+        "name": "get pet 66",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "66",
+        "payloadType": "num",
+        "x": 160,
+        "y": 780,
+        "wires": [
+            [
+                "d2a41ae8ac819aac"
+            ]
+        ]
+    },
+    {
+        "id": "6ff4d6e6f4ea5de7",
+        "type": "debug",
+        "z": "eecec5c9.d293c8",
+        "g": "dd76de3bf7598dce",
+        "name": "defined response 200",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 640,
+        "y": 820,
+        "wires": []
+    },
+    {
+        "id": "4ec82841fa6d0710",
+        "type": "debug",
+        "z": "eecec5c9.d293c8",
+        "g": "dd76de3bf7598dce",
+        "name": "defined response 404",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 640,
+        "y": 900,
+        "wires": []
+    },
+    {
+        "id": "d2a41ae8ac819aac",
+        "type": "openApi-red",
+        "z": "eecec5c9.d293c8",
+        "g": "dd76de3bf7598dce",
+        "name": "",
+        "configUrlNode": "4fc15b76b4d55d7d",
+        "apiTag": "pet",
+        "keepAuth": "",
+        "operationData": {
+            "id": "getPetById",
+            "hasOperationId": true,
+            "path": "/pet/{petId}",
+            "method": "get"
+        },
+        "target": "payload",
+        "targetType": "msg",
+        "outputStyle": "each response",
+        "errorHandling": "throw exception",
+        "internalErrors": {
+            "readUrl": false,
+            "text": "",
+            "urlNotRead": false,
+            "url": false,
+            "parameters": false,
+            "source": ""
+        },
+        "parameters": {
+            "petId path": {
+                "name": "petId",
+                "isActive": true,
+                "activeFilter": "",
+                "required": true,
+                "type": "msg",
+                "value": "payload",
+                "in": "path"
+            }
+        },
+        "requestContentType": "application/json",
+        "responseContentType": "application/json",
+        "outputs": 4,
+        "responseOutputLabels": [
+            {
+                "code": "200",
+                "text": "successful operation"
+            },
+            {
+                "code": "400",
+                "text": "Invalid ID supplied"
+            },
+            {
+                "code": "404",
+                "text": "Pet not found"
+            },
+            {
+                "code": "default",
+                "text": "Unexpected error"
+            }
+        ],
+        "responseAsPayload": false,
+        "debugMode": "",
+        "headers": [],
+        "_version": "2.7.9",
+        "x": 370,
+        "y": 860,
+        "wires": [
+            [
+                "6ff4d6e6f4ea5de7"
+            ],
+            [
+                "2b67610b618ac59d"
+            ],
+            [
+                "4ec82841fa6d0710"
+            ],
+            [
+                "96e4f9c4c448a4bf"
+            ]
+        ]
+    },
+    {
+        "id": "2b67610b618ac59d",
+        "type": "debug",
+        "z": "eecec5c9.d293c8",
+        "g": "dd76de3bf7598dce",
+        "name": "defined response 400",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 640,
+        "y": 860,
+        "wires": []
+    },
+    {
+        "id": "e9898fe301e773fc",
+        "type": "inject",
+        "z": "eecec5c9.d293c8",
+        "g": "dd76de3bf7598dce",
+        "name": "error 400",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "\"10a\"",
+        "payloadType": "str",
+        "x": 160,
+        "y": 900,
+        "wires": [
+            [
+                "d2a41ae8ac819aac"
+            ]
+        ]
+    },
+    {
+        "id": "1b6346ef4cfbba4c",
+        "type": "inject",
+        "z": "eecec5c9.d293c8",
+        "g": "dd76de3bf7598dce",
+        "name": "error 404",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 160,
+        "y": 940,
+        "wires": [
+            [
+                "d2a41ae8ac819aac"
+            ]
+        ]
+    },
+    {
+        "id": "444c19141c28706a",
+        "type": "debug",
+        "z": "eecec5c9.d293c8",
+        "g": "dd76de3bf7598dce",
+        "name": "not defined response",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 780,
+        "y": 1040,
+        "wires": []
+    },
+    {
+        "id": "eeb0511fb0f04e80",
+        "type": "inject",
+        "z": "eecec5c9.d293c8",
+        "g": "dd76de3bf7598dce",
+        "name": "add pet 952",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            },
+            {
+                "p": "jsonataTest",
+                "v": "{ \"tagId\": \"1234\", \"otherStuff\": true }",
+                "vt": "json"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 170,
+        "y": 620,
+        "wires": [
+            [
+                "c283d71d7b7399b7"
+            ]
+        ]
+    },
+    {
+        "id": "71873e6834e2b1f0",
+        "type": "debug",
+        "z": "eecec5c9.d293c8",
+        "g": "dd76de3bf7598dce",
+        "name": "success",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 600,
+        "y": 600,
+        "wires": []
+    },
+    {
+        "id": "c283d71d7b7399b7",
+        "type": "openApi-red",
+        "z": "eecec5c9.d293c8",
+        "g": "dd76de3bf7598dce",
+        "name": "add Pet by editor",
+        "configUrlNode": "4fc15b76b4d55d7d",
+        "apiTag": "pet",
+        "keepAuth": "",
+        "operationData": {
+            "id": "addPet",
+            "hasOperationId": true,
+            "path": "/pet",
+            "method": "post"
+        },
+        "target": "payload",
+        "targetType": "msg",
+        "outputStyle": "each response",
+        "errorHandling": "throw exception",
+        "internalErrors": {
+            "readUrl": false,
+            "text": "",
+            "url": false,
+            "urlNotRead": false,
+            "parameters": false,
+            "source": ""
+        },
+        "parameters": {
+            "requestBody": {
+                "name": "Request body",
+                "required": true,
+                "isActive": true,
+                "activeFilter": "",
+                "type": "editor:Pet",
+                "parameters": {
+                    "id": {
+                        "name": "id",
+                        "isActive": true,
+                        "activeFilter": "",
+                        "type": "num",
+                        "value": "952"
+                    },
+                    "name": {
+                        "name": "name",
+                        "isActive": true,
+                        "activeFilter": "",
+                        "required": true,
+                        "type": "str",
+                        "value": "Mr. Whizzlecat"
+                    },
+                    "category": {
+                        "name": "category",
+                        "activeFilter": "",
+                        "type": "editor:Category",
+                        "parameters": {
+                            "id": {
+                                "name": "id",
+                                "activeFilter": ""
+                            },
+                            "name": {
+                                "name": "name",
+                                "activeFilter": ""
+                            }
+                        }
+                    },
+                    "photoUrls": {
+                        "name": "photoUrls",
+                        "isActive": true,
+                        "activeFilter": "",
+                        "required": true,
+                        "type": "json",
+                        "value": "[]"
+                    },
+                    "tags": {
+                        "name": "tags",
+                        "isActive": true,
+                        "activeFilter": "",
+                        "type": "array",
+                        "collapsed": false,
+                        "value": [
+                            {
+                                "name": 0,
+                                "isActive": true,
+                                "activeFilter": "",
+                                "required": true,
+                                "type": "editor:Tag",
+                                "collapsed": false,
+                                "parameters": {
+                                    "id": {
+                                        "name": "id",
+                                        "isActive": true,
+                                        "activeFilter": "",
+                                        "type": "jsonata",
+                                        "collapsed": false,
+                                        "value": "$substring(jsonataTest.tagId, 1)"
+                                    },
+                                    "name": {
+                                        "name": "name",
+                                        "isActive": true,
+                                        "activeFilter": "",
+                                        "type": "str",
+                                        "value": "has a tag"
+                                    }
+                                }
+                            },
+                            {
+                                "name": 1,
+                                "isActive": true,
+                                "activeFilter": "",
+                                "required": true,
+                                "type": "editor:Tag",
+                                "collapsed": false,
+                                "parameters": {
+                                    "id": {
+                                        "name": "id",
+                                        "isActive": true,
+                                        "activeFilter": "",
+                                        "type": "num",
+                                        "value": "124"
+                                    },
+                                    "name": {
+                                        "name": "name",
+                                        "isActive": true,
+                                        "activeFilter": "",
+                                        "type": "str",
+                                        "value": "and even a second one"
+                                    }
+                                }
+                            }
+                        ]
+                    },
+                    "status": {
+                        "name": "status",
+                        "isActive": true,
+                        "activeFilter": "",
+                        "type": "select",
+                        "value": "available"
+                    }
+                },
+                "collapsed": false
+            }
+        },
+        "requestContentType": "application/json",
+        "responseContentType": "application/json",
+        "outputs": 4,
+        "responseOutputLabels": [
+            {
+                "code": "200",
+                "text": "Successful operation"
+            },
+            {
+                "code": "400",
+                "text": "Invalid input"
+            },
+            {
+                "code": "422",
+                "text": "Validation exception"
+            },
+            {
+                "code": "default",
+                "text": "Unexpected error"
+            }
+        ],
+        "responseAsPayload": false,
+        "debugMode": false,
+        "headers": [],
+        "_version": "2.7.9",
+        "x": 390,
+        "y": 620,
+        "wires": [
+            [
+                "71873e6834e2b1f0"
+            ],
+            [
+                "c1d1e693ccadcf44"
+            ],
+            [
+                "c1d1e693ccadcf44"
+            ],
+            [
+                "c1d1e693ccadcf44"
+            ]
+        ]
+    },
+    {
+        "id": "a2c6893296eba8a4",
+        "type": "inject",
+        "z": "eecec5c9.d293c8",
+        "g": "dd76de3bf7598dce",
+        "name": "get pet 952",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "952",
+        "payloadType": "num",
+        "x": 160,
+        "y": 820,
+        "wires": [
+            [
+                "d2a41ae8ac819aac"
+            ]
+        ]
+    },
+    {
+        "id": "11ce8512b68c2b7f",
+        "type": "inject",
+        "z": "eecec5c9.d293c8",
+        "g": "dd76de3bf7598dce",
+        "name": "add pet 632",
+        "props": [
+            {
+                "p": "id",
+                "v": "632",
+                "vt": "num"
+            },
+            {
+                "p": "payload"
+            },
+            {
+                "p": "urls",
+                "v": "[\"http://www.myDog.de\",\"http://www.myDog.com\",\"http://www.myDog.at\",\"http://www.myDog.gov\"]",
+                "vt": "json"
+            },
+            {
+                "p": "isActive",
+                "v": "true",
+                "vt": "bool"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "[{\"id\":13,\"nameX\":\"YEAH (id should be 0)\"},{\"id\":15,\"nameX\":\"IT (id should be 15)\"},{\"id\":17,\"nameX\":\"WORKS (id should be 17)\"},{\"id\":999,\"nameX\":\"if this will not be shown!!!!!\"}]",
+        "payloadType": "json",
+        "x": 170,
+        "y": 720,
+        "wires": [
+            [
+                "6b53329dc65f1776"
+            ]
+        ]
+    },
+    {
+        "id": "2d91484a43d6fdd1",
+        "type": "debug",
+        "z": "eecec5c9.d293c8",
+        "g": "dd76de3bf7598dce",
+        "name": "target => myResult",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 630,
+        "y": 700,
+        "wires": []
+    },
+    {
+        "id": "0944b51dbadc22f4",
+        "type": "debug",
+        "z": "eecec5c9.d293c8",
+        "g": "dd76de3bf7598dce",
+        "name": "defined response 405",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 640,
+        "y": 740,
+        "wires": []
+    },
+    {
+        "id": "6264d06712f4b623",
+        "type": "inject",
+        "z": "eecec5c9.d293c8",
+        "g": "dd76de3bf7598dce",
+        "name": "get pet 632",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "632",
+        "payloadType": "num",
+        "x": 160,
+        "y": 860,
+        "wires": [
+            [
+                "d2a41ae8ac819aac"
+            ]
+        ]
+    },
+    {
+        "id": "6b53329dc65f1776",
+        "type": "openApi-red",
+        "z": "eecec5c9.d293c8",
+        "g": "dd76de3bf7598dce",
+        "name": "add Pet (editor + filter)",
+        "configUrlNode": "4fc15b76b4d55d7d",
+        "apiTag": "pet",
+        "keepAuth": "",
+        "operationData": {
+            "id": "addPet",
+            "hasOperationId": true,
+            "path": "/pet",
+            "method": "post"
+        },
+        "target": "payload",
+        "targetType": "msg",
+        "outputStyle": "classic",
+        "errorHandling": "other output",
+        "internalErrors": {
+            "readUrl": false,
+            "text": "",
+            "url": false,
+            "urlNotRead": false,
+            "parameters": false,
+            "source": ""
+        },
+        "parameters": {
+            "requestBody": {
+                "name": "Request body",
+                "required": true,
+                "isActive": true,
+                "activeFilter": "",
+                "type": "editor:Pet",
+                "parameters": {
+                    "id": {
+                        "name": "id",
+                        "isActive": true,
+                        "activeFilter": "{\n\treturn value === 632\n}",
+                        "type": "msg",
+                        "collapsed": false,
+                        "value": "id"
+                    },
+                    "name": {
+                        "name": "name",
+                        "isActive": true,
+                        "activeFilter": "",
+                        "required": true,
+                        "type": "str",
+                        "value": "Doggy Mc Dogface"
+                    },
+                    "category": {
+                        "name": "category",
+                        "activeFilter": "",
+                        "type": "editor:Category",
+                        "collapsed": false,
+                        "parameters": {
+                            "id": {
+                                "name": "id",
+                                "activeFilter": ""
+                            },
+                            "name": {
+                                "name": "name",
+                                "activeFilter": ""
+                            }
+                        }
+                    },
+                    "photoUrls": {
+                        "name": "photoUrls",
+                        "isActive": true,
+                        "activeFilter": "",
+                        "required": true,
+                        "type": "each",
+                        "collapsed": false,
+                        "value": [
+                            {
+                                "name": 0,
+                                "isActive": true,
+                                "activeFilter": "{\n\treturn url !== \"http://www.myDog.at\"\n}",
+                                "required": true,
+                                "type": "_each_url",
+                                "value": ""
+                            }
+                        ],
+                        "eachType": "msg",
+                        "each": "urls",
+                        "as": "url"
+                    },
+                    "tags": {
+                        "name": "tags",
+                        "isActive": true,
+                        "activeFilter": "",
+                        "type": "each",
+                        "collapsed": false,
+                        "value": [
+                            {
+                                "name": 0,
+                                "isActive": true,
+                                "activeFilter": "{\n\treturn tag.id < 100\n}",
+                                "required": true,
+                                "type": "editor:Tag",
+                                "collapsed": false,
+                                "parameters": {
+                                    "id": {
+                                        "name": "id",
+                                        "isActive": true,
+                                        "activeFilter": "{\n\treturn tag.id !== 13\n}",
+                                        "type": "_each_tag",
+                                        "value": ".id"
+                                    },
+                                    "name": {
+                                        "name": "name",
+                                        "isActive": true,
+                                        "activeFilter": "",
+                                        "type": "_each_tag",
+                                        "value": ".nameX"
+                                    }
+                                }
+                            }
+                        ],
+                        "eachType": "msg",
+                        "each": "payload",
+                        "as": "tag"
+                    },
+                    "status": {
+                        "name": "status",
+                        "isActive": true,
+                        "activeFilter": "",
+                        "type": "select",
+                        "value": "available"
+                    }
+                },
+                "collapsed": false
+            }
+        },
+        "requestContentType": "application/json",
+        "responseContentType": "application/json",
+        "outputs": 2,
+        "responseOutputLabels": [
+            {
+                "code": "all",
+                "text": "all responses"
+            },
+            {
+                "code": "undefinedResponses",
+                "text": "all undefined responses"
+            }
+        ],
+        "responseAsPayload": false,
+        "debugMode": false,
+        "headers": [],
+        "_version": "2.7.9",
+        "x": 400,
+        "y": 720,
+        "wires": [
+            [
+                "2d91484a43d6fdd1"
+            ],
+            [
+                "0944b51dbadc22f4"
+            ]
+        ]
+    },
+    {
+        "id": "c1d1e693ccadcf44",
+        "type": "debug",
+        "z": "eecec5c9.d293c8",
+        "g": "dd76de3bf7598dce",
+        "name": "errors",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 590,
+        "y": 640,
+        "wires": []
+    },
+    {
+        "id": "96e4f9c4c448a4bf",
+        "type": "debug",
+        "z": "eecec5c9.d293c8",
+        "g": "dd76de3bf7598dce",
+        "name": "error",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 590,
+        "y": 940,
+        "wires": []
+    }
+]
