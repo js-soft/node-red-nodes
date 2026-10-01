@@ -1,6 +1,10 @@
 {
-  "name": "node-red-execution-resilience",
+  "name": "@js-soft/node-red-execution-resilience",
   "version": "0.1.0",
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
   "description": "Node-RED node for tracking, replaying, and automatically retrying workflow executions, with a dashboard for execution history and system health",
   "keywords": [
     "node-red",
@@ -17,7 +21,7 @@
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/js-soft/frosch-workflow-engine.git",
+    "url": "https://github.com/js-soft/node-red-nodes.git",
     "directory": "packages/node-red-execution-resilience"
   },
   "files": [
@@ -39,7 +43,6 @@
     "bcryptjs": ">=2.4.3",
     "mongodb": "^7.4.0"
   },
-  "devDependencies": {},
   "engines": {
     "node": "24.x"
   }

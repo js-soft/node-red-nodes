@@ -14,6 +14,7 @@ the `packages/` directory.
 packages/
 ├── node-red-enmeshed-connector/
 ├── node-red-eudiplo/
+├── node-red-execution-resilience/
 ├── node-red-frosch-work-openapi-generator/
 └── node-red-openapi/
 ```
@@ -52,6 +53,7 @@ follows:
 | --- | --- | --- |
 | `enmeshed-connector` | `packages/node-red-enmeshed-connector` | `@js-soft/node-red-enmeshed-connector` |
 | `eudiplo` | `packages/node-red-eudiplo` | `@js-soft/node-red-eudiplo` |
+| `execution-resilience` | `packages/node-red-execution-resilience` | `@js-soft/node-red-execution-resilience` |
 | `frosch-work-openapi-generator` | `packages/node-red-frosch-work-openapi-generator` | `@js-soft/node-red-frosch-work-openapi-generator` |
 | `openapi` | `packages/node-red-openapi` | `@js-soft/node-red-openapi` |
 

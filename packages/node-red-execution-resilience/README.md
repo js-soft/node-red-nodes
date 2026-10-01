@@ -21,13 +21,13 @@ A comprehensive workflow execution tracking and visualization node for Node-RED.
 ## Installation
 
 ```bash
-npm install node-red-execution-resilience
+npm install @js-soft/node-red-execution-resilience
 ```
 
 Or add to your Node-RED custom nodes package.json:
 
 ```json
-"node-red-execution-resilience": "^0.1.0"
+"@js-soft/node-red-execution-resilience": "^0.1.0"
 ```
 
 ## Configuration
