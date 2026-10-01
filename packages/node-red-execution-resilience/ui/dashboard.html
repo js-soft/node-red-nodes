@@ -584,9 +584,10 @@ fetch(msg.url).then(result =&gt; {
             <code>DatabaseAdapter</code> class; only a MongoDB implementation exists today, but the interface is
             designed so a Postgres/file-based/etc. adapter could be swapped in later without touching the tracking
             logic.</li>
-          <li><strong>Cleanup is manual only.</strong> The Delete dropdown (30d/7d/today/all) is the only way to
-            remove old executions right now - there's no scheduled retention job enforcing the node's configured
-            retention period yet.</li>
+          <li><strong>Retention is opt-in.</strong> Executions are kept forever unless
+            <code>execHistoryRetentionDays</code> is set in <code>settings.js</code>, in which case anything older is
+            deleted automatically (checked every <code>execHistoryRetentionIntervalHours</code>, default 1). The
+            Delete dropdown (30d/7d/today/all) works for manual cleanup either way.</li>
           <li><strong>Vanilla JS dashboard, no framework.</strong> This page is static HTML/CSS/JS served directly
             by the node (no React/Vue, no dependency on Node-RED's own editor framework, and deliberately no
             <code>express</code> dependency, since this package may be installed outside Node-RED's own

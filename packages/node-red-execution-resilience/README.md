@@ -21,13 +21,13 @@ A comprehensive workflow execution tracking and visualization node for Node-RED.
 ## Installation
 
 ```bash
-npm install node-red-execution-resilience
+npm install @js-soft/node-red-execution-resilience
 ```
 
 Or add to your Node-RED custom nodes package.json:
 
 ```json
-"node-red-execution-resilience": "^0.1.0"
+"@js-soft/node-red-execution-resilience": "^0.1.0"
 ```
 
 ## Configuration
@@ -57,6 +57,25 @@ Optionally, enable unsafe debug replay - resuming from any node, not just a
 ```javascript
 execHistoryUnsafeReplay: true
 ```
+
+Optionally, delete old executions automatically - here everything older than
+7 days, along with its recorded messages and graph edges. The check runs once
+at startup and then every `execHistoryRetentionIntervalHours` (default `1`).
+Leave `execHistoryRetentionDays` unset to keep everything forever (the default):
+
+```javascript
+execHistoryRetentionDays: 7,
+execHistoryRetentionIntervalHours: 1 // optional
+```
+
+Both also accept numeric strings, so you can pass an environment variable
+straight through (e.g. `execHistoryRetentionDays: process.env.EXEC_HISTORY_RETENTION_DAYS`).
+
+Age is measured from when an execution *started*, so this also removes
+executions still stuck at `RUNNING` and any pending automatic retry older than
+the cutoff. Deleting an old execution doesn't break replaying a newer replay of
+it - "Restart from Origin" falls back to the oldest execution still stored in
+that replay chain.
 
 **Strongly recommended**: password-protect the dashboard - it exposes recorded
 message payloads, a more sensitive surface than the editor itself, and is
@@ -94,8 +113,9 @@ different gap that automatic tracking can't fill on its own:
 3. Open the dashboard from the "Execution Resilience" sidebar tab (or its
    "Open Dashboard" button) to view executions
 
-Cleaning up old executions (retention) is manual only for now - use the
-dashboard's Delete dropdown (30d/7d/today/all).
+Old executions are kept forever unless you enable scheduled retention
+(`execHistoryRetentionDays` - see "Settings Setup" above). The dashboard's
+Delete dropdown (30d/7d/today/all) works for manual cleanup either way.
 
 ### The "Execution Resilience" sidebar tab
 
