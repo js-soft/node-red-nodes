@@ -1465,4 +1465,70 @@ module.exports = function(RED) {
       pendingRetryTimers.set(execution.executionId, { timer, nodeId: execution.scheduledRetry.nodeId });
     });
   })();
+
+  // Scheduled retention: when execHistoryRetentionDays is set, delete every
+  // execution older than that many days (plus its messages and edges - see
+  // clearExecutions) once at startup and then every
+  // execHistoryRetentionIntervalHours (default 1). Runs once per process -
+  // this module function is only invoked when the node set loads, not on
+  // every redeploy - so there's only ever one timer. Unset means keep
+  // everything forever, exactly as before; manual cleanup via the
+  // dashboard's Delete dropdown keeps working either way.
+  const retention = parseRetentionSettings(RED);
+  if (retention) {
+    const runRetention = async () => {
+      let manager;
+      try {
+        manager = await getManager(RED, 'default');
+      } catch (err) {
+        return; // already warned once via the onSend hook
+      }
+
+      try {
+        const cutoffDate = new Date(Date.now() - retention.days * DAY_MS);
+        const deletedCount = await manager.clearExecutions(cutoffDate);
+        if (deletedCount > 0) {
+          RED.log.info(`[execution-resilience] Retention: deleted ${deletedCount} execution(s) older than ${retention.days} day(s)`);
+        }
+      } catch (err) {
+        RED.log.error(`[execution-resilience] Retention cleanup failed: ${err.message}`);
+      }
+    };
+
+    runRetention();
+    const retentionTimer = setInterval(runRetention, retention.intervalHours * 60 * 60 * 1000);
+    if (typeof retentionTimer.unref === 'function') retentionTimer.unref();
+  }
 };
+
+// Reads and validates the retention settings. Returns null when retention
+// is disabled (execHistoryRetentionDays unset) or misconfigured - the
+// latter logged as a warning rather than thrown, so a typo in settings.js
+// can't take down Node-RED's startup. Numeric strings are accepted too, so
+// a settings.js can pass an environment variable straight through.
+function toNumberSetting(value) {
+  if (typeof value === 'string' && value.trim() !== '') return Number(value);
+  return value;
+}
+
+function parseRetentionSettings(RED) {
+  const rawDays = RED.settings.get('execHistoryRetentionDays');
+  if (rawDays === undefined || rawDays === null || rawDays === '') return null;
+  const days = toNumberSetting(rawDays);
+
+  if (typeof days !== 'number' || !(days > 0)) {
+    RED.log.warn(`[execution-resilience] Ignoring execHistoryRetentionDays=${JSON.stringify(rawDays)}: expected a positive number of days. Retention cleanup is disabled.`);
+    return null;
+  }
+
+  const rawInterval = RED.settings.get('execHistoryRetentionIntervalHours');
+  let intervalHours = toNumberSetting(rawInterval);
+  if (rawInterval === undefined || rawInterval === null || rawInterval === '') {
+    intervalHours = 1;
+  } else if (typeof intervalHours !== 'number' || !(intervalHours > 0)) {
+    RED.log.warn(`[execution-resilience] Ignoring execHistoryRetentionIntervalHours=${JSON.stringify(rawInterval)}: expected a positive number of hours. Falling back to 1.`);
+    intervalHours = 1;
+  }
+
+  return { days, intervalHours };
+}
