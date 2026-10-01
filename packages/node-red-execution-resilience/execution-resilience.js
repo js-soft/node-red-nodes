@@ -1222,9 +1222,18 @@ module.exports = function(RED) {
           });
         }
 
-        const destinationIds = new Set();
-        (originNode.wires || []).forEach(port => (port || []).forEach(id => destinationIds.add(id)));
-        if (destinationIds.size === 0) {
+        // One edge per origin wire, keeping its port. The seed is fed
+        // straight into each destination via node.receive() below, which
+        // bypasses the origin's own send() - so the onSend hook never sees
+        // these wires and would otherwise never record them, leaving the
+        // dashboard's message tree cut off right after the origin.
+        const originEdges = [];
+        (originNode.wires || []).forEach((port, portIndex) => (port || []).forEach(id => {
+          if (!originEdges.some(e => e.destinationNodeId === id)) {
+            originEdges.push({ sourcePort: portIndex, destinationNodeId: id });
+          }
+        }));
+        if (originEdges.length === 0) {
           return res.status(422).json({
             error: 'NO_DOWNSTREAM',
             message: 'The flow\'s origin node has no outgoing connection in the current flow, so there is nothing downstream to restart into.'
@@ -1232,15 +1241,20 @@ module.exports = function(RED) {
         }
 
         const newExecutionId = generateExecutionId();
-        await manager.beginRestart(newExecutionId, root.flowId, root.flowName, root.initialMessage, root.originNodeId, execution.executionId, root.rootExecutionId || root.executionId);
 
-        destinationIds.forEach(id => {
-          const node = RED.nodes.getNode(id);
+        // Stamp the NEW execution id before recording the seed, so the
+        // restart's own 'input' entry doesn't carry its parent's stale id.
+        const seedTemplate = safeClone(root.initialMessage);
+        seedTemplate._executionId = newExecutionId;
+        seedTemplate._flowName = root.flowName;
+
+        await manager.beginRestart(newExecutionId, root.flowId, root.flowName, seedTemplate, root.originNodeId, execution.executionId, root.rootExecutionId || root.executionId);
+        await manager.recordEdges(newExecutionId, root.originNodeId, originEdges);
+
+        originEdges.forEach(({ destinationNodeId }) => {
+          const node = RED.nodes.getNode(destinationNodeId);
           if (!node) return;
-          const seed = safeClone(root.initialMessage);
-          seed._executionId = newExecutionId;
-          seed._flowName = root.flowName;
-          node.receive(seed);
+          node.receive(safeClone(seedTemplate));
         });
 
         return res.json({ executionId: newExecutionId, replayedFrom: { mode: 'restart' } });
