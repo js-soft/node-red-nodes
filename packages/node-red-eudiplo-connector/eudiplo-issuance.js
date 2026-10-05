@@ -1,52 +1,24 @@
-const { EudiploClient } = require('@eudiplo/sdk-core');
-
-const BASE_URL_ENV_VAR = 'EUDIPLO_BASE_URL';
-
 module.exports = function (RED) {
   function EudiploIssuanceNode(config) {
     RED.nodes.createNode(this, config);
     const node = this;
 
-    let clientId = process.env.EUDIPLO_CLIENT_ID;
-    let password = process.env.EUDIPLO_CLIENT_SECRET;
-
-    if (config.credentialsOverwrite) {
-      node.log('Overwriting eudiplo-credentials from environment variables');
-      clientId = config.clientId;
-      password = node.credentials.clientSecret;
-    } else {
-      node.log('Using eudiplo-credentials from environment variables');
-    }
-
-    const baseUrl = config.baseUrlOverwrite ? config.baseUrl : process.env[BASE_URL_ENV_VAR];
-
-    if (config.baseUrlOverwrite) {
-      node.log('Overwriting eudiplo base URL from node configuration');
-    } else {
-      node.log(`Using eudiplo base URL from environment variable ${BASE_URL_ENV_VAR}`);
-    }
+    const server = RED.nodes.getNode(config.server);
 
     let configurationError = null;
-    if (!baseUrl) {
-      configurationError = `Missing Eudiplo base URL. Set ${BASE_URL_ENV_VAR} or enable the Base URL override in the node configuration.`;
-      node.status({ fill: 'red', shape: 'ring', text: 'missing base URL' });
-      node.error(configurationError);
+    if (!server) {
+      configurationError = 'Missing eudiplo config node. Select a server in the node configuration.';
+    } else if (server.configurationError) {
+      configurationError = server.configurationError;
     }
-
-    // EudiploClient handles token acquisition and refresh internally.
-    // The SDK uses ${baseUrl}/api/oauth2/token as the token endpoint.
-    let sdkClient = null;
-    if (!configurationError) {
-      sdkClient = new EudiploClient({
-        baseUrl,
-        clientId: clientId,
-        clientSecret: password
-      });
+    if (configurationError) {
+      node.status({ fill: 'red', shape: 'ring', text: 'invalid configuration' });
+      node.error(configurationError);
     }
 
     node.on('input', async function (msg, send, done) {
       if (configurationError) {
-        node.status({ fill: 'red', shape: 'ring', text: 'missing base URL' });
+        node.status({ fill: 'red', shape: 'ring', text: 'invalid configuration' });
         return done(new Error(configurationError));
       }
 
@@ -81,7 +53,7 @@ module.exports = function (RED) {
 
         node.status({ fill: 'blue', shape: 'dot', text: 'issuing…' });
 
-        const result = await sdkClient.createIssuanceOffer({
+        const result = await server.client.createIssuanceOffer({
           credentialConfigurationIds,
           claims,
           flow: config.flow || 'pre_authorized_code',
@@ -103,15 +75,7 @@ module.exports = function (RED) {
         done(err);
       }
     });
-
-    node.on('close', function () {
-      sdkClient = null;
-    });
   }
 
-  RED.nodes.registerType('eudiplo-issuance', EudiploIssuanceNode, {
-    credentials: {
-      clientSecret: { type: 'password' },
-    },
-  });
+  RED.nodes.registerType('eudiplo-issuance', EudiploIssuanceNode);
 };
