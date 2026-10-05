@@ -1,0 +1,128 @@
+<script type="text/javascript">
+  RED.nodes.registerType('eudiplo-config', {
+    category: 'config',
+    defaults: {
+      name:             { value: '' },
+      baseUrl:          { value: '${EUDIPLO_BASE_URL}', required: true },
+      baseUrlType:      { value: 'env' },
+      clientId:         { value: '${EUDIPLO_CLIENT_ID}' },
+      clientIdType:     { value: 'env' },
+      clientSecretEnv:  { value: '${EUDIPLO_CLIENT_SECRET}' },
+      clientSecretType: { value: 'env' },
+    },
+    credentials: {
+      clientSecret: { type: 'password' },
+    },
+    label: function () { return this.name || this.baseUrl || 'eudiplo'; },
+
+    oneditprepare: function () {
+      const node = this;
+
+      // Switching between env variable and string must not carry the value over,
+      // otherwise e.g. an env variable reference would end up in the secret field.
+      function envOrStringInput(selector, typeField, type, values, strType) {
+        const input = $(selector);
+        let currentType = type;
+        input.typedInput({ types: ['env', strType || 'str'], typeField });
+        input.typedInput('type', type);
+        input.typedInput('value', values[type]);
+        input.on('change', function () {
+          const newType = input.typedInput('type');
+          if (newType === currentType) {
+            values[currentType] = input.typedInput('value');
+            return;
+          }
+          currentType = newType;
+          input.typedInput('value', values[newType]);
+        });
+      }
+
+      const baseUrlType = node.baseUrlType || 'env';
+      envOrStringInput('#node-config-input-baseUrl', '#node-config-input-baseUrlType', baseUrlType, {
+        env: baseUrlType === 'env' ? node.baseUrl : '${EUDIPLO_BASE_URL}',
+        str: baseUrlType === 'str' ? node.baseUrl : '',
+      });
+
+      const clientIdType = node.clientIdType || 'env';
+      envOrStringInput('#node-config-input-clientId', '#node-config-input-clientIdType', clientIdType, {
+        env: clientIdType === 'env' ? node.clientId : '${EUDIPLO_CLIENT_ID}',
+        str: clientIdType === 'str' ? node.clientId : '',
+      });
+
+      // A literal secret is stored as an encrypted credential and shown masked;
+      // an env variable reference is a plain property and shown in clear text.
+      envOrStringInput('#eudiplo-config-clientSecret', '#node-config-input-clientSecretType', node.clientSecretType || 'env', {
+        env: node.clientSecretEnv || '${EUDIPLO_CLIENT_SECRET}',
+        str: $('#node-config-input-clientSecret').val(),
+      }, { value: 'str', label: 'string', icon: 'red/images/typedInput/az.svg', inputType: 'password' });
+    },
+
+    oneditsave: function () {
+      // The runtime only substitutes values of the form ${VAR}, so wrap bare variable names.
+      function envValue(input) {
+        const value = input.typedInput('value').trim();
+        if (input.typedInput('type') !== 'env' || !value || value.startsWith('${')) {
+          return value;
+        }
+        return '${' + value + '}';
+      }
+
+      const baseUrlInput = $('#node-config-input-baseUrl');
+      baseUrlInput.typedInput('value', envValue(baseUrlInput));
+      const clientIdInput = $('#node-config-input-clientId');
+      clientIdInput.typedInput('value', envValue(clientIdInput));
+
+      const secretInput = $('#eudiplo-config-clientSecret');
+      const isEnv = secretInput.typedInput('type') === 'env';
+      const secret = isEnv ? envValue(secretInput) : secretInput.typedInput('value');
+      $('#node-config-input-clientSecretEnv').val(isEnv ? secret : '');
+      $('#node-config-input-clientSecret').val(isEnv ? '' : secret);
+    },
+  });
+</script>
+
+<script type="text/html" data-template-name="eudiplo-config">
+  <div class="form-row">
+    <label for="node-config-input-name"><i class="fa fa-tag"></i> Name</label>
+    <input type="text" id="node-config-input-name" placeholder="Name">
+  </div>
+
+  <div class="form-row">
+    <label for="node-config-input-baseUrl"><i class="fa fa-globe"></i> Base URL</label>
+    <input type="text" id="node-config-input-baseUrl">
+    <input type="hidden" id="node-config-input-baseUrlType">
+  </div>
+
+  <hr/>
+
+  <div class="form-row">
+    <label><i class="fa fa-lock"></i> OAuth2</label>
+  </div>
+
+  <div class="form-row">
+    <label for="node-config-input-clientId"><i class="fa fa-user"></i> Client ID</label>
+    <input type="text" id="node-config-input-clientId">
+    <input type="hidden" id="node-config-input-clientIdType">
+  </div>
+
+  <div class="form-row">
+    <label for="eudiplo-config-clientSecret"><i class="fa fa-user-secret"></i> Client Secret</label>
+    <input type="text" id="eudiplo-config-clientSecret">
+    <input type="hidden" id="node-config-input-clientSecretType">
+    <input type="hidden" id="node-config-input-clientSecretEnv">
+    <input type="password" id="node-config-input-clientSecret" style="display:none">
+  </div>
+</script>
+
+<script type="text/html" data-help-name="eudiplo-config">
+  <p>Connection to a Eudiplo server, shared by the eudiplo issuance and presentation nodes.</p>
+
+  <h3>Details</h3>
+  <ul>
+    <li><b>Base URL</b> — Server URL of the Eudiplo instance. Defaults to the env variable <code>${EUDIPLO_BASE_URL}</code>; switch the type to <i>string</i> to enter a URL directly.</li>
+    <li><b>Client ID / Secret</b> — OAuth2 client credentials (Client Credentials grant). They default to the env variables <code>${EUDIPLO_CLIENT_ID}</code> and <code>${EUDIPLO_CLIENT_SECRET}</code>. A secret entered as <i>string</i> is stored encrypted and never shown in clear text. The SDK uses <code>${baseUrl}/api/oauth2/token</code> as the token endpoint.</li>
+  </ul>
+
+  <h3>Notes</h3>
+  <p>All nodes using the same config node share one OAuth2 access token, which the SDK caches and refreshes automatically. To give a single node its own connection, choose <i>Add new eudiplo-config...</i> in that node.</p>
+</script>

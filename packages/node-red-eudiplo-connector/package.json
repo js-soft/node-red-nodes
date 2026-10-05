@@ -1,6 +1,6 @@
 {
   "name": "@js-soft/node-red-eudiplo-connector",
-  "version": "0.1.0-alpha.1",
+  "version": "8.2.0-beta.1",
   "publishConfig": {
     "access": "public",
     "provenance": true
@@ -23,10 +23,13 @@
   },
   "files": [
     "index.js",
+    "eudiplo-config.js",
+    "eudiplo-config.html",
     "eudiplo-issuance.js",
     "eudiplo-issuance.html",
     "eudiplo-presentation.js",
     "eudiplo-presentation.html",
+    "eudiplo-settings.js",
     "icons",
     "README.md",
     "LICENSE"
@@ -34,6 +37,7 @@
   "node-red": {
     "version": ">=3.0.0",
     "nodes": {
+      "eudiplo-config": "eudiplo-config.js",
       "eudiplo-issuance": "eudiplo-issuance.js",
       "eudiplo-presentation": "eudiplo-presentation.js"
     }
