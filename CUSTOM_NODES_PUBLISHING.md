@@ -13,7 +13,7 @@ the `packages/` directory.
 ```text
 packages/
 ├── node-red-enmeshed-connector/
-├── node-red-eudiplo/
+├── node-red-eudiplo-connector/
 ├── node-red-execution-resilience/
 ├── node-red-frosch-work-openapi-generator/
 └── node-red-openapi/
@@ -35,16 +35,16 @@ Examples:
 
 ```bash
 git tag enmeshed-connector@0.1.0
-git tag eudiplo@7.4.0
-git tag eudiplo@7.4.0-beta.1
+git tag eudiplo-connector@9.0.0
+git tag eudiplo-connector@9.0.0-beta.1
 git tag frosch-work-openapi-generator@1.0.0
-git tag openapi@1.0.0
+git tag openapi@1.0.1
 ```
 
-`node-red-eudiplo`'s version is kept in lockstep with its `@eudiplo/sdk-core`
+`node-red-eudiplo-connector`'s version is kept in lockstep with its `@eudiplo/sdk-core`
 dependency version rather than following independent semver. Its published
 version should always match the SDK version currently pinned in
-`packages/node-red-eudiplo/package.json`.
+`packages/node-red-eudiplo-connector/package.json`.
 
 The tag identifier maps to a package directory and published npm package as
 follows:
@@ -52,7 +52,7 @@ follows:
 | Tag identifier | Directory | Published npm package |
 | --- | --- | --- |
 | `enmeshed-connector` | `packages/node-red-enmeshed-connector` | `@js-soft/node-red-enmeshed-connector` |
-| `eudiplo` | `packages/node-red-eudiplo` | `@js-soft/node-red-eudiplo` |
+| `eudiplo-connector` | `packages/node-red-eudiplo-connector` | `@js-soft/node-red-eudiplo-connector` |
 | `execution-resilience` | `packages/node-red-execution-resilience` | `@js-soft/node-red-execution-resilience` |
 | `frosch-work-openapi-generator` | `packages/node-red-frosch-work-openapi-generator` | `@js-soft/node-red-frosch-work-openapi-generator` |
 | `openapi` | `packages/node-red-openapi` | `@js-soft/node-red-openapi` |
@@ -60,7 +60,7 @@ follows:
 ### Push the Tag
 
 ```bash
-git push origin eudiplo@7.4.0
+git push origin eudiplo-connector@9.0.0
 ```
 
 ### Automated Publication
