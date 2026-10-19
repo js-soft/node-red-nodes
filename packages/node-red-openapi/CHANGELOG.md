@@ -1,6 +1,6 @@
 > **Attention:** ⚠️ means that a change breaks things. Manual adjustments will be necessary. So be careful before updating. Even data loss might occur.
 
-## Unreleased
+## @js-soft/node-red-openapi 1.0.1 (19th of October 2026)
 - Loading a specification from a URL now fails with a clear error (incl. HTTP status) on non-2xx responses instead of a JSON parse error
 - YAML specifications from URLs are detected by `Content-Type`, by extension even with query strings, and via JSON → YAML fallback (e.g. `/v3/api-docs`)
 
