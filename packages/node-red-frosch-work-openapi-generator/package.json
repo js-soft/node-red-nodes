@@ -40,7 +40,7 @@
     "Jakob Erben <jakob.erben@js-soft.com>"
   ],
   "dependencies": {
-    "i18next": "^26.3.4",
+    "i18next": "^27.0.0",
     "swagger-ui": "^5.32.12",
     "swagger-ui-dist": "^5.32.8"
   },
